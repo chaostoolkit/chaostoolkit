@@ -8,6 +8,7 @@ function build-docs () {
     git checkout gh-pages
     cd -
     cd docs
+    pip install -r requirements.txt
     mkdocs build --strict -d /tmp/site
     cd /tmp/site
     git add .
