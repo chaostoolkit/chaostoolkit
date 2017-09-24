@@ -1,0 +1,26 @@
+site_name: chaostoolkit
+site_author: The chaostoolkit Team
+site_description: Documentation for chaostoolkit
+copyright: '&copy; 2017 chaostoolkit'
+theme: material
+docs_dir: sources
+markdown_extensions:
+  - admonition
+  - codehilite(guess_lang=false, linenums=false)
+  - def_list
+  - footnotes
+  - meta
+  - smarty
+  - toc(permalink=true)
+  - pymdownx.betterem(smart_enable=all)
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist(custom_checkbox=true)
+  - pymdownx.tilde
+repo_name: chaostoolkit
+repo_url: https://github.com/chaostoolkit/chaostoolkit

@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - 3.5
+
+install:
+  - pip install -r requirements.txt
+
+env:
+  global:
+  - secure: "djg5Q9zqWqDJUJxCPbhHrUaT9hBVqxAtIbqy7LST5OWcM3MPT8ailtxECkVKIbmC/NPAu3RvO5lWx4mV7JVv6CRNIqjkns+5Su7g2UrltawVAOjwvLs+9kLvklMLYurRWK3SqeEgRrxz0rvp9xD5d0lAVV+o4w/sp6w8ZsHzgomXOKXh4PPYFouC+B3nG1eDrLTzG0UyYAXnzTBYlnj1OFURfpyNBI0qLGpd+swItu2rEtukfR75TYX3q+lG00EoG8idrm5hNfRkWk3MOBhP0YMHhzQsbatgCCtdQVNffiaaR+AawRUHOR3QqcQkc500Fp7LxD6bTE0/N3MAAMNEjWPqNxLA7SFCtAd6SDJwIr1VJYw+s07k13B1Ndu7gHACPuI34/hQLw6bgNI8/jZ3Sw6LW06tSCkK2lKIHXmKl0PxN7UXeykIyjxBuvGg/y9pQTA6MmyQocdEd2HBTHER7k68bg5ktFKXuB9zWRmjlL2s1RdaxsfVX/02EHdwYU8fRgz+syer4vZef0VENpkxTxUQ/8IZRi6r2XeZfyHLve9M5zYE6xemmB92+9bcn1XHg9QBTUuLz4Yxxi7xxFMhwf78VD2gPK3lpeZGeh4EW64es+DQ2IRKtV/JqVwR/9p9TSKD33ED+CQ3KrqAE4nRnFhCiwkZ2jwqrwKl7oGEjwg="
+  - GH_USER_NAME: "chaostoolkit-ci"
+
+script: 
+  - bash ci.bash
+
+branches:
+  except:
+  - gh-pages
