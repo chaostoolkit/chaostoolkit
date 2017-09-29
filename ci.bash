@@ -2,6 +2,7 @@
 set -o pipefail
 
 function build-docs () {
+    origin=$PWD
     mkdir /tmp/site
     cd /tmp/site
     git clone https://$GH_USER_NAME:$GH_USER_PWD@github.com/chaostoolkit/chaostoolkit.git .
@@ -14,7 +15,7 @@ function build-docs () {
     git add .
     git commit -a -m "Built from ${TRAVIS_COMMIT}"
     git push
-    cd -
+    cd $origin
 }
 
 function lint () {
@@ -35,7 +36,7 @@ function release () {
 
 function main () {
     lint || return 1
-    #build-docs || return 1
+    build-docs || return 1
     build || return 1
     run-test || return 1
     release || return 1
