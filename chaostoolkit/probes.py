@@ -2,8 +2,7 @@
 from typing import Any, Callable, Dict
 
 from chaostoolkit.errors import FailedProbe, InvalidProbe, UnknownProbe
-from chaostoolkit.backend import k8s
-from chaostoolkit.types import Backend, MicroservicesStatus, Probe
+from chaostoolkit.types import Layer, MicroservicesStatus, Probe
 
 __all__ = ["apply_probe", "get_probe_from_step"]
 
@@ -18,7 +17,7 @@ def get_probe_from_step(step: Dict[str, Any],
     return step.get("probes", {}).get(probe_name)
 
 
-def apply_probe(name: str, probe: Probe, backend: Backend) -> Any:
+def apply_probe(name: str, probe: Probe, layer: Layer) -> Any:
     """
     Apply the given probe and return its result. The name of the probe
     matches a function in this module by replacing dashes with underscores.
@@ -33,7 +32,7 @@ def apply_probe(name: str, probe: Probe, backend: Backend) -> Any:
     if not probe_func:
         raise UnknownProbe(name)
 
-    return probe_func(probe, backend)
+    return probe_func(probe, layer)
 
 
 def get_probe_function(name: str) -> Callable[[Probe], Any]:
@@ -48,17 +47,17 @@ def get_probe_function(name: str) -> Callable[[Probe], Any]:
 ###############################################################################
 
 
-def microservices_all_healthy(probe: Probe, backend: Backend):
+def microservices_all_healthy(probe: Probe, layer: Layer):
     """
     Query the system for its health. Raises :exc:`FailedProbe` when at least
     one microservice is not marked running.
     """
-    notready, failed = backend.all_microservices_healthy()
+    notready, failed = layer.all_microservices_healthy()
     if notready or failed:
         raise FailedProbe("the system is unhealthy")
 
 
-def microservice_available_and_healthy(probe: Probe, backend: Backend):
+def microservice_available_and_healthy(probe: Probe, layer: Layer):
     """
     Query the system for one microservice's availability and health. If the
     microservice is not available or running, raises :exc:`FailedProbe`.
@@ -67,7 +66,7 @@ def microservice_available_and_healthy(probe: Probe, backend: Backend):
     if not name:
         raise InvalidProbe("missing microservice name")
 
-    available = backend.microservice_available_and_healthy(name)
+    available = layer.microservice_available_and_healthy(name)
 
     if available is None:
         raise FailedProbe(
@@ -78,7 +77,7 @@ def microservice_available_and_healthy(probe: Probe, backend: Backend):
             "microservice '{name}' is not healthy".format(name=name))
 
 
-def microservice_is_not_available(probe: Probe, backend: Backend):
+def microservice_is_not_available(probe: Probe, layer: Layer):
     """
     Query the system for one microservice's availability. If the microservice
     is found, even in a non-running state, then raises :exc:`FailedProbe`.
@@ -87,7 +86,7 @@ def microservice_is_not_available(probe: Probe, backend: Backend):
     if not name:
         raise InvalidProbe("missing microservice name")
 
-    unavailable = backend.microservice_is_not_available(name)
+    unavailable = layer.microservice_is_not_available(name)
 
     if unavailable is False:
         raise FailedProbe(

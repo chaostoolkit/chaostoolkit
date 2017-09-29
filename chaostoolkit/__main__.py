@@ -6,6 +6,7 @@ from chaostoolkit.plan import run_plan
 
 
 @click.group()
+@click.version_option(version=__version__)
 def cli():
     pass
 

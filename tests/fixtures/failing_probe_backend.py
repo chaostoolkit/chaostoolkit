@@ -3,7 +3,6 @@ import json
 import os.path
 from typing import Union
 
-from chaostoolkit.backend.noop import *
 from chaostoolkit.types import MicroservicesStatus, Probe
 
 

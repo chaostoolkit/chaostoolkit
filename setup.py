@@ -35,7 +35,10 @@ author_email = 'sh@defuze.org'
 url = 'http://chaostoolkit.org'
 license = 'Apache License Version 2.0'
 packages = [
-    'chaostoolkit'
+    'chaostoolkit',
+    'chaostoolkit.layers',
+    'chaostoolkit.layers.platforms',
+    'chaostoolkit.layers.applications'
 ]
 
 needs_pytest = set(['pytest', 'test']).intersection(sys.argv)

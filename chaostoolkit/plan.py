@@ -10,11 +10,11 @@ import jsonschema
 from logzero import logger
 
 from chaostoolkit.actions import execute_action, Action
-from chaostoolkit.backend import load_backend_module
+from chaostoolkit.layers import load_layers
 from chaostoolkit.errors import InvalidPlan
 from chaostoolkit.probes import apply_probe, get_probe_from_step
 from chaostoolkit.report import Report
-from chaostoolkit.types import Backend, Plan
+from chaostoolkit.types import Layer, Plan
 
 __all__ = ["run_plan", "load_plan", "execute_plan"]
 
@@ -31,7 +31,7 @@ def run_plan(plan_path: str, dry_run: bool = False) -> Report:
 
         report.with_plan(plan)
 
-        backend = load_backend_module(plan.get("backend", "dummy"))
+        layers = load_layers(plan.get("target-layers"))
 
         execute_plan(plan, backend)
         return report
@@ -49,12 +49,13 @@ def load_plan(plan_path: str) -> Plan:
 
     with io.open(plan_path) as f:
         payload = json.load(f)
-        schema = pkgutil.get_data("chaostoolkit", "plan-schema.json")
-        jsonschema.validate(payload, json.loads(schema.decode("utf-8")))
+        schema = os.path.join(os.path.dirname(__file__), "plan-schema.json")
+        with io.open(schema) as s:
+            jsonschema.validate(payload, json.load(s))
         return payload
 
 
-def execute_plan(plan: Plan, backend: Backend):
+def execute_plan(plan: Plan, layers: Dict[str, Layer]):
     """
     Execute the given plan by applying the method's steps in the plan
     description.
@@ -80,14 +81,15 @@ def execute_plan(plan: Plan, backend: Backend):
     for step in method:
         logger.info("Moving on to step '{title}'".format(
             title=step.get("title", "N/A")))
-        apply_steady_probe(step, backend)
-        apply_action(step, backend)
-        apply_close_probe(step, backend)
+
+        apply_steady_probe(step, layers)
+        apply_action(step, layers)
+        apply_close_probe(step, layers)
 
     logger.info("Done with plan: '{name}'".format(name=title))
 
 
-def apply_steady_probe(step: Dict[str, Any], backend: Backend):
+def apply_steady_probe(step: Dict[str, Any], layers: Dict[str, Layer]):
     """
     Apply the steady probe found in this step. If none is defined, does
     nothing.
@@ -102,13 +104,17 @@ def apply_steady_probe(step: Dict[str, Any], backend: Backend):
     if "name" not in probe:
         raise InvalidPlan("steady probe requires a probe name to apply")
 
+    if "layer" not in probe:
+        raise InvalidPlan("steady probe requires the target layer to be set")
+
     if probe:
         probe_name = probe.pop("name")
+        layer = layers.get(probe["layer"])
         logger.info(" Applying steady probe '{name}'".format(name=probe_name))
-        apply_probe(probe_name, probe, backend)
+        apply_probe(probe_name, probe, layer)
 
 
-def apply_close_probe(step: Dict[str, Any], backend: Backend):
+def apply_close_probe(step: Dict[str, Any], layers: Dict[str, Layer]):
     """
     Apply the close probe found in this step. If none is defined, does
     nothing.
@@ -123,13 +129,17 @@ def apply_close_probe(step: Dict[str, Any], backend: Backend):
     if "name" not in probe:
         raise InvalidPlan("close probe requires a probe name to apply")
 
+    if "layer" not in probe:
+        raise InvalidPlan("close probe requires the target layer to be set")
+
     if probe:
         probe_name = probe.pop("name")
+        layer = layers.get(probe["layer"])
         logger.info(" Applying close probe '{name}'".format(name=probe_name))
-        apply_probe(probe_name, probe, backend)
+        apply_probe(probe_name, probe, layer)
 
 
-def apply_action(step: Dict[str, Any], backend: Backend):
+def apply_action(step: Dict[str, Any], layers: Dict[str, Layer]):
     """
     Apply the saction found in this step. If none is defined, does
     nothing.
@@ -145,9 +155,13 @@ def apply_action(step: Dict[str, Any], backend: Backend):
     if not action_name:
         raise InvalidPlan("action requires a name")
 
+    if "layer" not in action:
+        raise InvalidPlan("action requires the target layer to be set")
+
     pause(action, "before")
     logger.info(" Executing action '{name}'".format(name=action_name))
-    execute_action(action_name, action, backend)
+    layer = layers.get(action["layer"])
+    execute_action(action_name, action, layer)
     pause(action, "after")
 
 

@@ -102,3 +102,6 @@ ENV/
 
 #vscode
 .vscode/
+
+# generated docs
+docs/site/

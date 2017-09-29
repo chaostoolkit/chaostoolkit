@@ -24,3 +24,19 @@ markdown_extensions:
   - pymdownx.tilde
 repo_name: chaostoolkit
 repo_url: https://github.com/chaostoolkit/chaostoolkit
+extra:
+  palette:
+    primary: blue-grey
+    accent: blue-grey
+  social:
+    - type: github
+      link: https://github.com/chaostoolkit
+    - type: twitter
+      link: https://twitter.com/chaostoolkit
+
+pages:
+- Overview:
+    - Concepts: overview/concepts.md
+- Getting Started:
+    - Install: usage/install.md
+    - Run: usage/running.md
