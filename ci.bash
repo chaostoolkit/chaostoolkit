@@ -14,6 +14,7 @@ function build-docs () {
     git add .
     git commit -a -m "Built from ${TRAVIS_COMMIT}"
     git push
+    cd -
 }
 
 function lint () {
