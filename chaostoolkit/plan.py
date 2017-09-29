@@ -33,7 +33,7 @@ def run_plan(plan_path: str, dry_run: bool = False) -> Report:
 
         layers = load_layers(plan.get("target-layers"))
 
-        execute_plan(plan, backend)
+        execute_plan(plan, layers)
         return report
 
 
@@ -49,9 +49,9 @@ def load_plan(plan_path: str) -> Plan:
 
     with io.open(plan_path) as f:
         payload = json.load(f)
-        schema = os.path.join(os.path.dirname(__file__), "plan-schema.json")
-        with io.open(schema) as s:
-            jsonschema.validate(payload, json.load(s))
+        #schema = os.path.join(os.path.dirname(__file__), "plan-schema.json")
+        #with io.open(schema) as s:
+        #    jsonschema.validate(payload, json.load(s))
         return payload
 
 

@@ -91,3 +91,12 @@ def microservice_is_not_available(probe: Probe, layer: Layer):
     if unavailable is False:
         raise FailedProbe(
             "microservice '{name}' looks healthy".format(name=name))
+
+
+def endpoint_should_respond_ok(probe: Probe, layer: Layer):
+    url = probe.get("parameters", {}).get("url")
+    if not url:
+        raise InvalidProbe("missing endpoint url")
+
+    if not layer.endpoint_should_respond_ok(url):
+        raise FailedProbe("endpoint did not return an okay status")
