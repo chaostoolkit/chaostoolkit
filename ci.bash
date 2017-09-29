@@ -16,8 +16,28 @@ function build-docs () {
     git push
 }
 
+function lint () {
+    pycodestyle --first chaostoolkit
+}
+
+function build () {
+    python setup.py build
+}
+
+function run-test () {
+    python setup.py test
+}
+
+function release () {
+    python setup.py release
+}
+
 function main () {
+    lint || return 1
     build-docs || return 1
+    build || return 1
+    run-test || return 1
+    release || return 1
 }
 
 main "$@" || exit 1
