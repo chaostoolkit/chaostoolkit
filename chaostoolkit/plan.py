@@ -67,7 +67,7 @@ def execute_plan(plan: Plan, backend: Backend):
       applied
 
     Note that the execution exists as soon as one of those fail, meaning the
-    following steps are not applied. This also means you responsible for 
+    following steps are not applied. This also means you responsible for
     cleaning up your system.
     """
     title = plan.get("title", "N/A")

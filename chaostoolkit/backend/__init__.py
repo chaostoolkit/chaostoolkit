@@ -11,7 +11,7 @@ __all__ = ["load_backend_module"]
 
 def load_backend_module(backend_config: Dict[str, Any]) -> Backend:
     """
-    Import the backend module matching the `backend_config["name"]` key. 
+    Import the backend module matching the `backend_config["name"]` key.
 
     Currently supported:
 

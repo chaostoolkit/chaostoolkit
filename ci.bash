@@ -35,7 +35,7 @@ function release () {
 
 function main () {
     lint || return 1
-    build-docs || return 1
+    #build-docs || return 1
     build || return 1
     run-test || return 1
     release || return 1
