@@ -36,10 +36,9 @@ function release () {
     pip install twine
     twine upload dist/* -u ${PYPI_USER_NAME} -p ${PYPI_PWD}
 
-    version=$(sed -n "s/^__version__\s=\s'\(.*\)'$/\1/p" chaostoolkit/__init__.py)
     docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_PWD}
-    docker build -t chaostoolkit/chaostoolkit:$version .
-    docker push chaostoolkit/chaostoolkit:$version
+    docker build -t chaostoolkit/chaostoolkit:$TRAVIS_TAG .
+    docker push chaostoolkit/chaostoolkit:$TRAVIS_TAG
 }
 
 function main () {
@@ -48,6 +47,7 @@ function main () {
     run-test || return 1
 
     if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo "Building tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
         if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5\.[0-9]+$ ]]; then
             build-docs || return 1
             release || return 1
