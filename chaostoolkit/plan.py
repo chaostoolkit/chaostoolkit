@@ -27,7 +27,7 @@ def run_plan(plan_path: str, dry_run: bool = False) -> Report:
         logger.info("Executing plan '{path}'".format(path=plan_path))
         plan = load_plan(plan_path)
         if dry_run:
-            plan["backend"]["name"] = "noop"
+            switch_to_dry_run(plan)
 
         report.with_plan(plan)
 
@@ -35,6 +35,27 @@ def run_plan(plan_path: str, dry_run: bool = False) -> Report:
 
         execute_plan(plan, layers)
         return report
+
+
+def switch_to_dry_run(plan: Plan):
+    """
+    When running a dry run, we switch all target layers to a noop layer
+    so operations do nothing.
+    """
+    for target in plan["target-layers"]:
+        for layer in plan["target-layers"][target]:
+            layer["key"] = "noop"
+
+        for step in plan["method"]:
+            probes = step.get("probes")
+            if probes:
+                if "steady" in probes:
+                    probes["steady"]["layer"] = "noop"
+                if "close" in probes:
+                    probes["close"]["layer"] = "noop"
+
+            if "action" in step:
+                step["action"]["layer"] = "noop"
 
 
 def load_plan(plan_path: str) -> Plan:

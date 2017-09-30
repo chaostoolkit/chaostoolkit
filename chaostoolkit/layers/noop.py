@@ -6,6 +6,10 @@ from typing import Union
 from chaostoolkit.types import MicroservicesStatus, Probe
 
 
+def endpoint_should_respond_ok(url: str) -> bool:
+    return True
+
+
 def all_microservices_healthy() -> MicroservicesStatus:
     return [], []
 

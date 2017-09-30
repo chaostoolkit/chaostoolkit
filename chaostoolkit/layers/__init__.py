@@ -10,7 +10,7 @@ __all__ = ["load_layers"]
 
 MAPPING = {
     "kubernetes": "chaostoolkit.layers.platforms.k8s",
-    "noop": "chaostoolkit.layers.platforms.noop",
+    "noop": "chaostoolkit.layers.noop",
     "spring": "chaostoolkit.layers.applications.spring"
 }
 
