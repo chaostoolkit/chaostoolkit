@@ -1,4 +1,8 @@
 language: python
+sudo: required
+
+services:
+  - docker
 
 python:
   - 3.5
@@ -13,6 +17,8 @@ env:
   - GH_USER_NAME: "chaostoolkit-ci"
   - secure: "xR2xoqHvGaGcs0Y+r82c2nBWWBTodNr3Otvu8IlgYrR261g3lY0Pbuur+NQitENSmjX0/CoqlYFHXcaS+a6ltKQtWQUFnt+um5sCjD4ls3mLa5alsyhz/Jw1IlVQvXyAvMv7BUHi4qcpk+bmi2uaVDCCigcZqBEp5HpUEwUwbOmvZe1j7rQraVxw7PAhfcar0IwvDApQTwo8NZRA1v7gA9M2teyXG0cExf8J1Pdv+bJw7bQlFmnwqG9p5hDaAFjJVl9F934GyIWNedl2MiKcOgGsSn865PG1I02kI/YIpq7Eggnj4VXVVoLIBzJNfbq8DFFkFfgDIujgKL4rHdgJ769syIT8PC7ViQnZwtHEWMkm4ZKtDuI5wIyupkGdIsgnAPRscN6ABhH+EYpmNb0Tz6B70zLJre9Skajtk/wqPJgTvZX6ahE5E/P1AHJqwwRVOLgqdEYx6eBRXxgRJFGDFxLs/qGWDK31+MIK4kh1lWdTDrui3c8nKStrJq6kM9RezUwPqeQfpJHHwZVzWjKr7ioL8mjszxSXSmLuqWjY3TBFmg+Ht6a2aVp/FlfbsaRDkf+GfS1ZN7tfgfh7Hd7oG36XXmMd8bO4X98uSP+WxFEUjp8ANpA5P7hN8KvUU+fzOrcvmV5dEGi2vngmUARbfzZlFs+gc8SCuU187ACXT50="
   - PYPI_USER_NAME: "chaostoolkit"
+  - secure: "yUoYfWMc1O8duPJC3bCG9j6CqfqTL8l0GQTHnbOJ5Z7FusFr1DTyCjDHjejfQVNUg436iSUr3YleOx2c6foRaX2Mq12cK88n+fXKPEC2msUVfDojOv1ysK7z2U2Un7pza734X7gN/ijuS2jYbF3sZwK8Bh/5XshkgReuwoG8aPbYF1GlzgkukMIot0wEelwSl5J4Z1ELHD7E/TFToE84uuXYhvEg/CAix+7quE4DMpRleijNrpOA1CNzm7VNEjOrpluCOwHg6+1JumGDXYN0yASxRgUGytF/ybvmVS0/ZTdfBnVnwrb6hzkpCBjmMG/SjIeioaoMrPd4x0pMAS4dxTPmVJL8e31MOGeGNwKjRBq+jnBY6dqLz3yo/BivoH3A5NParJXn6/Eve9bg+XR2kDrWxJxrxdyd5EwqsBGXH7Th2/X8CyyV03L8aXeCADs8yFU6au4St3/GyJjpsuEha4cHQnNLWOumzVIntGFesAJIhKExq2Q14zWLeXjDiVOqL3KMKDwrBLyQnk9zXYZ/VSHGrGIIhMDNX/iSDfR+b+K7Pp822AgiaVaW5Q3ucxZbTUbjF43gciI2y6sQOCY9Ws7DDU0DyVii/zTcrfNQu4R2Cq5JKpPaIXSZlAX1+uTiatWjnUf0OL+ykPWEXkBgewuw8ysuHswdO1sZpN5foIY="
+  - DOCKER_USER_NAME: "chaostoolkit"
 
 script: 
   - bash ci.bash
