@@ -32,14 +32,20 @@ function run-test () {
 
 function release () {
     python setup.py release
+
+    pip install twine
+    twine upload dist/* -u ${PYPI_USER_NAME} -p ${PYPI_PWD}
 }
 
 function main () {
     lint || return 1
-    build-docs || return 1
     build || return 1
     run-test || return 1
-    release || return 1
+
+    if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        build-docs || return 1
+        release || return 1
+    fi
 }
 
 main "$@" || exit 1
