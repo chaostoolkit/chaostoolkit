@@ -39,6 +39,7 @@ function release () {
     docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_PWD}
     docker build -t chaostoolkit/chaostoolkit:$TRAVIS_TAG .
     docker push chaostoolkit/chaostoolkit:$TRAVIS_TAG
+    docker push chaostoolkit/chaostoolkit
 }
 
 function main () {
