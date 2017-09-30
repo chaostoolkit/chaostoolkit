@@ -48,8 +48,10 @@ function main () {
     run-test || return 1
 
     if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        build-docs || return 1
-        release || return 1
+        if [[ $TRAVIS_PYTHON_VERSION =~ ^3.5.[0-9]+$ ]]; then
+            build-docs || return 1
+            release || return 1
+        fi
     fi
 }
 

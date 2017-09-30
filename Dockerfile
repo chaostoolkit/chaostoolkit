@@ -6,5 +6,5 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir chaostoolkit
 
-ENTRYPOINT ["chaostoolkit"]
-CMD [""]
+ENTRYPOINT ["/usr/local/bin/chaostoolkit"]
+CMD ["--help"]
