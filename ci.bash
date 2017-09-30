@@ -37,7 +37,10 @@ function release () {
     twine upload dist/* -u ${PYPI_USER_NAME} -p ${PYPI_PWD}
 
     docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_PWD}
-    docker build -t chaostoolkit/chaostoolkit:$TRAVIS_TAG .
+    docker build -t chaostoolkit/chaostoolkit .
+
+    docker tag chaostoolkit/chaostoolkit:latest chaostoolkit/chaostoolkit:$TRAVIS_TAG
+    
     docker push chaostoolkit/chaostoolkit:$TRAVIS_TAG
     docker push chaostoolkit/chaostoolkit:latest
 }
