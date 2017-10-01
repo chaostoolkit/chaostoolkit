@@ -1,4 +1,4 @@
-FROM python:3.5
+FROM python:3.5-alpine
 
 LABEL maintainer="Sylvain Hellegouarch <sh@defuze.org>"
 
