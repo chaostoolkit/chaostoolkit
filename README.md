@@ -1,5 +1,60 @@
 # chaostoolkit
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
+[https://img.shields.io/docker/stars/_/chaostoolkit.svg](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
+[https://img.shields.io/pypi/pyversions/chaostoolkit.svg](https://www.python.org/)
+[![Requirements Status](https://requires.io/github/chaostoolkit/chaostoolkit/requirements.svg?branch=master)](https://requires.io/github/chaostoolkit/chaostoolkit/requirements/?branch=master)
+[https://img.shields.io/pypi/wheel/chaostoolkit.svg](http://pythonwheels.com/)
 
-A chaos engineering toolkit for your system and microservices
+A chaos engineering toolkit for your system and microservices.
+
+## Context and Purpose
+
+The chaostoolkit aims at making it simple and straightforward to run
+experiments against your live system to observe its behavior and learn about
+potential weaknesses.
+
+The idea is that your system is complex and no matter how well you planned
+ and designed, it would be challenging to claim anyone knows how it would 
+ react under certain conditions.
+
+Following in the steps of giants like Netflix or LinkedIn, we believe in the
+[principles of chaos engineering][principles]. Creating the conditions to
+stress your system should help your team become better at handling those
+situations while allowing your system to evolve nicely.
+
+[principles]: http://principlesofchaos.org/
+
+The chaostoolkit is, as its name implies, a toolkit for you to run those
+experiments at the platform and/or application level. For instance, by killing
+a microservice, your experiment could probe the system for other services and
+see the impact of tsuch a failure.
+
+The goal is not to break things, though this is one way to run an experiment,
+but to create the conditions of stress that can make you learn from your system.
+
+## Getting Started
+
+chaostoolkit is a command line tool that runs your experiment, then 
+generates a report to share with your team for discussion.
+
+Running an experiment is as simple as:
+
+```
+$ chaos run experiment.json
+```
+
+chaostoolkit takes your experiment as a description file, encoded in JSON, and
+runs its steps sequentially.
+
+Please, read the main documentation to [install chaostoolkit][install] and 
+learn more about it.
+
+[install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
+
+## Learn More
+
+chaostoolkit is open and you are more than welcome to discuss and share your
+experiments with its community.
+
+
