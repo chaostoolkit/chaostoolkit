@@ -1,10 +1,10 @@
 # chaostoolkit
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
-[https://img.shields.io/docker/stars/_/chaostoolkit.svg](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
-[https://img.shields.io/pypi/pyversions/chaostoolkit.svg](https://www.python.org/)
+[![Docker Stars](https://img.shields.io/docker/stars/_/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
+[![Python versions](https://img.shields.io/pypi/pyversions/chaostoolkit.svg)](https://www.python.org/)
 [![Requirements Status](https://requires.io/github/chaostoolkit/chaostoolkit/requirements.svg?branch=master)](https://requires.io/github/chaostoolkit/chaostoolkit/requirements/?branch=master)
-[https://img.shields.io/pypi/wheel/chaostoolkit.svg](http://pythonwheels.com/)
+[![Has wheel](https://img.shields.io/pypi/wheel/chaostoolkit.svg)](http://pythonwheels.com/)
 
 A chaos engineering toolkit for your system and microservices.
 
