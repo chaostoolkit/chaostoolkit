@@ -1,4 +1,4 @@
-## Run
+# Running the Chaos Toolkit
 
 The `chaostoolkit` CLI will display commands it supports as follows:
 

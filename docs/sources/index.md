@@ -1,5 +1,3 @@
-# chaostoolkit documentation
+# Welcome to the Chaos Toolkit Documentation
 
-chaostoolkit allows you to run stressful experiments against your production
-system and report the deviation between the expected results and the actual
-state of the system.
+The Chaos Toolkit is a free, open source project that enables you to create and apply Chaos Experiments to various types of infrastructure, platforms and applications.
