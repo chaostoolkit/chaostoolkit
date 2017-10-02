@@ -27,6 +27,7 @@ If you run the command from a container, you may use a command such as:
 
 ```
 $ docker run --rm -it \
+    --user `id -u` \
     -v $HOME/.kube:/root/.kube \
     -v $HOME/.minikube:$HOME/.minikube \
     -v `pwd`:/tmp/chaos \
