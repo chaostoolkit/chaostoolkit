@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.10...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.11...HEAD
+
+## [0.1.11][] - 2017-10-02
+
+[0.1.10]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.10...0.1.11
+
+### Added
+
+-   Ensure CNAME is set for the docs to be resolved via chaostoolkit.org
 
 ## [0.1.10][] - 2017-10-02
 
