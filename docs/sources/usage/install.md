@@ -38,7 +38,13 @@ $ sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 $ sudo yum -y install python35
 ```
 
-#### Install the dependencies in a virtual environment
+On Windows:
+
+[Download the latest binary installer][pywin] from the Python website.
+
+[pywin]: https://www.python.org/downloads/windows/
+
+#### Create a virtual environment
 
 Dependencies can be installed for your system via its package management but,
 more likely, you will want to install them yourself in a local virtual
@@ -59,18 +65,9 @@ $ source  ~/.venvs/chaostk/bin/activate
 
 [virtualenvwrapper]: https://virtualenvwrapper.readthedocs.io/en/latest/
 
-Next, install the dependencies using [pip][]:
-
-```
-(chaostk) $ pip install -r https://raw.githubusercontent.com/chaostoolkit/chaostoolkit/master/requirements.txt
-```
-
-[pip]: https://pip.pypa.io/en/stable/
-
 ### Install the CLI
 
-Once your dependencies are deployed properly, install `chaostoolkit` in the
-virtual environment:
+Install `chaostoolkit` in the virtual environment as follows:
 
 ```
 (chaostk) $ pip install chaostoolkit

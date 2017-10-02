@@ -51,6 +51,10 @@ test_require = [
     'backports.unittest_mock',
 ]
 
+install_require = []
+with io.open('requirements.txt') as f:
+    install_require = [l.strip() for l in f if not l.startswith('#')]
+
 setup_params = dict(
     name=name,
     version=__version__,
@@ -64,6 +68,7 @@ setup_params = dict(
     packages=packages,
     entry_points={'console_scripts': ['chaos = chaostoolkit.__main__:cli']},
     include_package_data=True,
+    install_requires=install_require,
     tests_require=test_require,
     setup_requires=pytest_runner,
 )
