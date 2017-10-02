@@ -51,10 +51,12 @@ function main () {
     build || return 1
     run-test || return 1
 
-    if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        echo "Releasing tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
-        if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
-            build-docs || return 1
+    if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
+        # build docs on each commit but only once
+        build-docs || return 1
+
+        if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Releasing tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
             release || return 1
         fi
     fi
