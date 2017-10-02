@@ -45,7 +45,7 @@ more likely, you will want to install them yourself in a local virtual
 environment. Let's create first such a virtual environment:
 
 ```
-$ python3.5 -m venv ~/.venvs/chaostk
+$ python3 -m venv ~/.venvs/chaostk
 ```
 
 Make sure to always activate your virtual environment before using it:
