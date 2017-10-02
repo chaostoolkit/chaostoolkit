@@ -1,4 +1,4 @@
-## Install chaostoolkit
+# How to Install the Chaos Toolkit
 
 You can either install the chaostoolkit command line or run it directly as a
 container. The former expects [Python 3.5+][python] properly
