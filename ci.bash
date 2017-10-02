@@ -68,7 +68,7 @@ function main () {
     if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
         build-docs || return 1
 
-        if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == 'master' ]]; then
+        if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_PULL_REQUEST" == false ]]; then
             # build docs on each commit but only from master
             publish-docs || return 1
         fi
