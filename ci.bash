@@ -12,6 +12,7 @@ function build-docs () {
     pip install -r requirements.txt
     mkdocs build --strict -d /tmp/site
     cd /tmp/site
+    echo "chaostoolkit.org" > CNAME
     git add .
     git commit -a -m "Built from ${TRAVIS_COMMIT}"
     git push
