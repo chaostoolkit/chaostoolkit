@@ -105,3 +105,6 @@ ENV/
 
 # generated docs
 docs/site/
+
+# pytest results
+junit-test-results.xml

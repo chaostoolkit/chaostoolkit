@@ -1,5 +1,5 @@
 #!/bin/bash
-set -o pipefail
+set -eo pipefail
 
 function build-docs () {
     origin=$PWD
@@ -11,6 +11,11 @@ function build-docs () {
     cd docs
     pip install -r requirements.txt
     mkdocs build --strict -d /tmp/site
+    cd $origin
+}
+
+function publish-docs () {
+    origin=$PWD
     cd /tmp/site
     echo "chaostoolkit.org" > CNAME
     git add .
@@ -47,15 +52,16 @@ function release () {
 }
 
 function main () {
-    lint || return 1
-    build || return 1
-    run-test || return 1
+    lint || return 1
+    build || return 1
+    run-test || return 1
 
     if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
+        build-docs || return 1
 
         if [[ $TRAVIS_PULL_REQUEST == false ]]; then
             # build docs on each commit but only from master
-            build-docs || return 1
+            publish-docs || return 1
         fi
 
         if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then

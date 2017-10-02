@@ -12,3 +12,5 @@ build/
 ci.bash
 *.md
 setup.*
+*.ini
+*.xml

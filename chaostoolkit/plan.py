@@ -70,8 +70,8 @@ def load_plan(plan_path: str) -> Plan:
 
     with io.open(plan_path) as f:
         payload = json.load(f)
-        #schema = os.path.join(os.path.dirname(__file__), "plan-schema.json")
-        #with io.open(schema) as s:
+        # schema = os.path.join(os.path.dirname(__file__), "plan-schema.json")
+        # with io.open(schema) as s:
         #    jsonschema.validate(payload, json.load(s))
         return payload
 
