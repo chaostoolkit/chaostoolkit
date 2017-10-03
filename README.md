@@ -64,7 +64,7 @@ they are good to be applied as part of your experiment.
 
 ## Learn More
 
-chaostoolkit is open and you are more than welcome to discuss and share your
-experiments with its community.
+chaostoolkit is open and [you are more than welcome][join] to discuss and share
+your experiments with its community.
 
-
+[join]: https://join.chaostoolkit.org/
