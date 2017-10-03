@@ -52,6 +52,16 @@ learn more about it.
 
 [install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
 
+## Extend
+
+The Chaos Toolkit command plays the experiment you feed it. Experiments are
+made of probes and actions which you can implement yourself whenever existing
+ones do not fit the bill.
+
+chaostoolkit supports probes and actions implemented as Python function,
+processes or remote HTTP calls. As long as they obey the Chaos Toolkit API,
+they are good to be applied as part of your experiment.
+
 ## Learn More
 
 chaostoolkit is open and you are more than welcome to discuss and share your
