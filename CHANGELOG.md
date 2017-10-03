@@ -2,11 +2,19 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.11...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.12...HEAD
+
+## [0.1.12][] - 2017-10-03
+
+[0.1.12]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.11...0.1.12
+
+### Removed
+
+-   Documentation has moved to its own project
 
 ## [0.1.11][] - 2017-10-02
 
-[0.1.10]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.10...0.1.11
+[0.1.11]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.10...0.1.11
 
 ### Added
 

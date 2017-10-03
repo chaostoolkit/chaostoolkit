@@ -1,5 +1,0 @@
-mkdocs
-pygments
-pymdown-extensions
-mkdocs-material
-markdown-include

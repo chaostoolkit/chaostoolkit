@@ -1,31 +1,6 @@
 #!/bin/bash
 set -eo pipefail
 
-function build-docs () {
-    echo "Building the documentation"
-    origin=$PWD
-    mkdir /tmp/site
-    cd /tmp/site
-    git clone https://$GH_USER_NAME:$GH_USER_PWD@github.com/chaostoolkit/chaostoolkit.git .
-    git checkout gh-pages
-    cd -
-    cd docs
-    pip install -r requirements.txt
-    mkdocs build --strict -d /tmp/site
-    cd $origin
-}
-
-function publish-docs () {
-    echo "Publishing the documentation"
-    origin=$PWD
-    cd /tmp/site
-    echo "chaostoolkit.org" > CNAME
-    git add .
-    git commit -a -m "Built from ${TRAVIS_COMMIT}"
-    git push
-    cd $origin
-}
-
 function lint () {
     echo "Checking the code syntax"
     pycodestyle --first chaostoolkit
@@ -66,13 +41,6 @@ function main () {
     run-test || return 1
 
     if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
-        build-docs || return 1
-
-        if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_PULL_REQUEST" == false ]]; then
-            # build docs on each commit but only from master
-            publish-docs || return 1
-        fi
-
         if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Releasing tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
             release || return 1
