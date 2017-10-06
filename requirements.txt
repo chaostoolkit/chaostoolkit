@@ -3,5 +3,5 @@ pycodestyle
 kubernetes
 logzero
 pyyaml
-jsonschema
 requests
+chaostoolkit-lib

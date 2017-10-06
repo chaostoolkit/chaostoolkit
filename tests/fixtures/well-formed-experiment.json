@@ -1,0 +1,59 @@
+{
+    "title": "Losing configuration file should not fail the service",
+    "description": "We may loose the configuration file of the service but this should not prevent the service from running",
+    "method": [
+        {
+            "title": "Let's ensure our service configuration is there in the first place",
+            "probes": {
+                "steady": {
+                    "title": "Checking configuration exists",
+                    "layer": "fs",
+                    "type": "python",
+                    "module": "os.path",
+                    "func": "exists",
+                    "arguments": {
+                        "path": "./tests/fixtures/svc.ini"
+                    }
+                }
+            }
+        },
+        {
+            "title": "Next, we pretend that configuration is gone",
+            "action": {
+                "title": "Move the configuration to a different name",
+                "layer": "fs",
+                "type": "python",
+                "module": "os",
+                "func": "rename",
+                "arguments": {
+                    "src": "./tests/fixtures/svc.ini",
+                    "dst": "./tests/fixtures/svc-old.ini"
+                }
+            },
+            "probes": {
+                "close": {
+                    "title": "Configuration file should not be there with the original name",
+                    "layer": "fs",
+                    "type": "python",
+                    "module": "os.path",
+                    "func": "exists",
+                    "negate": true,
+                    "arguments": {
+                        "path": "./tests/fixtures/svc-old.ini"
+                    }
+                }
+            }
+        },
+        {
+            "title": "Our service should continue running",
+            "probes": {
+                "steady": {
+                    "title": "Checking service is healthy",
+                    "layer": "spring",
+                    "type": "http",
+                    "url": "https://www.google.com/health"
+                }
+            }
+        }
+    ]
+}

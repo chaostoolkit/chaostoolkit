@@ -2,7 +2,19 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.12...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.0...HEAD
+
+## [0.2.0][] - 2017-10-06
+
+[0.2.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.1.12...0.2.0
+
+### Changed
+
+-   Core code now lives in a dedicated project [chaoslib][chaoslib].
+    chaostoolkit is now just the CLI of running experiments [#3][3]
+
+[chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
+[3]: https://github.com/chaostoolkit/chaostoolkit/issues/3
 
 ## [0.1.12][] - 2017-10-03
 
