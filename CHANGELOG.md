@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.2...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...HEAD
+
+## [0.2.3][] - 2017-10-07
+
+[0.2.3]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.2...0.2.3
+
+### Changed
+
+-   Not a universal wheel distribution
 
 ## [0.2.2][] - 2017-10-06
 
