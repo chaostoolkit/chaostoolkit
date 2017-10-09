@@ -41,9 +41,12 @@ Install, or upgrade, the Chaos Toolkit as follows:
 $ pip install -U chaostoolkit
 ``` 
 
-Please, read the main documentation to [install chaostoolkit][install] and 
+The Chaos Toolkit CLI expects [Python 3.5][py3k] or above and permissions to
+install Python dependencies. It is worh installing it in a virtual environment.
+Please, read the main documentation to [install chaostoolkit][install] and
 learn more about the requirements.
 
+[py3k]: https://www.python.org/
 [install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
 
 ## Getting Started
