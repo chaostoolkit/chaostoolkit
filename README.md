@@ -73,6 +73,14 @@ chaostoolkit supports probes and actions implemented as Python function,
 processes or remote HTTP calls. As long as they obey the Chaos Toolkit API,
 they are good to be applied as part of your experiment.
 
+### Known Extensions
+
+The following extensions can be used for your probes and/or actions:
+
+* [chaostoolkit-kubernetes][chaoskube]: Kubernetes interactions
+
+[chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
+
 ## Learn More
 
 chaostoolkit is open and [you are more than welcome][join] to discuss and share
