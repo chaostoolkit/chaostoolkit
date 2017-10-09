@@ -33,6 +33,19 @@ see the impact of tsuch a failure.
 The goal is not to break things, though this is one way to run an experiment,
 but to create the conditions of stress that can make you learn from your system.
 
+## Install or Upgrade
+
+Install, or upgrade, the Chaos Toolkit as follows:
+
+```
+$ pip install -U chaostoolkit
+``` 
+
+Please, read the main documentation to [install chaostoolkit][install] and 
+learn more about the requirements.
+
+[install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
+
 ## Getting Started
 
 chaostoolkit is a command line tool that runs your experiment, then 
@@ -46,11 +59,6 @@ $ chaos run experiment.json
 
 chaostoolkit takes your experiment as a description file, encoded in JSON, and
 runs its steps sequentially.
-
-Please, read the main documentation to [install chaostoolkit][install] and 
-learn more about it.
-
-[install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
 
 ## Extend
 
