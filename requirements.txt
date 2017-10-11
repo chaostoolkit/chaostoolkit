@@ -1,4 +1,5 @@
 click
+click-plugins
 pycodestyle
 logzero
 chaostoolkit-lib

@@ -11,14 +11,17 @@ from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
 from chaoslib.types import Experiment
 import click
+from click_plugins import with_plugins
 import logzero
 from logzero import logger
+from pkg_resources import iter_entry_points
 
 from chaostoolkit import __version__
 
 __all__ = ["cli"]
 
 
+@with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
