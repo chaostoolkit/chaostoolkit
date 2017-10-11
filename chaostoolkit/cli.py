@@ -32,7 +32,7 @@ def cli(verbose: bool = False):
         fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
 
     logzero.formatter(
-        formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"), 
+        formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
         update_custom_handlers=True)
 
 
