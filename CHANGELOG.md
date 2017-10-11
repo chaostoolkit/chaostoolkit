@@ -8,6 +8,10 @@
 
 [0.2.4]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...0.2.4
 
+### Added
+
+-   Enable CLI extensions 
+
 ### Changed
 
 -   Proper verbose log level
