@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.4...HEAD
+
+## [0.2.4][] - 2017-10-10
+
+[0.2.4]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...0.2.4
+
+### Changed
+
+-   Proper verbose log level
 
 ## [0.2.3][] - 2017-10-07
 
