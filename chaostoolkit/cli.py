@@ -5,14 +5,14 @@ import logging
 import os
 import sys
 
-import click
-import logzero
-from logzero import logger
 
 from chaoslib.exceptions import ChaosException
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
 from chaoslib.types import Experiment
+import click
+import logzero
+from logzero import logger
 
 from chaostoolkit import __version__
 
@@ -21,7 +21,7 @@ __all__ = ["cli"]
 
 @click.group()
 @click.version_option(version=__version__)
-@click.option('--verbose', is_flag=True, help='Display debug level traces')
+@click.option('--verbose', is_flag=True, help='Display debug level traces.')
 def cli(verbose: bool = False):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
@@ -38,15 +38,15 @@ def cli(verbose: bool = False):
 
 @cli.command()
 @click.option('--report-path', default="./chaos-report.json",
-              help='Path where to save the report from the plan execution')
+              help='Path where to save the report from the plan execution.')
 @click.option('--dry', is_flag=True,
-              help='Run the plan using the noop backend')
+              help='Run the experiment without executing activities.')
 @click.option('--no-validation', is_flag=True,
-              help='Do not perform validation of the experiment')
+              help='Do not validate the experiment before running.')
 @click.argument('path', type=click.Path(exists=True))
 def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
         no_validation: bool = False):
-    """Run the plan given at PATH."""
+    """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
     if not no_validation:
         try:
@@ -56,6 +56,7 @@ def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
             logger.debug(x)
             sys.exit(1)
 
+    experiment["dry"] = dry
     journal = run_experiment(experiment)
 
     with io.open(report_path, "w") as r:
@@ -65,7 +66,7 @@ def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
 @cli.command()
 @click.argument('path', type=click.Path(exists=True))
 def validate(path: str):
-    """Validate un the experiment at PATH."""
+    """Validate the experiment at PATH."""
     experiment = load_experiment(click.format_filename(path))
     try:
         ensure_experiment_is_valid(experiment)
