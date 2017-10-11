@@ -24,15 +24,16 @@ __all__ = ["cli"]
 @click.option('--verbose', is_flag=True, help='Display debug level traces')
 def cli(verbose: bool = False):
     if verbose:
-        logzero.loglevel(logging.DEBUG)
+        logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
     else:
-        logzero.loglevel(logging.INFO)
+        logzero.loglevel(logging.INFO, update_custom_handlers=True)
         fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
 
-    logzero.setup_default_logger(
-        formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"))
+    logzero.formatter(
+        formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"), 
+        update_custom_handlers=True)
 
 
 @cli.command()
