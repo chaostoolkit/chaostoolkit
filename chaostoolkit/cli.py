@@ -25,7 +25,8 @@ __all__ = ["cli"]
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
-@click.option('--change-dir', help='Change directory before running experiment.')
+@click.option('--change-dir',
+              help='Change directory before running experiment.')
 def cli(verbose: bool = False, change_dir: str = None):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
