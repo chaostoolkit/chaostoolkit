@@ -71,15 +71,20 @@ ones do not fit the bill.
 
 chaostoolkit supports probes and actions implemented as Python function,
 processes or remote HTTP calls. As long as they obey the Chaos Toolkit API,
-they are good to be applied as part of your experiment.
+they are good to be applied as part of your experiment. The core implementation
+of the Chaos Toolkit is found in the [chaostoolkit-lib][chaoslib] project.
+
+[chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
 
 ### Known Extensions
 
 The following extensions can be used for your probes and/or actions:
 
-* [chaostoolkit-kubernetes][chaoskube]: Kubernetes interactions
+* [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
+* [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
 
 [chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
+[chaosgremlin]: https://github.com/chaostoolkit/chaostoolkit-gremlin
 
 ## Learn More
 
