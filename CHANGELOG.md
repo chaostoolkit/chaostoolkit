@@ -4,13 +4,14 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.4...HEAD
 
-## [0.2.4][] - 2017-10-10
+## [0.2.4][] - 2017-10-12
 
 [0.2.4]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...0.2.4
 
 ### Added
 
--   Enable CLI extensions 
+-   Enable CLI extensions
+-   Provide a change directory argument when using the CLI
 
 ### Changed
 

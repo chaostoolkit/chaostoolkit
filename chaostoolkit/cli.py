@@ -25,7 +25,8 @@ __all__ = ["cli"]
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
-def cli(verbose: bool = False):
+@click.option('--change-dir', help='Change directory before running experiment.')
+def cli(verbose: bool = False, change_dir: str = None):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
@@ -37,6 +38,10 @@ def cli(verbose: bool = False):
     logzero.formatter(
         formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
         update_custom_handlers=True)
+
+    if change_dir:
+        logger.warning("Moving to {d}".format(d=change_dir))
+        os.chdir(change_dir)
 
 
 @cli.command()
