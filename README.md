@@ -82,9 +82,11 @@ The following extensions can be used for your probes and/or actions:
 
 * [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
 * [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
+* [chaostoolkit-prometheus][chaosprom]: Prometheus probes
 
 [chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
 [chaosgremlin]: https://github.com/chaostoolkit/chaostoolkit-gremlin
+[chaosprom]: https://github.com/chaostoolkit/chaostoolkit-prometheus
 
 ## Learn More
 
