@@ -4,3 +4,4 @@ pycodestyle
 logzero
 chaostoolkit-lib
 requests
+typing
