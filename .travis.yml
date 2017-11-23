@@ -29,6 +29,8 @@ notifications:
     on_success: always
 
 deploy:
+  before_deploy:
+  - cd ~/
   provider: releases
   api_key:
     secure: KT6lJnwLj4YTQFqcmb/+jLkFP194WUg0cIfxg/a4CO7foKJvKbBorMUnr3FRZkahZ9XwEte7p4qyRhXJBzEC1CaEw49i01/HlPbwTOafdfSKZdDAk1GPfJVbOAEezJC/OMyRlVpfXF1nhyoYEF2M8t0hEWSe67BqC5NSyhmyS2mF1clNEabzpt2GdpWQBAl/TxL5oVOJ9iz99mc3K323hmA140oNBZuoNNIKKDlMJeTHK653R02pVNMQCYw9UKpSrrOmE0U10IxgwXpri6Z/fy3kR3Rz2632h/ydrGyKPeLfv9R95ZZ8tav0zcGcjgeRpAyjN2iGkK9mM9p67MNheQQOb10yXy44bl+tDKdx3zn1X/+VZSNWd56x8VevQ3NNmXIC5n5a2WsIPuHD35hG+exByTqDft3u49/EhXwfqzBeyqHYhqOsqm5IIkxvdW8rXpquDn1IzKfmD8b0tmYEstYJbsPVURA3tiJ0S0cbLvNZDjQax9cIgH8bPXYgQJYb9ngu77cGqVg5Ouer3Ii/yzkVkZvhc7m7yTyQxD/ocbhW9WbXpfrPYMl4A0KMN6NtQoYTruI9/1ivicyoOoPHzhdfPwi51hR7HT5rxIdVS07U2CDETvb0/uuJaBrMySuTuwihUBOrPmBpHge4wyWg23GyYMUw7WYu7JsPKtt1NEw=
@@ -37,3 +39,4 @@ deploy:
   on:
     repo: chaostoolkit/chaostoolkit
     tags: true
+    condition: if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; fi
