@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.4...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.5...HEAD
+
+## [0.2.5][] - 2017-11-23
+
+[0.2.5]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.4...0.2.5
+
+### Added
+
+-   Checking for newer release of the toolkit at runtime
 
 ## [0.2.4][] - 2017-10-12
 
