@@ -8,7 +8,7 @@
 
 Chaos Toolkit is a project whose mission is to provide a free, open and community-driven toolkit and API to all the various forms of chaos engineering tools that the community needs.
 
-## Why the `Chaos Toolkit`?
+## Why the Chaos Toolkit?
 
 The Chaos Toolkit has two main purposes:
 
