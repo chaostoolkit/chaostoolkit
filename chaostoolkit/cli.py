@@ -17,6 +17,8 @@ from logzero import logger
 from pkg_resources import iter_entry_points
 
 from chaostoolkit import __version__
+from chaostoolkit.check import check_newer_version
+
 
 __all__ = ["cli"]
 
@@ -25,9 +27,12 @@ __all__ = ["cli"]
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
+@click.option('--no-version-check', is_flag=True,
+              help='Do not search for an updated version of the chaostoolkit.')
 @click.option('--change-dir',
               help='Change directory before running experiment.')
-def cli(verbose: bool = False, change_dir: str = None):
+def cli(verbose: bool = False, no_version_check: bool = False,
+        change_dir: str = None):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
@@ -39,6 +44,9 @@ def cli(verbose: bool = False, change_dir: str = None):
     logzero.formatter(
         formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
         update_custom_handlers=True)
+
+    if not no_version_check:
+        check_newer_version()
 
     if change_dir:
         logger.warning("Moving to {d}".format(d=change_dir))
