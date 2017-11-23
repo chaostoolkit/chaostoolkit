@@ -1,4 +1,4 @@
-# Chaos Toolkit - The Open API for Chaos Engineering
+# Chaos Toolkit - An Open API for Chaos Engineering
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
