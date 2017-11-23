@@ -1,4 +1,4 @@
-# chaostoolkit
+# Chaos Toolkit - An Open API for Chaos Engineering
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
@@ -6,53 +6,40 @@
 [![Requirements Status](https://requires.io/github/chaostoolkit/chaostoolkit/requirements.svg?branch=master)](https://requires.io/github/chaostoolkit/chaostoolkit/requirements/?branch=master)
 [![Has wheel](https://img.shields.io/pypi/wheel/chaostoolkit.svg)](http://pythonwheels.com/)
 
-A chaos engineering toolkit for your system and microservices.
+Chaos Toolkit is a project whose mission is to provide a free, open and community-driven toolkit and API to all the various forms of chaos engineering tools that the community needs.
 
-## Context and Purpose
+## Why the Chaos Toolkit?
 
-The chaostoolkit aims at making it simple and straightforward to run
-experiments against your live system to observe its behavior and learn about
+The Chaos Toolkit has two main purposes:
+
+* To provide a full chaos engineering implementation that simplifies the adoption of chaos engineering by providing an easy starting point for applying the discipline.
+* To define an open API with the community so that any chaos experiment can be executed consistently using integrations with the many commercial, private and open source chaos implementations that are emerging.
+
+### Simplifying Adoption of Chaos Engineering
+
+Firstly the Chaos Toolkit aims to make it simple and straightforward to run
+experiments against your live system to build confidence in its behavior and learn about
 potential weaknesses.
 
-The idea is that your system is complex and no matter how well you planned
- and designed, it would be challenging to claim anyone knows how it would 
- react under certain conditions.
-
-Following in the steps of giants like Netflix or LinkedIn, we believe in the
-[principles of chaos engineering][principles]. Creating the conditions to
-stress your system should help your team become better at handling those
-situations while allowing your system to evolve nicely.
+Following the 
+[principles of chaos engineering][principles], the Chaos Toolkit aims to be the easiest way to apply these principles to your own complex, and even sometimes chaotic, systems.
 
 [principles]: http://principlesofchaos.org/
 
-The chaostoolkit is, as its name implies, a toolkit for you to run those
-experiments at the platform and/or application level. For instance, by killing
-a microservice, your experiment could probe the system for other services and
-see the impact of tsuch a failure.
+### An Open API to Chaos Engineering
 
-The goal is not to break things, though this is one way to run an experiment,
-but to create the conditions of stress that can make you learn from your system.
+Secondly the Chaos Toolkit defines an open API to Chaos Engineering through it's JSON-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
 
 ## Install or Upgrade
 
-Install, or upgrade, the Chaos Toolkit as follows:
+Before installing the Chaos Toolkit it is recommended that you create a Python virtual environment for running your chaos experiments. Full instructions for installing chaostoolkit and its requirements are available in the [installation documentation][install].
 
-```
-$ pip install -U chaostoolkit
-``` 
-
-The Chaos Toolkit CLI expects [Python 3.5][py3k] or above and permissions to
-install Python dependencies. It is worh installing it in a virtual environment.
-Please, read the main documentation to [install chaostoolkit][install] and
-learn more about the requirements.
-
-[py3k]: https://www.python.org/
 [install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
 
 ## Getting Started
 
-chaostoolkit is a command line tool that runs your experiment, then 
-generates a report to share with your team for discussion.
+Once you have installed the Chaos Toolkit you can use it through its simple command line tool. The tool's main job is to run your experiment and then 
+generate a report of the findings from the experiment to then share with your team for discussion.
 
 Running an experiment is as simple as:
 
@@ -60,25 +47,28 @@ Running an experiment is as simple as:
 $ chaos run experiment.json
 ```
 
-chaostoolkit takes your experiment as a description file, encoded in JSON, and
-runs its steps sequentially.
+The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON, and runs its steps sequentially. A full description of this JSON experiment description file can be found in the [main project documentation][experiment-description].
 
-## Extend
+[json]: https://www.json.org/
+[experiment-description]: Provide a full experiment JSON description 
 
-The Chaos Toolkit command plays the experiment you feed it. Experiments are
-made of probes and actions which you can implement yourself whenever existing
-ones do not fit the bill.
+## Extending the Chaos Toolkit
 
-chaostoolkit supports probes and actions implemented as Python function,
-processes or remote HTTP calls. As long as they obey the Chaos Toolkit API,
-they are good to be applied as part of your experiment. The core implementation
-of the Chaos Toolkit is found in the [chaostoolkit-lib][chaoslib] project.
+The Chaos Toolkit plays the experiment JSON description that you provide to it. 
+Experiments are made up of probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment). We are always looking for community contribution and ideas around
+what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and evironment.
+
+If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea. (As a hint, always `@russmiles` in the community Slack when you post your idea to get Russ's, and the team's, attention immediately! We want to hear from you).
+
+In terms of implementation, the Chaos Toolkit currently supports probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][chaoslib] you can then specify your own unique extensions in your experiment JSON definitions. 
+
+The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
 [chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
 
-### Known Extensions
+### Current Known Extensions
 
-The following extensions can be used for your probes and/or actions:
+The following free and open source extensions are available for your probes and/or actions:
 
 * [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
 * [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
@@ -88,9 +78,12 @@ The following extensions can be used for your probes and/or actions:
 [chaosgremlin]: https://github.com/chaostoolkit/chaostoolkit-gremlin
 [chaosprom]: https://github.com/chaostoolkit/chaostoolkit-prometheus
 
-## Learn More
+## Get involved!
 
-chaostoolkit is open and [you are more than welcome][join] to discuss and share
-your experiments with its community.
+Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As dsuch we encourage and welcome to you  is open [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
 
 [join]: https://join.chaostoolkit.org/
+
+If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
+
+Finally you can always email russ@chaosiq.io with any questions or requirements as well.
