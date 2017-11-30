@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from urllib.parse import urlparse
+import re
 
 from logzero import logger
 import requests
@@ -9,7 +9,8 @@ from chaostoolkit import __version__
 
 __all__ = ["check_newer_version"]
 
-GH_PROJECT_URL = "https://github.com/chaostoolkit/chaostoolkit"
+LATEST_RELEASE_URL = "http://chaostoolkit.org/usage/latest/"
+VERSION_REGEX = re.compile('id="latest">([0-9]+\\.[0-9]+\\.[0-9]+)</')
 
 
 def check_newer_version():
@@ -19,18 +20,23 @@ def check_newer_version():
     inviting the user to upgrade its environment.
     """
     try:
-        r = requests.get(
-            "{u}/releases/latest".format(u=GH_PROJECT_URL),
-            timeout=(1, 30))
+        r = requests.get(LATEST_RELEASE_URL, timeout=(1, 30),
+                         headers={
+                             "Referer": "#currentversion={v}".format(
+                                 v=__version__)})
         if r.status_code == 200:
-            _, latest_version = urlparse(r.url).path.rsplit('/', 1)
-            if semver.compare(latest_version, __version__) == 1:
-                logger.warn(
-                    "\nThere is a new version of the chaostoolkit available.\n"
-                    "You may install it by typing:\n\n"
-                    "$ pip install -U chaostoolkit\n\n"
-                    "Please review changes at {u}".format(u=r.url))
+            m = VERSION_REGEX.search(r.text)
+            if m:
+                latest_version = m.group(1)
+                if semver.compare(latest_version, __version__) == 1:
+                    logger.warn(
+                        "\nThere is a new version ({v}) of the chaostoolkit "
+                        "available.\n"
+                        "You may upgrade by typing:\n\n"
+                        "$ pip install -U chaostoolkit\n\n"
+                        "Please review changes at {u}\n".format(
+                            u=r.url, v=latest_version))
 
-                return latest_version
+                    return latest_version
     except Exception:
         pass
