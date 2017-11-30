@@ -2,13 +2,24 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.5...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.8...HEAD
+
+## [0.2.8][] - 2017-11-30
+
+[0.2.8]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.5...0.2.8
+
+### Changed
+
+-   Minor improvements of the version check
+-   Triggering the documentation build on new releases so the doc is updated
+    with the latest tag information
+
 
 ## [0.2.5][] - 2017-11-23
 
 [0.2.5]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.4...0.2.5
 
-### Added
+### Added
 
 -   Checking for newer release of the toolkit at runtime
 
@@ -16,7 +27,7 @@
 
 [0.2.4]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.3...0.2.4
 
-### Added
+### Added
 
 -   Enable CLI extensions
 -   Provide a change directory argument when using the CLI

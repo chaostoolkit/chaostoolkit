@@ -33,6 +33,15 @@ function release () {
     echo "Publishing to the Docker repository"
     docker push chaostoolkit/chaostoolkit:$TRAVIS_TAG
     docker push chaostoolkit/chaostoolkit:latest
+
+    echo "Rebuilding the documentation"
+    curl -s -X POST \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -H "Travis-API-Version: 3" \
+        -H "Authorization: token "$TRAVIS_CI_TOKEN"" \
+        -d '{"request": {"branch":"master", "message": "Rebuilding after new chaostoolkit release"}}' \
+        https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-documentation/requests
 }
 
 function main () {
