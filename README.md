@@ -80,7 +80,7 @@ The following free and open source extensions are available for your probes and/
 
 ## Get involved!
 
-Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As dsuch we encourage and welcome to you  is open [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
+Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As such, we encourage and welcome you  to [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
 
 [join]: https://join.chaostoolkit.org/
 
