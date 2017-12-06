@@ -31,7 +31,7 @@ classifiers = [
     'Topic :: System :: Distributed Computing'
 ]
 author = 'chaostoolkit Team'
-author_email = 'sh@defuze.org'
+author_email = 'contact@chaostoolkit.org'
 url = 'http://chaostoolkit.org'
 license = 'Apache License Version 2.0'
 packages = [
