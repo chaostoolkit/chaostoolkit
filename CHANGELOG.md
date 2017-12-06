@@ -2,7 +2,16 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.8...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.3.0...HEAD
+
+## [0.3.0][] - 2017-12-06
+
+[0.3.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.8...0.3.0
+
+### Changed
+
+- Proper contact email address
+- Ensuring latest spec version support from chaostoolkit-lib 0.6.0
 
 ## [0.2.8][] - 2017-11-30
 
