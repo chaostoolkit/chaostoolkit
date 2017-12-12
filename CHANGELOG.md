@@ -8,6 +8,10 @@
 
 - Added log-file flag to log the run (at DEBUG level) to a file
 
+### Changed
+
+- Bumped to chaostoolkit-lib 0.7.0
+
 ## [0.3.0][] - 2017-12-06
 
 [0.3.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.2.8...0.3.0

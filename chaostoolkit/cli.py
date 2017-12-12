@@ -31,19 +31,29 @@ __all__ = ["cli"]
               help='Do not search for an updated version of the chaostoolkit.')
 @click.option('--change-dir',
               help='Change directory before running experiment.')
+@click.option('--log-file',
+              help='File path where to write the experiment log.')
 def cli(verbose: bool = False, no_version_check: bool = False,
-        change_dir: str = None):
+        change_dir: str = None, log_file: str = None):
+
     if verbose:
-        logzero.loglevel(logging.DEBUG, update_custom_handlers=True)
+        logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
     else:
-        logzero.loglevel(logging.INFO, update_custom_handlers=True)
+        logzero.loglevel(logging.INFO, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
+
+    if log_file:
+        # let's ensure we log at DEBUG level
+        logger.setLevel(logging.DEBUG)
+        logzero.logfile(
+            click.format_filename(log_file), mode='w',
+            loglevel=logging.DEBUG)
 
     logzero.formatter(
         formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
-        update_custom_handlers=True)
+        update_custom_handlers=False)
 
     if not no_version_check:
         check_newer_version()
