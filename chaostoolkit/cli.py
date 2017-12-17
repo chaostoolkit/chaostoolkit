@@ -33,8 +33,8 @@ __all__ = ["cli"]
               help='Change directory before running experiment.')
 @click.option('--no-log-file', is_flag=True,
               help='Disable logging to file entirely.')
-@click.option('--log-file', default="experiment.log",
-              help='File path where to write the experiment log: ${default}.')
+@click.option('--log-file', default="experiment.log", show_default=True,
+              help='File path where to write the experiment log.')
 def cli(verbose: bool = False, no_version_check: bool = False,
         change_dir: str = None, no_log_file: bool = False,
         log_file: str = "experiment.log"):
