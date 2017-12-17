@@ -31,10 +31,13 @@ __all__ = ["cli"]
               help='Do not search for an updated version of the chaostoolkit.')
 @click.option('--change-dir',
               help='Change directory before running experiment.')
-@click.option('--log-file',
-              help='File path where to write the experiment log.')
+@click.option('--no-log-file', is_flag=True,
+              help='Disable logging to file entirely.')
+@click.option('--log-file', default="experiment.log",
+              help='File path where to write the experiment log: ${default}.')
 def cli(verbose: bool = False, no_version_check: bool = False,
-        change_dir: str = None, log_file: str = None):
+        change_dir: str = None, no_log_file: bool = False,
+        log_file: str = "experiment.log"):
 
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
@@ -44,7 +47,7 @@ def cli(verbose: bool = False, no_version_check: bool = False,
         logzero.loglevel(logging.INFO, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
 
-    if log_file:
+    if not no_log_file:
         # let's ensure we log at DEBUG level
         logger.setLevel(logging.DEBUG)
         logzero.logfile(

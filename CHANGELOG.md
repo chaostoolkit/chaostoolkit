@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.4.0...HEAD
 
+#### Changed
+
+- Log to file by default and added a flag to disable it
+
 ## [0.4.0][] - 2017-12-12
 
 [0.4.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.3.0...0.4.0
