@@ -7,6 +7,7 @@
 #### Changed
 
 - Log to file by default and added a flag to disable it
+- Updated to chaostoolkit-lib 0.8.0
 
 ## [0.4.0][] - 2017-12-12
 
