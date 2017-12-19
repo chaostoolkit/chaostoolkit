@@ -45,7 +45,7 @@ test_require = [
     'pytest>=2.8',
     'pytest-cov',
     'pytest-sugar',
-    'backports.unittest_mock',
+    'semver',
 ]
 
 install_require = []
