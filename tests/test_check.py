@@ -8,18 +8,21 @@ from chaostoolkit.check import check_newer_version
 
 
 class FakeResponse:
-    def __init__(self, status=200, url=None, version=None):
+    def __init__(self, status=200, url=None, response=None):
         self.status_code = status
         self.url = url
-        self.text = '<a href="" id="latest">{v}</a>'.format(v=version)
+        self.response = response
+
+    def json(self):
+        return self.response
 
 
 @patch("chaostoolkit.check.requests", autospec=True)
 def test_version_is_not_newer(requests):
     requests.get.return_value = FakeResponse(
         200,
-        "http://someplace/usage/latest/",
-        __version__
+        "https://releases.chaostoolkit.org/latest",
+        {"version": __version__, "up_to_date": True}
     )
 
     latest_version = check_newer_version()
@@ -32,8 +35,8 @@ def test_version_is_newer(requests):
     requests.get.return_value = FakeResponse(
         200,
         "http://someplace//usage/latest/",
-        newer_version
+        {"version": __version__, "up_to_date": False}
     )
 
     latest_version = check_newer_version()
-    assert latest_version == newer_version
+    assert latest_version == __version__

@@ -4,11 +4,16 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.5.0...HEAD
 
+### Changed
+
+- Version check is now done server-side to remove semver dependency
+
+
 ## [0.5.0][] - 2017-12-17
 
 [0.5.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.4.0...0.5.0
 
-#### Changed
+### Changed
 
 - Log to file by default and added a flag to disable it
 - Updated to chaostoolkit-lib 0.8.0

@@ -4,4 +4,3 @@ pycodestyle
 logzero
 chaostoolkit-lib>=0.8.0
 requests
-semver
