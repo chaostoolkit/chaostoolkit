@@ -49,10 +49,9 @@ Running an experiment is as simple as:
 $ chaos run experiment.json
 ```
 
-The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON, and runs its steps sequentially. A full specifiction of this JSON experiment description file can be found in the [main project documentation][experiment-description].
+The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON, and runs its steps sequentially. A full specifiction of this JSON experiment description file can be found in the [main project documentation][api].
 
 [json]: https://www.json.org/
-[experiment-description]: http://chaostoolkit.org/api/experiment/
 
 ## Extending the Chaos Toolkit
 
@@ -62,11 +61,11 @@ what probes and actions you might need as you integrate chaos experiments throug
 
 If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea.
 
-In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][chaoslib] you can then specify your own unique extensions in your experiment JSON definitions. 
+In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment JSON definitions. 
 
 The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
-[extend]: http://chaostoolkit.org/technology/extend/
+[extend]: http://chaostoolkit.org/extending/approaches/
 [chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
 
 ### Current Known Extensions
