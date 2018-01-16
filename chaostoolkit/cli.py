@@ -7,9 +7,10 @@ import sys
 
 
 from chaoslib.exceptions import ChaosException
+from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
-from chaoslib.types import Experiment
+from chaoslib.types import Discovery, Experiment
 import click
 from click_plugins import with_plugins
 import logzero
@@ -23,7 +24,6 @@ from chaostoolkit.check import check_newer_version
 __all__ = ["cli"]
 
 
-@with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
@@ -104,3 +104,29 @@ def validate(path: str):
     except ChaosException as x:
         logger.error(str(x))
         sys.exit(1)
+
+
+@cli.command()
+@click.option('--no-system-info', is_flag=True,
+              help='Do not discover system information.')
+@click.option('--no-install', is_flag=True,
+              help='Assume package already in PYTHONPATH.')
+@click.option('--discovery-report-path', default="./discovery.json",
+              help='Path where to save the report from the discovery.',
+              show_default=True)
+@click.argument('package')
+def discover(package: str, discovery_report_path: str = "./discovery.json",
+             no_system_info: bool = False,
+             no_install: bool = False) -> Discovery:
+    """Discover capabilities and experiments."""
+    discovery = disco(
+        package_name=package, discover_system=not no_system_info,
+        download_and_install=not no_install)
+    with open(discovery_report_path, "w") as d:
+        d.write(json.dumps(discovery, indent=2))
+    logger.info("Discovery report saved in {p}".format(
+        p=discovery_report_path))
+
+
+# keep this after the cli group declaration for plugins to override defaults
+with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
