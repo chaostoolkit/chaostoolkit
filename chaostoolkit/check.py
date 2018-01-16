@@ -19,7 +19,7 @@ def check_newer_version():
     inviting the user to upgrade its environment.
     """
     try:
-        r = requests.get(LATEST_RELEASE_URL, timeout=(1, 30),
+        r = requests.get(LATEST_RELEASE_URL, timeout=(2, 30),
                          params={"current": __version__})
         if r.status_code == 200:
             payload = r.json()
@@ -34,4 +34,4 @@ def check_newer_version():
                         u=CHANGELOG_URL, v=latest_version))
                 return latest_version
     except Exception:
-        raise
+        pass

@@ -2,5 +2,5 @@ click
 click-plugins
 pycodestyle
 logzero
-chaostoolkit-lib>=0.8.0
+chaostoolkit-lib>=0.10.0
 requests
