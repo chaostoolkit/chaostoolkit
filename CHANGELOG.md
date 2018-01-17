@@ -2,7 +2,17 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.9.0...HEAD
+
+## [0.9.0][] - 2018-01-17
+
+[0.9.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.8.0...0.9.0
+
+### Added
+
+- Steady state hypothesis is not mandatory when exploring weaknesses [#18][18]
+
+[18]: https://github.com/chaostoolkit/chaostoolkit/issues/18
 
 ## [0.8.0][] - 2018-01-16
 
