@@ -151,10 +151,6 @@ def init(discovery_report_path: str = "./discovery.json",
         "title": "",
         "description": "N/A",
         "tags": [],
-        "steady-state-hypothesis": {
-            "title": "",
-            "probes": []
-        },
         "method": [],
         "rollbacks": []
     }
@@ -172,11 +168,8 @@ def init(discovery_report_path: str = "./discovery.json",
 
     s = click.style
     title = click.prompt(s("Experiment's title", fg='green'), type=str)
-    hypo_title = click.prompt(
-        s("Steady state hypothesis in a nutshell", fg='green'), type=str)
 
     base_experiment["title"] = title
-    base_experiment["steady-state-hypothesis"]["title"] = hypo_title
 
     activities = [(a["name"], a) for a in discovery["activities"]]
     echo = click.echo
@@ -210,7 +203,7 @@ def init(discovery_report_path: str = "./discovery.json",
         activity = base_activity.copy()
         activity["name"] = selected["name"]
         activity["type"] = selected["type"]
-        activity["provider"] = {}
+        activity["provider"] = {"type": "python"}
         activity["provider"]["module"] = selected["mod"]
         activity["provider"]["func"] = selected["name"]
         activity["provider"]["arguments"] = {}
