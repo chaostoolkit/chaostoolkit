@@ -2,7 +2,17 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.8.0...HEAD
+
+## [0.8.0][] - 2018-01-16
+
+[0.8.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.7.0...0.8.0
+
+### Added
+
+- New init feature [#23][23]
+
+[23]: https://github.com/chaostoolkit/chaostoolkit/issues/23
 
 ## [0.7.0][] - 2018-01-16
 

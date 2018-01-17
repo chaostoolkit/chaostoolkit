@@ -128,5 +128,116 @@ def discover(package: str, discovery_report_path: str = "./discovery.json",
         p=discovery_report_path))
 
 
+@cli.command()
+@click.option('--discovery-report-path', default="./discovery.json",
+              help='Path where to save the report from the discovery.',
+              show_default=True, type=click.Path(exists=True))
+@click.option('--experiment-path', default="./experiment.json",
+              help='Path where to save the experiment.',
+              show_default=True)
+def init(discovery_report_path: str = "./discovery.json",
+         experiment_path: str = "./experiment.json"):
+    """
+    Initialize a new experiment from discovered capabilities.
+    """
+    logger.info("Let's build a new experiment")
+
+    discovery = None
+    with open(discovery_report_path) as d:
+        discovery = json.loads(d.read())
+
+    base_experiment = {
+        "version": "1.0.0",
+        "title": "",
+        "description": "N/A",
+        "tags": [],
+        "steady-state-hypothesis": {
+            "title": "",
+            "probes": []
+        },
+        "method": [],
+        "rollbacks": []
+    }
+
+    base_activity = {
+        "type": None,
+        "name": None,
+        "provider": {
+            "type": "python",
+            "module": None,
+            "func": None,
+            "arguments": {}
+        }
+    }
+
+    s = click.style
+    title = click.prompt(s("Experiment's title", fg='green'), type=str)
+    hypo_title = click.prompt(
+        s("Steady state hypothesis in a nutshell", fg='green'), type=str)
+
+    base_experiment["title"] = title
+    base_experiment["steady-state-hypothesis"]["title"] = hypo_title
+
+    activities = [(a["name"], a) for a in discovery["activities"]]
+    echo = click.echo
+    if len(activities) > 10:
+        echo = click.echo_via_pager
+
+    def add_activity():
+        click.echo(click.style('Add an activity to your method', fg='green'))
+        echo("\n".join([
+            "{i}) {t}".format(
+                i=idx+1, t=name) for (idx, (name, a)) in enumerate(
+                    activities)]))
+        activity_index = click.prompt(s(
+            "Activity (0 to escape)", fg='green'), type=int)
+        if not activity_index:
+            return
+
+        selected = activities[activity_index - 1][1]
+        selected_doc = selected.get("doc")
+        if selected_doc:
+            click.echo(selected_doc)
+
+        if not click.confirm(
+            s('Do you want to use this {a}?'.format(
+                a=selected['type']), fg='green')):
+            if not click.confirm(s('Do you want to select another activity?',
+                                   fg='green')):
+                return
+            add_activity()
+
+        activity = base_activity.copy()
+        activity["name"] = selected["name"]
+        activity["type"] = selected["type"]
+        activity["provider"] = {}
+        activity["provider"]["module"] = selected["mod"]
+        activity["provider"]["func"] = selected["name"]
+        activity["provider"]["arguments"] = {}
+        for arg in selected.get("arguments", []):
+            arg_name = arg["name"]
+            if arg_name in ("secrets", "configuration"):
+                continue
+            arg_default = arg.get("default", None)
+            question = "Argument's value for '{a}'".format(a=arg_name)
+            arg_value = click.prompt(s(
+                question, fg='yellow'), default=arg_default, show_default=True)
+            activity["provider"]["arguments"][arg["name"]] = arg_value
+        base_experiment["method"].append(activity)
+
+        if not click.confirm(s('Do you want to select another activity?',
+                               fg='green')):
+            return
+        add_activity()
+
+    add_activity()
+
+    with open(experiment_path, "w") as e:
+        e.write(json.dumps(base_experiment, indent=4))
+
+    logger.info("Experiment created and saved in '{e}'".format(
+        e=experiment_path))
+
+
 # keep this after the cli group declaration for plugins to override defaults
 with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
