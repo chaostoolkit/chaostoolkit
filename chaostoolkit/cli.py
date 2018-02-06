@@ -136,7 +136,7 @@ def discover(package: str, discovery_report_path: str = "./discovery.json",
               help='Path where to save the experiment.',
               show_default=True)
 def init(discovery_report_path: str = "./discovery.json",
-         experiment_path: str = "./experiment.json"):
+         experiment_path: str = "./experiment.json") -> Experiment:
     """
     Initialize a new experiment from discovered capabilities.
     """
@@ -230,6 +230,8 @@ def init(discovery_report_path: str = "./discovery.json",
 
     logger.info("Experiment created and saved in '{e}'".format(
         e=experiment_path))
+
+    return base_experiment
 
 
 # keep this after the cli group declaration for plugins to override defaults

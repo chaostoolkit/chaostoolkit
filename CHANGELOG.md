@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.10.0...HEAD
+
+## [0.10.0][] - 2018-02-06
+
+[0.10.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.9.0...0.10.0
+
+### Changed
+
+- Returns the generated experiment to external callers
 
 ## [0.9.0][] - 2018-01-17
 
