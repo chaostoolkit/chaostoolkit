@@ -108,3 +108,8 @@ docs/site/
 
 # pytest results
 junit-test-results.xml
+experiment.log
+experiment.json
+output.png
+chaos-report.json
+discovery.json
