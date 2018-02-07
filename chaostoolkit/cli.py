@@ -4,13 +4,13 @@ import json
 import logging
 import os
 import sys
-
+from typing import List
 
 from chaoslib.exceptions import ChaosException
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
-from chaoslib.types import Discovery, Experiment
+from chaoslib.types import Activity, Discovery, Experiment
 import click
 from click_plugins import with_plugins
 import logzero
@@ -164,100 +164,36 @@ def init(discovery_path: str="./discovery.json",
         "title": "",
         "description": "N/A",
         "tags": [],
-        "method": [],
         "rollbacks": []
     }
 
-    base_activity = {
-        "type": None,
-        "name": None,
-        "provider": {
-            "type": "python",
-            "module": None,
-            "func": None,
-            "arguments": {}
-        }
-    }
-
     s = click.style
-    title = click.prompt(s("Experiment's title", fg='green'), type=str)
 
+    title = click.prompt(s("Experiment's title", fg='green'), type=str)
     base_experiment["title"] = title
 
+    m = s('Do you want to define a steady state hypothesis right now?',
+          fg='green')
+    if click.confirm(m):
+        hypo = {}
+
+        title = click.prompt(s("Hypothesis's title", fg='green'), type=str)
+        hypo["title"] = title
+
+        if discovery:
+            hypo["probes"] = []
+            activities = []
+            for a in discovery["activities"]:
+                if a["type"] == "probe":
+                    activities.append((a["name"], a))
+            add_activities(activities, hypo["probes"], with_tolerance=True)
+
+        base_experiment["steady-state-hypothesis"] = hypo
+
     if discovery:
+        base_experiment["method"] = []
         activities = [(a["name"], a) for a in discovery["activities"]]
-        echo = click.echo
-        if len(activities) > 10:
-            echo = click.echo_via_pager
-
-        def add_activity():
-            click.echo(click.style(
-                'Add an activity to your method', fg='green'))
-            echo("\n".join([
-                "{i}) {t}".format(
-                    i=idx+1, t=name) for (idx, (name, a)) in enumerate(
-                        activities)]))
-            activity_index = click.prompt(s(
-                "Activity (0 to escape)", fg='green'), type=int)
-            if not activity_index:
-                return
-
-            selected = activities[activity_index - 1][1]
-            selected_doc = selected.get("doc")
-            if selected_doc:
-                click.echo(selected_doc)
-
-            if not click.confirm(
-                s('Do you want to use this {a}?'.format(
-                    a=selected['type']), fg='green')):
-                m = s('Do you want to select another activity?', fg='green')
-                if not click.confirm(m):
-                    return
-                add_activity()
-
-            activity = base_activity.copy()
-            activity["name"] = selected["name"]
-            activity["type"] = selected["type"]
-            activity["provider"] = {"type": "python"}
-            activity["provider"]["module"] = selected["mod"]
-            activity["provider"]["func"] = selected["name"]
-            activity["provider"]["arguments"] = {}
-            for arg in selected.get("arguments", []):
-                arg_name = arg["name"]
-                if arg_name in ("secrets", "configuration"):
-                    continue
-
-                # None is a bit of a problem because for the prompt it means
-                # no defaults. When the user doesn't want to set a value, then
-                # the prompt keeps asking. So, we pretend the default for None
-                # is actually the empty string.
-                arg_default = None
-                if "default" in arg:
-                    arg_default = arg["default"]
-                    if arg_default is None:
-                        arg_default = ""
-
-                question = "Argument's value for '{a}'".format(a=arg_name)
-                m = s(question, fg='yellow')
-                arg_value = click.prompt(
-                    m, default=arg_default, show_default=True)
-
-                # now, if the user didn't input anything and the default was
-                # None, we override it back to None
-                if "default" in arg:
-                    arg_default = arg["default"]
-                    if arg_default is None and arg_value == "":
-                        arg_value = None
-
-                activity["provider"]["arguments"][arg["name"]] = arg_value
-            base_experiment["method"].append(activity)
-
-            m = s('Do you want to select another activity?', fg='green')
-            if not click.confirm(m):
-                return
-            add_activity()
-
-        add_activity()
+        add_activities(activities, base_experiment["method"])
 
     with open(experiment_path, "w") as e:
         e.write(json.dumps(base_experiment, indent=4))
@@ -270,3 +206,95 @@ def init(discovery_path: str="./discovery.json",
 
 # keep this after the cli group declaration for plugins to override defaults
 with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
+
+
+def add_activities(activities: List[Activity], pool: List[Activity],
+                   with_tolerance: bool=False):
+    """
+    Add activities to the given pool.
+    """
+    base_activity = {
+        "type": None,
+        "name": None,
+        "provider": {
+            "type": "python",
+            "module": None,
+            "func": None,
+            "arguments": {}
+        }
+    }
+
+    s = click.style
+    echo = click.echo
+    if len(activities) > 10:
+        echo = click.echo_via_pager
+
+    click.echo(s(
+        'Add an activity to your method', fg='green'))
+    echo("\n".join([
+        "{i}) {t}".format(
+            i=idx+1, t=name) for (idx, (name, a)) in enumerate(
+                activities)]))
+    activity_index = click.prompt(s(
+        "Activity (0 to escape)", fg='green'), type=int)
+    if not activity_index:
+        return
+
+    selected = activities[activity_index - 1][1]
+    selected_doc = selected.get("doc")
+    if selected_doc:
+        click.echo(selected_doc)
+
+    if not click.confirm(
+        s('Do you want to use this {a}?'.format(
+            a=selected['type']), fg='green')):
+        m = s('Do you want to select another activity?', fg='green')
+        if not click.confirm(m):
+            return
+        add_activities(activities, pool)
+
+    activity = base_activity.copy()
+    activity["name"] = selected["name"]
+    activity["type"] = selected["type"]
+    if with_tolerance:
+        tolerance_value = click.prompt(
+            s("What is the tolerance for this probe?", fg='blue'))
+        activity["tolerance"] = tolerance_value
+    activity["provider"] = {"type": "python"}
+    activity["provider"]["module"] = selected["mod"]
+    activity["provider"]["func"] = selected["name"]
+    activity["provider"]["arguments"] = {}
+    for arg in selected.get("arguments", []):
+        arg_name = arg["name"]
+        if arg_name in ("secrets", "configuration"):
+            continue
+
+        # None is a bit of a problem because for the prompt it means
+        # no defaults. When the user doesn't want to set a value, then
+        # the prompt keeps asking. So, we pretend the default for None
+        # is actually the empty string.
+        arg_default = None
+        if "default" in arg:
+            arg_default = arg["default"]
+            if arg_default is None:
+                arg_default = ""
+
+        question = "Argument's value for '{a}'".format(a=arg_name)
+        m = s(question, fg='yellow')
+        arg_value = click.prompt(
+            m, default=arg_default, show_default=True)
+
+        # now, if the user didn't input anything and the default was
+        # None, we override it back to None
+        if "default" in arg:
+            arg_default = arg["default"]
+            if arg_default is None and arg_value == "":
+                arg_value = None
+
+        activity["provider"]["arguments"][arg["name"]] = arg_value
+    pool.append(activity)
+
+    m = s('Do you want to select another activity?', fg='green')
+    if not click.confirm(m):
+        return
+    add_activities(activities, pool)
