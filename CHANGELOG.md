@@ -23,6 +23,7 @@
 - Allow to set rollbacks from init command [#30][30]
 - Pass command executed to checker for compatbility [#36][36]
 - Better logging of failed discovery [chaostoolkit-lib#29][29lib]
+- Depending now on chaostoolkit-lib 0.14.0
 
 [27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
 [28]: https://github.com/chaostoolkit/chaostoolkit/issues/28
