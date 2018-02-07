@@ -113,3 +113,5 @@ experiment.json
 output.png
 chaos-report.json
 discovery.json
+journal.json
+chaostoolkit.log

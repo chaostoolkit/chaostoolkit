@@ -33,11 +33,11 @@ __all__ = ["cli"]
               help='Change directory before running experiment.')
 @click.option('--no-log-file', is_flag=True,
               help='Disable logging to file entirely.')
-@click.option('--log-file', default="experiment.log", show_default=True,
-              help='File path where to write the experiment log.')
-def cli(verbose: bool = False, no_version_check: bool = False,
-        change_dir: str = None, no_log_file: bool = False,
-        log_file: str = "experiment.log"):
+@click.option('--log-file', default="chaostoolkit.log", show_default=True,
+              help="File path where to write the command's log.")
+def cli(verbose: bool=False, no_version_check: bool=False,
+        change_dir: str=None, no_log_file: bool=False,
+        log_file: str="chaostoolkit.log"):
 
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
@@ -51,12 +51,15 @@ def cli(verbose: bool = False, no_version_check: bool = False,
         # let's ensure we log at DEBUG level
         logger.setLevel(logging.DEBUG)
         logzero.logfile(
-            click.format_filename(log_file), mode='w',
+            click.format_filename(log_file), mode='a',
             loglevel=logging.DEBUG)
 
     logzero.formatter(
         formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
         update_custom_handlers=False)
+
+    # make it nicer for going through the log file
+    logger.debug("#" * 79)
 
     if not no_version_check:
         check_newer_version()
@@ -67,16 +70,18 @@ def cli(verbose: bool = False, no_version_check: bool = False,
 
 
 @cli.command()
-@click.option('--report-path', default="./chaos-report.json",
-              help='Path where to save the report from the plan execution.')
+@click.option('--journal-path', default="./journal.json",
+              help='Path where to save the journal from the execution.')
 @click.option('--dry', is_flag=True,
               help='Run the experiment without executing activities.')
 @click.option('--no-validation', is_flag=True,
               help='Do not validate the experiment before running.')
 @click.argument('path', type=click.Path(exists=True))
-def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
-        no_validation: bool = False):
+def run(path: str, journal_path: str="./journal.json", dry: bool=False,
+        no_validation: bool=False):
     """Run the experiment given at PATH."""
+    logger.debug("Running command 'run'")
+
     experiment = load_experiment(click.format_filename(path))
     if not no_validation:
         try:
@@ -89,7 +94,7 @@ def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
     experiment["dry"] = dry
     journal = run_experiment(experiment)
 
-    with io.open(report_path, "w") as r:
+    with io.open(journal_path, "w") as r:
         json.dump(journal, r, indent=2, ensure_ascii=False)
 
 
@@ -97,6 +102,8 @@ def run(path: str, report_path: str = "./chaos-report.json", dry: bool = False,
 @click.argument('path', type=click.Path(exists=True))
 def validate(path: str):
     """Validate the experiment at PATH."""
+    logger.debug("Running command 'validate'")
+
     experiment = load_experiment(click.format_filename(path))
     try:
         ensure_experiment_is_valid(experiment)
@@ -111,40 +118,43 @@ def validate(path: str):
               help='Do not discover system information.')
 @click.option('--no-install', is_flag=True,
               help='Assume package already in PYTHONPATH.')
-@click.option('--discovery-report-path', default="./discovery.json",
-              help='Path where to save the report from the discovery.',
+@click.option('--discovery-path', default="./discovery.json",
+              help='Path where to save the the discovery outcome.',
               show_default=True)
 @click.argument('package')
-def discover(package: str, discovery_report_path: str = "./discovery.json",
-             no_system_info: bool = False,
-             no_install: bool = False) -> Discovery:
+def discover(package: str, discovery_path: str="./discovery.json",
+             no_system_info: bool=False,
+             no_install: bool=False) -> Discovery:
     """Discover capabilities and experiments."""
+    logger.debug("Running command 'discover'")
+
     discovery = disco(
         package_name=package, discover_system=not no_system_info,
         download_and_install=not no_install)
-    with open(discovery_report_path, "w") as d:
+    with open(discovery_path, "w") as d:
         d.write(json.dumps(discovery, indent=2))
-    logger.info("Discovery report saved in {p}".format(
-        p=discovery_report_path))
+    logger.info("Discovery outcome saved in {p}".format(
+        p=discovery_path))
 
 
 @cli.command()
-@click.option('--discovery-report-path', default="./discovery.json",
-              help='Path where to save the report from the discovery.',
+@click.option('--discovery-path', default="./discovery.json",
+              help='Path to the discovery outcome.',
               show_default=True, type=click.Path(exists=False))
 @click.option('--experiment-path', default="./experiment.json",
               help='Path where to save the experiment.',
               show_default=True)
-def init(discovery_report_path: str = "./discovery.json",
-         experiment_path: str = "./experiment.json") -> Experiment:
+def init(discovery_path: str="./discovery.json",
+         experiment_path: str="./experiment.json") -> Experiment:
     """
     Initialize a new experiment from discovered capabilities.
     """
+    logger.debug("Running command 'init'")
     logger.info("Let's build a new experiment")
 
     discovery = None
-    if discovery_report_path and os.path.exists(discovery_report_path):
-        with open(discovery_report_path) as d:
+    if discovery_path and os.path.exists(discovery_path):
+        with open(discovery_path) as d:
             discovery = json.loads(d.read())
     else:
         logger.info("No discovery was found, let's create an empty experiment")
