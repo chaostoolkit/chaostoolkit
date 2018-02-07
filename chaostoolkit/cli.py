@@ -35,10 +35,10 @@ __all__ = ["cli"]
               help='Disable logging to file entirely.')
 @click.option('--log-file', default="chaostoolkit.log", show_default=True,
               help="File path where to write the command's log.")
-def cli(verbose: bool=False, no_version_check: bool=False,
+@click.pass_context
+def cli(ctx: click.Context, verbose: bool=False, no_version_check: bool=False,
         change_dir: str=None, no_log_file: bool=False,
         log_file: str="chaostoolkit.log"):
-
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
@@ -58,11 +58,14 @@ def cli(verbose: bool=False, no_version_check: bool=False,
         formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S"),
         update_custom_handlers=False)
 
+    subcommand = ctx.invoked_subcommand
+
     # make it nicer for going through the log file
     logger.debug("#" * 79)
+    logger.debug("Running command '{}'".format(subcommand))
 
     if not no_version_check:
-        check_newer_version()
+        check_newer_version(command=subcommand)
 
     if change_dir:
         logger.warning("Moving to {d}".format(d=change_dir))
@@ -80,8 +83,6 @@ def cli(verbose: bool=False, no_version_check: bool=False,
 def run(path: str, journal_path: str="./journal.json", dry: bool=False,
         no_validation: bool=False):
     """Run the experiment given at PATH."""
-    logger.debug("Running command 'run'")
-
     experiment = load_experiment(click.format_filename(path))
     if not no_validation:
         try:
@@ -102,8 +103,6 @@ def run(path: str, journal_path: str="./journal.json", dry: bool=False,
 @click.argument('path', type=click.Path(exists=True))
 def validate(path: str):
     """Validate the experiment at PATH."""
-    logger.debug("Running command 'validate'")
-
     experiment = load_experiment(click.format_filename(path))
     try:
         ensure_experiment_is_valid(experiment)
@@ -126,8 +125,6 @@ def discover(package: str, discovery_path: str="./discovery.json",
              no_system_info: bool=False,
              no_install: bool=False) -> Discovery:
     """Discover capabilities and experiments."""
-    logger.debug("Running command 'discover'")
-
     discovery = disco(
         package_name=package, discover_system=not no_system_info,
         download_and_install=not no_install)
@@ -149,7 +146,6 @@ def init(discovery_path: str="./discovery.json",
     """
     Initialize a new experiment from discovered capabilities.
     """
-    logger.debug("Running command 'init'")
     logger.info("Let's build a new experiment")
 
     discovery = None

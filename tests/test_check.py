@@ -25,7 +25,7 @@ def test_version_is_not_newer(requests):
         {"version": __version__, "up_to_date": True}
     )
 
-    latest_version = check_newer_version()
+    latest_version = check_newer_version(command="init")
     assert latest_version is None
 
 
@@ -38,5 +38,5 @@ def test_version_is_newer(requests):
         {"version": __version__, "up_to_date": False}
     )
 
-    latest_version = check_newer_version()
+    latest_version = check_newer_version(command="init")
     assert latest_version == __version__
