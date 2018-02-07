@@ -12,7 +12,7 @@ LATEST_RELEASE_URL = "https://releases.chaostoolkit.org/latest"
 CHANGELOG_URL = "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
 
 
-def check_newer_version():
+def check_newer_version(command: str):
     """
     Query for the latest release of the chaostoolkit to compare it
     with the current's version. If the former is higher then issue a warning
@@ -20,7 +20,7 @@ def check_newer_version():
     """
     try:
         r = requests.get(LATEST_RELEASE_URL, timeout=(2, 30),
-                         params={"current": __version__})
+                         params={"current": __version__, "command": command})
         if r.status_code == 200:
             payload = r.json()
             latest_version = payload["version"]

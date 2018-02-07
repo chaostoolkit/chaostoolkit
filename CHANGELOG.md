@@ -21,12 +21,14 @@
 - You can bypass argument in the init command via empty string [#29][29]
 - Allow to create steady-state hypothesis from init command [#28][28]
 - Allow to set rollbacks from init command [#30][30]
+- Pass command executed to checker for compatbility [#36][36]
 
 [27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
 [28]: https://github.com/chaostoolkit/chaostoolkit/issues/28
 [29]: https://github.com/chaostoolkit/chaostoolkit/issues/29
 [30]: https://github.com/chaostoolkit/chaostoolkit/issues/30
 [31]: https://github.com/chaostoolkit/chaostoolkit/issues/31
+[36]: https://github.com/chaostoolkit/chaostoolkit/issues/36
 
 ## [0.9.0][] - 2018-01-17
 
