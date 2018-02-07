@@ -12,8 +12,15 @@
 
 - Create an empty experiment when no discovery was run beforehand [#27][27]
 - Returns the generated experiment to external callers
+- Name of the journal output from the run command is now `journal.json` rather
+  than `chaos-report.json` [#31][31]
+- Renamed the debug log from `experiment.log` to `chaostoolkit.log` because
+  it is used for any commands, even when the experiment is not required
+- The debug log is now appending
+- The command being run is logged into the debug log
 
 [27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
+[31]: https://github.com/chaostoolkit/chaostoolkit/issues/31
 
 ## [0.9.0][] - 2018-01-17
 
