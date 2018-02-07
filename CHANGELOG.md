@@ -19,8 +19,10 @@
 - The debug log is now appending
 - The command being run is logged into the debug log
 - You can bypass argument in the init command via empty string [#29][29]
+- Allow to create steady-state hypothesis from init command [#28][28]
 
 [27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
+[28]: https://github.com/chaostoolkit/chaostoolkit/issues/28
 [29]: https://github.com/chaostoolkit/chaostoolkit/issues/29
 [31]: https://github.com/chaostoolkit/chaostoolkit/issues/31
 
