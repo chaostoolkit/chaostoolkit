@@ -163,8 +163,7 @@ def init(discovery_path: str="./discovery.json",
         "version": "1.0.0",
         "title": "",
         "description": "N/A",
-        "tags": [],
-        "rollbacks": []
+        "tags": []
     }
 
     s = click.style
@@ -179,9 +178,9 @@ def init(discovery_path: str="./discovery.json",
 
         title = click.prompt(s("Hypothesis's title", fg='green'), type=str)
         hypo["title"] = title
+        hypo["probes"] = []
 
         if discovery:
-            hypo["probes"] = []
             activities = []
             for a in discovery["activities"]:
                 if a["type"] == "probe":
@@ -194,6 +193,16 @@ def init(discovery_path: str="./discovery.json",
         base_experiment["method"] = []
         activities = [(a["name"], a) for a in discovery["activities"]]
         add_activities(activities, base_experiment["method"])
+
+        m = s('Do you want to set rollbacks right now?', fg='green')
+        if click.confirm(m):
+            rollbacks = []
+            activities = []
+            for a in discovery["activities"]:
+                if a["type"] == "action":
+                    activities.append((a["name"], a))
+            add_activities(activities, rollbacks)
+            base_experiment["rollbacks"] = rollbacks
 
     with open(experiment_path, "w") as e:
         e.write(json.dumps(base_experiment, indent=4))
