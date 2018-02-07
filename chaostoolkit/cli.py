@@ -6,7 +6,7 @@ import os
 import sys
 from typing import List
 
-from chaoslib.exceptions import ChaosException
+from chaoslib.exceptions import ChaosException, DiscoveryFailed
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
@@ -125,13 +125,21 @@ def discover(package: str, discovery_path: str="./discovery.json",
              no_system_info: bool=False,
              no_install: bool=False) -> Discovery:
     """Discover capabilities and experiments."""
-    discovery = disco(
-        package_name=package, discover_system=not no_system_info,
-        download_and_install=not no_install)
+    try:
+        discovery = disco(
+            package_name=package, discover_system=not no_system_info,
+            download_and_install=not no_install)
+    except DiscoveryFailed as err:
+        logger.debug("Failed to discover {}".format(package), exc_info=err)
+        logger.fatal(str(err))
+        return
+
     with open(discovery_path, "w") as d:
         d.write(json.dumps(discovery, indent=2))
     logger.info("Discovery outcome saved in {p}".format(
         p=discovery_path))
+
+    return discovery
 
 
 @cli.command()
