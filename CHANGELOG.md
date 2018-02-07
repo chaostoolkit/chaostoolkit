@@ -18,8 +18,10 @@
   it is used for any commands, even when the experiment is not required
 - The debug log is now appending
 - The command being run is logged into the debug log
+- You can bypass argument in the init command via empty string [#29][29]
 
 [27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
+[29]: https://github.com/chaostoolkit/chaostoolkit/issues/29
 [31]: https://github.com/chaostoolkit/chaostoolkit/issues/31
 
 ## [0.9.0][] - 2018-01-17
