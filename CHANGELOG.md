@@ -10,7 +10,10 @@
 
 ### Changed
 
+- Create an empty experiment when no discovery was run beforehand [#27][27]
 - Returns the generated experiment to external callers
+
+[27]: https://github.com/chaostoolkit/chaostoolkit/issues/27
 
 ## [0.9.0][] - 2018-01-17
 
