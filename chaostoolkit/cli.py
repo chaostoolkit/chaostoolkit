@@ -226,11 +226,29 @@ def init(discovery_path: str="./discovery.json",
                 arg_name = arg["name"]
                 if arg_name in ("secrets", "configuration"):
                     continue
-                arg_default = arg.get("default", None)
+
+                # None is a bit of a problem because for the prompt it means
+                # no defaults. When the user doesn't want to set a value, then
+                # the prompt keeps asking. So, we pretend the default for None
+                # is actually the empty string.
+                arg_default = None
+                if "default" in arg:
+                    arg_default = arg["default"]
+                    if arg_default is None:
+                        arg_default = ""
+
                 question = "Argument's value for '{a}'".format(a=arg_name)
                 m = s(question, fg='yellow')
                 arg_value = click.prompt(
                     m, default=arg_default, show_default=True)
+
+                # now, if the user didn't input anything and the default was
+                # None, we override it back to None
+                if "default" in arg:
+                    arg_default = arg["default"]
+                    if arg_default is None and arg_value == "":
+                        arg_value = None
+
                 activity["provider"]["arguments"][arg["name"]] = arg_value
             base_experiment["method"].append(activity)
 
