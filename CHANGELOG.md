@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.10.0...HEAD
 
+### Changed
+
+- Returning journal and experiment from run and validate commands for
+  downstream applications
+
 ## [0.10.0][] - 2018-02-06
 
 [0.10.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.9.0...0.10.0

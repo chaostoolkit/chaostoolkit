@@ -10,7 +10,7 @@ from chaoslib.exceptions import ChaosException, DiscoveryFailed
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
-from chaoslib.types import Activity, Discovery, Experiment
+from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
 import logzero
@@ -81,7 +81,7 @@ def cli(ctx: click.Context, verbose: bool=False, no_version_check: bool=False,
               help='Do not validate the experiment before running.')
 @click.argument('path', type=click.Path(exists=True))
 def run(path: str, journal_path: str="./journal.json", dry: bool=False,
-        no_validation: bool=False):
+        no_validation: bool=False) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
     if not no_validation:
@@ -98,10 +98,12 @@ def run(path: str, journal_path: str="./journal.json", dry: bool=False,
     with io.open(journal_path, "w") as r:
         json.dump(journal, r, indent=2, ensure_ascii=False)
 
+    return journal
+
 
 @cli.command()
 @click.argument('path', type=click.Path(exists=True))
-def validate(path: str):
+def validate(path: str) -> Experiment:
     """Validate the experiment at PATH."""
     experiment = load_experiment(click.format_filename(path))
     try:
@@ -110,6 +112,8 @@ def validate(path: str):
     except ChaosException as x:
         logger.error(str(x))
         sys.exit(1)
+
+    return experiment
 
 
 @cli.command()
