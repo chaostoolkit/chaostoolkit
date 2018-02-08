@@ -158,14 +158,26 @@ def init(discovery_path: str="./discovery.json",
     """
     Initialize a new experiment from discovered capabilities.
     """
-    logger.info("Let's build a new experiment")
+    click.secho(
+        "Your are about to create an experiment incrementally.\n"
+        "This wizard will guide you through each step so that you can build\n"
+        "the best experiment basis for your use-case\n"
+        "\n"
+        "An experiment is made of three elements:\n"
+        "- a steady-state hypothesis [OPTIONAL]\n"
+        "- an experimental method\n"
+        "- a set of rollback activities [OPTIONAL]\n"
+        "\n"
+        "Only the method is required to be filled and your experiment will\n"
+        "not run unless you define at least one activity for it\n",
+        fg="blue")
 
     discovery = None
     if discovery_path and os.path.exists(discovery_path):
         with open(discovery_path) as d:
             discovery = json.loads(d.read())
     else:
-        logger.info("No discovery was found, let's create an empty experiment")
+        click.echo("No discovery was found, let's create an empty experiment")
 
     base_experiment = {
         "version": "1.0.0",
@@ -179,8 +191,16 @@ def init(discovery_path: str="./discovery.json",
     title = click.prompt(s("Experiment's title", fg='green'), type=str)
     base_experiment["title"] = title
 
+    click.secho(
+        "\nA steady-state hypothesis's objective is to let you define what\n"
+        "normal looks like in your system. In an experiment, it acts as a\n"
+        "gateway to prevent the experiment from running when the\n"
+        "steady-state is not met. Once it has run, the experiment tells you\n"
+        "if your hypothesis\ still holds. As you start exploring, you may\n"
+        "not know yet what your hypothesis is, so you can avoid creating\n"
+        "one now.", fg="blue")
     m = s('Do you want to define a steady state hypothesis right now?',
-          fg='green')
+          dim=True)
     if click.confirm(m):
         hypo = {}
 
@@ -193,16 +213,35 @@ def init(discovery_path: str="./discovery.json",
             for a in discovery["activities"]:
                 if a["type"] == "probe":
                     activities.append((a["name"], a))
+            
+            click.secho(
+                "\nYou may now define probes that will determine what you\n"
+                "consider as the steady-state of your system.",
+                fg="blue")
             add_activities(activities, hypo["probes"], with_tolerance=True)
 
         base_experiment["steady-state-hypothesis"] = hypo
 
     if discovery:
         base_experiment["method"] = []
-        activities = [(a["name"], a) for a in discovery["activities"]]
-        add_activities(activities, base_experiment["method"])
+        click.secho(
+            "\nAn experiment takes a semi-scientist approach of running a\n"
+            "method varying events in your system to determine if your\n"
+            "steady-state hypothesis is met when they occur.\n"
+            "An experimental method is made of activities, either actions or\n"
+            "probes. The former impacts your system while the latter\n"
+            "observes how you system behaves.", fg="blue")
 
-        m = s('Do you want to set rollbacks right now?', fg='green')
+        m = s('Do you want to define your experimental method?', dim=True)
+        if click.confirm(m):
+            activities = [(a["name"], a) for a in discovery["activities"]]
+            add_activities(activities, base_experiment["method"])
+
+        click.secho(
+            "\nAn experiment may define a set of actions that will be used\n"
+            "to rollback the system to a given state. However, as this is\n"
+            "not always feasible, this is purely optional", fg="blue")
+        m = s('Do you want to set rollbacks right now?', dim=True)
         if click.confirm(m):
             rollbacks = []
             activities = []
@@ -215,8 +254,8 @@ def init(discovery_path: str="./discovery.json",
     with open(experiment_path, "w") as e:
         e.write(json.dumps(base_experiment, indent=4))
 
-    logger.info("Experiment created and saved in '{e}'".format(
-        e=experiment_path))
+    click.echo(
+        "\nExperiment created and saved in '{e}'".format(e=experiment_path))
 
     return base_experiment
 
@@ -243,11 +282,11 @@ def add_activities(activities: List[Activity], pool: List[Activity],
 
     s = click.style
     echo = click.echo
-    if len(activities) > 10:
+    if len(activities) > 20:
         echo = click.echo_via_pager
 
     click.echo(s(
-        'Add an activity to your method', fg='green'))
+        'Add an activity', fg='green'))
     echo("\n".join([
         "{i}) {t}".format(
             i=idx+1, t=name) for (idx, (name, a)) in enumerate(
@@ -257,15 +296,19 @@ def add_activities(activities: List[Activity], pool: List[Activity],
     if not activity_index:
         return
 
-    selected = activities[activity_index - 1][1]
+    activity_index = activity_index - 1
+    if activity_index > len(activities):
+        click.secho("Please pick up a valid activity", fg="red", err=True)
+        add_activities(activities, pool)
+        return
+
+    selected = activities[activity_index][1]
     selected_doc = selected.get("doc")
     if selected_doc:
-        click.echo(selected_doc)
-
-    if not click.confirm(
-        s('Do you want to use this {a}?'.format(
-            a=selected['type']), fg='green')):
-        m = s('Do you want to select another activity?', fg='green')
+        click.secho("\n{}".format(selected_doc), fg="blue")
+    m = s('Do you want to use this {a}?'.format(a=selected['type']), dim=True)
+    if not click.confirm(m):
+        m = s('Do you want to select another activity?', dim=True)
         if not click.confirm(m):
             return
         add_activities(activities, pool)
@@ -274,13 +317,22 @@ def add_activities(activities: List[Activity], pool: List[Activity],
     activity["name"] = selected["name"]
     activity["type"] = selected["type"]
     if with_tolerance:
+        click.secho(
+            "\nA steady-state probe requires a tolerance value used a\n"
+            "conditionnal to potentially fail the experiment when not met.\n",
+            fg="blue")
         tolerance_value = click.prompt(
-            s("What is the tolerance for this probe?", fg='blue'))
+            s("What is the tolerance for this probe?", fg='green'))
         activity["tolerance"] = tolerance_value
     activity["provider"] = {"type": "python"}
     activity["provider"]["module"] = selected["mod"]
     activity["provider"]["func"] = selected["name"]
     activity["provider"]["arguments"] = {}
+
+    click.secho(
+        "\nYou now need to fill the arguments for thi activity. Default\n"
+        "values will be shown between brackets. You may simply press return\n"
+        "to use it or not set any value.", fg="blue")
     for arg in selected.get("arguments", []):
         arg_name = arg["name"]
         if arg_name in ("secrets", "configuration"):
@@ -295,7 +347,6 @@ def add_activities(activities: List[Activity], pool: List[Activity],
             arg_default = arg["default"]
             if arg_default is None:
                 arg_default = ""
-
         question = "Argument's value for '{a}'".format(a=arg_name)
         m = s(question, fg='yellow')
         arg_value = click.prompt(
@@ -311,7 +362,7 @@ def add_activities(activities: List[Activity], pool: List[Activity],
         activity["provider"]["arguments"][arg["name"]] = arg_value
     pool.append(activity)
 
-    m = s('Do you want to select another activity?', fg='green')
+    m = s('Do you want to select another activity?', dim=True)
     if not click.confirm(m):
         return
     add_activities(activities, pool)

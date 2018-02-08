@@ -8,6 +8,7 @@
 
 - Returning journal and experiment from run and validate commands for
   downstream applications
+- Better guidance on init
 
 ## [0.10.0][] - 2018-02-06
 
