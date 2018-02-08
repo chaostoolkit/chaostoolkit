@@ -213,7 +213,7 @@ def init(discovery_path: str="./discovery.json",
             for a in discovery["activities"]:
                 if a["type"] == "probe":
                     activities.append((a["name"], a))
-            
+
             click.secho(
                 "\nYou may now define probes that will determine what you\n"
                 "consider as the steady-state of your system.",
