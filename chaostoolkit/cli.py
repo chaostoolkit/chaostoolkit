@@ -159,17 +159,18 @@ def init(discovery_path: str="./discovery.json",
     Initialize a new experiment from discovered capabilities.
     """
     click.secho(
-        "Your are about to create an experiment incrementally.\n"
-        "This wizard will guide you through each step so that you can build\n"
-        "the best experiment basis for your use-case\n"
+        "You are about to create an experiment.\n"
+        "This wizard will walk you through each step so that you can build\n"
+        "the best experiment for your needs.\n"
         "\n"
-        "An experiment is made of three elements:\n"
+        "An experiment is made up of three elements:\n"
         "- a steady-state hypothesis [OPTIONAL]\n"
         "- an experimental method\n"
         "- a set of rollback activities [OPTIONAL]\n"
         "\n"
-        "Only the method is required to be filled and your experiment will\n"
-        "not run unless you define at least one activity for it\n",
+        "Only the method is required. Also your experiment will\n"
+        "not run unless you define at least one activity (probe or action)\n"
+        "within it",
         fg="blue")
 
     discovery = None
@@ -192,14 +193,24 @@ def init(discovery_path: str="./discovery.json",
     base_experiment["title"] = title
 
     click.secho(
-        "\nA steady-state hypothesis's objective is to let you define what\n"
-        "normal looks like in your system. In an experiment, it acts as a\n"
-        "gateway to prevent the experiment from running when the\n"
-        "steady-state is not met. Once it has run, the experiment tells you\n"
-        "if your hypothesis\ still holds. As you start exploring, you may\n"
-        "not know yet what your hypothesis is, so you can avoid creating\n"
-        "one now.", fg="blue")
-    m = s('Do you want to define a steady state hypothesis right now?',
+        "\nA steady state hypothesis defines what 'normality' "
+        "looks like in your system\n"
+        "The steady state hypothesis is a collection of "
+        "conditions that are used,\n"
+        "at the beginning of an experiment, to decide if the "
+        "system is in a recognised\n"
+        "'normal' state. The staedy state conditions are then "
+        "used again when your experiment\n"
+        " is complete to detect where your system may have "
+        "deviated in an interesting,\n"
+        "weakness-detecting way\n"
+        "\n"
+        "Initially you may not know what your steady state "
+        "hypothesis is\n"
+        "and so instead you might create an experiment "
+        "without one\n"
+        "This is why the stead state hypothesis is optional.", fg="blue")
+    m = s('Do you want to define a steady state hypothesis now?',
           dim=True)
     if click.confirm(m):
         hypo = {}
@@ -215,8 +226,8 @@ def init(discovery_path: str="./discovery.json",
                     activities.append((a["name"], a))
 
             click.secho(
-                "\nYou may now define probes that will determine what you\n"
-                "consider as the steady-state of your system.",
+                "\nYou may now define probes that will determine\n"
+                "the steady-state of your system.",
                 fg="blue")
             add_activities(activities, hypo["probes"], with_tolerance=True)
 
@@ -225,23 +236,27 @@ def init(discovery_path: str="./discovery.json",
     if discovery:
         base_experiment["method"] = []
         click.secho(
-            "\nAn experiment takes a semi-scientist approach of running a\n"
-            "method varying events in your system to determine if your\n"
-            "steady-state hypothesis is met when they occur.\n"
-            "An experimental method is made of activities, either actions or\n"
-            "probes. The former impacts your system while the latter\n"
-            "observes how you system behaves.", fg="blue")
+            "\nAn experiment's method contains actions "
+            "and probes. Actions\n"
+            "vary real-world events in your system to determine if your\n"
+            "steady-state hypothesis is maintained when those events occur.\n"
+            "\n"
+            "An experimental method can also contain probes to gather"
+            " additional\n"
+            "information about your system as your method is executed.",
+            fg="blue")
 
-        m = s('Do you want to define your experimental method?', dim=True)
+        m = s('Do you want to define an experimental method?', dim=True)
         if click.confirm(m):
             activities = [(a["name"], a) for a in discovery["activities"]]
             add_activities(activities, base_experiment["method"])
 
         click.secho(
-            "\nAn experiment may define a set of actions that will be used\n"
-            "to rollback the system to a given state. However, as this is\n"
-            "not always feasible, this is purely optional", fg="blue")
-        m = s('Do you want to set rollbacks right now?', dim=True)
+            "\nAn experiment may optionally define a set of remedial"
+            " actions\nthat are used to rollback the system to a given"
+            " state.",
+            fg="blue")
+        m = s('Do you want to add some rollbacks now?', dim=True)
         if click.confirm(m):
             rollbacks = []
             activities = []
@@ -318,8 +333,9 @@ def add_activities(activities: List[Activity], pool: List[Activity],
     activity["type"] = selected["type"]
     if with_tolerance:
         click.secho(
-            "\nA steady-state probe requires a tolerance value used a\n"
-            "conditionnal to potentially fail the experiment when not met.\n",
+            "\nA steady-state probe requires a tolerance value, "
+            "within which\n"
+            "your system is in a reognised `normal` state.\n",
             fg="blue")
         tolerance_value = click.prompt(
             s("What is the tolerance for this probe?", fg='green'))
