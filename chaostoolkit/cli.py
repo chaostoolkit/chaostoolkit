@@ -10,6 +10,9 @@ from chaoslib.exceptions import ChaosException, DiscoveryFailed
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
+from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
+    RunFlowEvent, ValidateFlowEvent
+from chaoslib.settings import load_settings
 from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
@@ -84,19 +87,32 @@ def run(path: str, journal_path: str="./journal.json", dry: bool=False,
         no_validation: bool=False) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
+
+    settings = load_settings()
+
     if not no_validation:
         try:
+            notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
             ensure_experiment_is_valid(experiment)
+            notify(settings, ValidateFlowEvent.ValidateCompleted, experiment)
         except ChaosException as x:
+            notify(settings, ValidateFlowEvent.ValidateFailed, experiment, x)
             logger.error(str(x))
             logger.debug(x)
             sys.exit(1)
 
     experiment["dry"] = dry
+    notify(settings, RunFlowEvent.RunStarted, experiment)
+
     journal = run_experiment(experiment)
 
     with io.open(journal_path, "w") as r:
         json.dump(journal, r, indent=2, ensure_ascii=False)
+
+    if journal["status"] == "completed":
+        notify(settings, RunFlowEvent.RunCompleted, journal)
+    else:
+        notify(settings, RunFlowEvent.RunFailed, journal)
 
     return journal
 
@@ -105,12 +121,17 @@ def run(path: str, journal_path: str="./journal.json", dry: bool=False,
 @click.argument('path', type=click.Path(exists=True))
 def validate(path: str) -> Experiment:
     """Validate the experiment at PATH."""
+    settings = load_settings()
     experiment = load_experiment(click.format_filename(path))
     try:
+        notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
         ensure_experiment_is_valid(experiment)
+        notify(settings, ValidateFlowEvent.ValidateCompleted, experiment)
         logger.info("experiment syntax and semantic look valid")
     except ChaosException as x:
+        notify(settings, ValidateFlowEvent.ValidateFailed, experiment, x)
         logger.error(str(x))
+        logger.debug(x)
         sys.exit(1)
 
     return experiment
@@ -129,11 +150,14 @@ def discover(package: str, discovery_path: str="./discovery.json",
              no_system_info: bool=False,
              no_install: bool=False) -> Discovery:
     """Discover capabilities and experiments."""
+    settings = load_settings()
     try:
+        notify(settings, DiscoverFlowEvent.DiscoverStarted, package)
         discovery = disco(
             package_name=package, discover_system=not no_system_info,
             download_and_install=not no_install)
     except DiscoveryFailed as err:
+        notify(settings, DiscoverFlowEvent.DiscoverFailed, package, err)
         logger.debug("Failed to discover {}".format(package), exc_info=err)
         logger.fatal(str(err))
         return
@@ -143,6 +167,7 @@ def discover(package: str, discovery_path: str="./discovery.json",
     logger.info("Discovery outcome saved in {p}".format(
         p=discovery_path))
 
+    notify(settings, DiscoverFlowEvent.DiscoverCompleted, discovery)
     return discovery
 
 
@@ -158,6 +183,8 @@ def init(discovery_path: str="./discovery.json",
     """
     Initialize a new experiment from discovered capabilities.
     """
+    settings = load_settings()
+    notify(settings, InitFlowEvent.InitStarted)
     click.secho(
         "You are about to create an experiment.\n"
         "This wizard will walk you through each step so that you can build\n"
@@ -272,6 +299,7 @@ def init(discovery_path: str="./discovery.json",
     click.echo(
         "\nExperiment created and saved in '{e}'".format(e=experiment_path))
 
+    notify(settings, InitFlowEvent.InitCompleted, base_experiment)
     return base_experiment
 
 
