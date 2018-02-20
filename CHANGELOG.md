@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.12.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.13.0...HEAD
+
+## [0.13.0][] - 2018-02-20
+
+[0.12.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.12.0...0.13.0
+
+### Changed
+
+- Publish events for each step of the flow
 
 ## [0.12.0][] - 2018-02-09
 
