@@ -30,7 +30,7 @@ Following the
 
 Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering through it's JSON-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
 
-[api]: http://chaostoolkit.org/api/experiment/
+[api]: http://chaostoolkit.org/reference/api/experiment/
 
 ## Install or Upgrade
 
