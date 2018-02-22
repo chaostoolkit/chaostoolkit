@@ -226,7 +226,7 @@ def init(discovery_path: str="./discovery.json",
         "conditions that are used,\n"
         "at the beginning of an experiment, to decide if the "
         "system is in a recognised\n"
-        "'normal' state. The staedy state conditions are then "
+        "'normal' state. The steady state conditions are then "
         "used again when your experiment\n"
         " is complete to detect where your system may have "
         "deviated in an interesting,\n"
