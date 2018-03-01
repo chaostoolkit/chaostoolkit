@@ -70,15 +70,24 @@ The core implementation of the Chaos Toolkit API can be found in the [chaostoolk
 
 ### Current Known Extensions
 
-The following free and open source extensions are available for your probes and/or actions:
+The following free and open source extensions are available for your probes
+and/or actions:
 
 * [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
 * [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
+* [chaostoolkit-aws][chaosaws]: AWS activities
+* [chaostoolkit-cloud-foundry][chaoscf]: Cloud Foundry activities
 * [chaostoolkit-prometheus][chaosprom]: Prometheus probes
+* [chaostoolkit-slack][chaosslack]: Slack notifications
+* [chaostoolkit-humio][chaoshumio]: Humio logging
 
 [chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
-[chaosgremlin]: https://github.com/chaostoolkit/chaostoolkit-gremlin
-[chaosprom]: https://github.com/chaostoolkit/chaostoolkit-prometheus
+[chaosgremlin]: https://github.com/chaostoolkit-incubator/chaostoolkit-gremlin
+[chaosaws]: https://github.com/chaostoolkit-incubator/chaostoolkit-aws
+[chaosprom]: https://github.com/chaostoolkit-incubator/chaostoolkit-prometheus
+[chaoscf]: https://github.com/chaostoolkit-incubator/chaostoolkit-cloud-foundry
+[chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-slack
+[chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-humio
 
 ## Get involved!
 
