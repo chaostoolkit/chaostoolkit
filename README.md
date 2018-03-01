@@ -87,7 +87,7 @@ and/or actions:
 [chaosprom]: https://github.com/chaostoolkit-incubator/chaostoolkit-prometheus
 [chaoscf]: https://github.com/chaostoolkit-incubator/chaostoolkit-cloud-foundry
 [chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-slack
-[chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-humio
+[chaoshumio]: https://github.com/chaostoolkit-incubator/chaostoolkit-humio
 
 ## Get involved!
 
