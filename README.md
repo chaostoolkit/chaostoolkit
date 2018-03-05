@@ -65,7 +65,7 @@ In terms of implementation, the [Chaos Toolkit currently supports][extend] probe
 
 The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
-[extend]: http://chaostoolkit.org/extending/approaches/
+[extend]: http://chaostoolkit.org/reference/extending/approaches/
 [chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
 
 ### Current Known Extensions
