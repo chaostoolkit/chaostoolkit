@@ -36,7 +36,7 @@ Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering throu
 
 Before installing the Chaos Toolkit it is recommended that you create a Python virtual environment for running your chaos experiments. Full instructions for installing chaostoolkit and its requirements are available in the [installation documentation][install].
 
-[install]: https://chaostoolkit.github.io/chaostoolkit/usage/install/
+[install]: http://chaostoolkit.org/reference/usage/install/
 
 ## Getting Started
 
