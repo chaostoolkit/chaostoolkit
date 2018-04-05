@@ -4,9 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.13.0...HEAD
 
+### Changed
+
+- Do not notify of experiment validation when running it (too noisy)
+
 ## [0.13.0][] - 2018-02-20
 
-[0.12.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.12.0...0.13.0
+[0.13.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.12.0...0.13.0
 
 ### Changed
 

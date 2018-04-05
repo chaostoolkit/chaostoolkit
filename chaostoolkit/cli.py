@@ -87,22 +87,19 @@ def run(path: str, journal_path: str="./journal.json", dry: bool=False,
         no_validation: bool=False) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
-
     settings = load_settings()
+
+    notify(settings, RunFlowEvent.RunStarted, experiment)
 
     if not no_validation:
         try:
-            notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
             ensure_experiment_is_valid(experiment)
-            notify(settings, ValidateFlowEvent.ValidateCompleted, experiment)
         except ChaosException as x:
-            notify(settings, ValidateFlowEvent.ValidateFailed, experiment, x)
             logger.error(str(x))
             logger.debug(x)
             sys.exit(1)
 
     experiment["dry"] = dry
-    notify(settings, RunFlowEvent.RunStarted, experiment)
 
     journal = run_experiment(experiment)
 
