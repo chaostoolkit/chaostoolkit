@@ -30,7 +30,7 @@ Following the
 
 ### An Open API to Chaos Engineering
 
-Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering through it's JSON-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
+Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering through it's JSON/YAML-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
 
 [api]: http://chaostoolkit.org/reference/api/experiment/
 
@@ -57,19 +57,19 @@ Running an experiment is as simple as:
 $ chaos run experiment.json
 ```
 
-The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON, and runs its steps sequentially. A full specifiction of this JSON experiment description file can be found in the [main project documentation][api].
+The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON (YAML is also supported), and runs its steps sequentially. A full specifiction of this experiment description file can be found in the [main project documentation][api].
 
 [json]: https://www.json.org/
 
 ## Extending the Chaos Toolkit
 
-The Chaos Toolkit plays the experiment JSON description that you provide to it. 
+The Chaos Toolkit plays the experiment description that you provide to it. 
 Experiments are made up of probes and actions (to vary real-world events during an experiment). We are always looking for community contribution and ideas around
 what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and evironment.
 
 If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea.
 
-In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment JSON definitions. 
+In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment definitions. 
 
 The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
