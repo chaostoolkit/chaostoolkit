@@ -39,9 +39,9 @@ __all__ = ["cli"]
 @click.option('--log-file', default="chaostoolkit.log", show_default=True,
               help="File path where to write the command's log.")
 @click.pass_context
-def cli(ctx: click.Context, verbose: bool=False, no_version_check: bool=False,
-        change_dir: str=None, no_log_file: bool=False,
-        log_file: str="chaostoolkit.log"):
+def cli(ctx: click.Context, verbose: bool = False,
+        no_version_check: bool = False, change_dir: str = None,
+        no_log_file: bool = False, log_file: str = "chaostoolkit.log"):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
@@ -83,8 +83,8 @@ def cli(ctx: click.Context, verbose: bool=False, no_version_check: bool=False,
 @click.option('--no-validation', is_flag=True,
               help='Do not validate the experiment before running.')
 @click.argument('path', type=click.Path(exists=True))
-def run(path: str, journal_path: str="./journal.json", dry: bool=False,
-        no_validation: bool=False) -> Journal:
+def run(path: str, journal_path: str = "./journal.json", dry: bool = False,
+        no_validation: bool = False) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
     settings = load_settings()
@@ -143,9 +143,9 @@ def validate(path: str) -> Experiment:
               help='Path where to save the the discovery outcome.',
               show_default=True)
 @click.argument('package')
-def discover(package: str, discovery_path: str="./discovery.json",
-             no_system_info: bool=False,
-             no_install: bool=False) -> Discovery:
+def discover(package: str, discovery_path: str = "./discovery.json",
+             no_system_info: bool = False,
+             no_install: bool = False) -> Discovery:
     """Discover capabilities and experiments."""
     settings = load_settings()
     try:
@@ -175,8 +175,8 @@ def discover(package: str, discovery_path: str="./discovery.json",
 @click.option('--experiment-path', default="./experiment.json",
               help='Path where to save the experiment.',
               show_default=True)
-def init(discovery_path: str="./discovery.json",
-         experiment_path: str="./experiment.json") -> Experiment:
+def init(discovery_path: str = "./discovery.json",
+         experiment_path: str = "./experiment.json") -> Experiment:
     """
     Initialize a new experiment from discovered capabilities.
     """
@@ -305,7 +305,7 @@ with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
 
 
 def add_activities(activities: List[Activity], pool: List[Activity],
-                   with_tolerance: bool=False):
+                   with_tolerance: bool = False):
     """
     Add activities to the given pool.
     """
