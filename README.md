@@ -84,6 +84,8 @@ and/or actions:
 * [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
 * [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
 * [chaostoolkit-aws][chaosaws]: AWS activities
+* [chaostoolkit-google-cloud][chaosgce]: Google Cloud Engine activities
+* [chaostoolkit-azure][chaosazure]: Microsoft Azure activities
 * [chaostoolkit-cloud-foundry][chaoscf]: Cloud Foundry activities
 * [chaostoolkit-prometheus][chaosprom]: Prometheus probes
 * [chaostoolkit-slack][chaosslack]: Slack notifications
@@ -92,6 +94,8 @@ and/or actions:
 [chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
 [chaosgremlin]: https://github.com/chaostoolkit-incubator/chaostoolkit-gremlin
 [chaosaws]: https://github.com/chaostoolkit-incubator/chaostoolkit-aws
+[chaosazure]: https://github.com/chaostoolkit-incubator/chaostoolkit-azure
+[chaosgce]: https://github.com/chaostoolkit-incubator/chaostoolkit-google-cloud
 [chaosprom]: https://github.com/chaostoolkit-incubator/chaostoolkit-prometheus
 [chaoscf]: https://github.com/chaostoolkit-incubator/chaostoolkit-cloud-foundry
 [chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-slack
