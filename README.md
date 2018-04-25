@@ -61,6 +61,8 @@ The Chaos Toolkit takes experiments defined in a [JSON format][json] description
 
 [json]: https://www.json.org/
 
+![Chaos Toolkit Run Sample](https://github.com/chaosiq/demos/raw/master/openfaas/experiments/switching-gce-nodepool/chaostoolkit-run.gif)
+
 ## Extending the Chaos Toolkit
 
 The Chaos Toolkit plays the experiment description that you provide to it. 
