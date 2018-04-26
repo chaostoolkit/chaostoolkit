@@ -26,7 +26,12 @@ from chaostoolkit.check import check_newer_version
 
 __all__ = ["cli"]
 
+"""Provide a command line interface to the chaostoolkit.
 
+    The CLI uses the Click module to handle the interaction with the toolkit,
+    provide feedback on the status of activities and edit configuration settings.
+
+"""
 @click.group()
 @click.version_option(version=__version__)
 @click.option('--verbose', is_flag=True, help='Display debug level traces.')
@@ -360,7 +365,7 @@ def add_activities(activities: List[Activity], pool: List[Activity],
         click.secho(
             "\nA steady-state probe requires a tolerance value, "
             "within which\n"
-            "your system is in a reognised `normal` state.\n",
+            "your system is in a recognised `normal` state.\n",
             fg="blue")
         tolerance_value = click.prompt(
             s("What is the tolerance for this probe?", fg='green'))
