@@ -7,6 +7,7 @@
 ### Changed
 
 - Do not notify of experiment validation when running it (too noisy)
+- Encode date, datetime, decimal and UUID to JSON explicitely
 
 ## [0.13.0][] - 2018-02-20
 

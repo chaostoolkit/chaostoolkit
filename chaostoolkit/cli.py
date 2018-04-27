@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from datetime import date, datetime
+import decimal
 import io
 import json
 import logging
 import os
 import sys
 from typing import List
+import uuid
 
 from chaoslib.exceptions import ChaosException, DiscoveryFailed
 from chaoslib.discovery import discover as disco
@@ -25,6 +28,26 @@ from chaostoolkit.check import check_newer_version
 
 
 __all__ = ["cli"]
+
+
+def encoder(o: object) -> str:
+    """
+    Perform some additional encoding for types JSON doesn't support natively.
+
+    We don't try to respect any ECMA specification here as we want to retain
+    as much information as we can.
+    """
+    if isinstance(o, (date, datetime)):
+        # we do not meddle with the timezone and assume the date was stored
+        # with the right information of timezone as +-HH:MM
+        return o.isoformat()
+    elif isinstance(o, decimal.Decimal):
+        return str(o)
+    elif isinstance(o, uuid.UUID):
+        return str(o)
+
+    raise TypeError(
+        "Object of type '{}' is not JSON serializable".format(type(o)))
 
 
 @click.group()
@@ -104,7 +127,7 @@ def run(path: str, journal_path: str = "./journal.json", dry: bool = False,
     journal = run_experiment(experiment)
 
     with io.open(journal_path, "w") as r:
-        json.dump(journal, r, indent=2, ensure_ascii=False)
+        json.dump(journal, r, indent=2, ensure_ascii=False, default=encoder)
 
     if journal["status"] == "completed":
         notify(settings, RunFlowEvent.RunCompleted, journal)
@@ -160,7 +183,7 @@ def discover(package: str, discovery_path: str = "./discovery.json",
         return
 
     with open(discovery_path, "w") as d:
-        d.write(json.dumps(discovery, indent=2))
+        d.write(json.dumps(discovery, indent=2, default=encoder))
     logger.info("Discovery outcome saved in {p}".format(
         p=discovery_path))
 
@@ -291,7 +314,7 @@ def init(discovery_path: str = "./discovery.json",
             base_experiment["rollbacks"] = rollbacks
 
     with open(experiment_path, "w") as e:
-        e.write(json.dumps(base_experiment, indent=4))
+        e.write(json.dumps(base_experiment, indent=4, default=encoder))
 
     click.echo(
         "\nExperiment created and saved in '{e}'".format(e=experiment_path))
