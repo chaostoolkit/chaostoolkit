@@ -15,7 +15,7 @@ The Chaos Toolkit has two main purposes:
 * To provide a full chaos engineering implementation that simplifies the adoption of chaos engineering by providing an easy starting point for applying the discipline.
 * To define an open API with the community so that any chaos experiment can be executed consistently using integrations with the many commercial, private and open source chaos implementations that are emerging.
 
-![Chaos Toolkit](http://chaostoolkit.org/static/images/schema-1920.svg)
+![Chaos Toolkit](https://chaostoolkit.org/static/chaos-toolkit-schema.fbdfc57a.svg)
 
 ### Simplifying Adoption of Chaos Engineering
 
