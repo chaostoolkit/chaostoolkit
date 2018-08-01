@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.14.0...HEAD
 
+### Added
+
+- Added 'info' command to display the current status of the Chaos Toolkit's
+  environment
+
 ## [0.14.0][] - 2018-04-27
 
 [0.14.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.13.0...0.14.0
