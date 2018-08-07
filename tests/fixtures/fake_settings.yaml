@@ -1,0 +1,5 @@
+notifications:
+- channel: test
+  module: chaosslack.notification
+  token: XYZ
+  type: plugin

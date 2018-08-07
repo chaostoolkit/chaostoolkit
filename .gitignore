@@ -115,3 +115,4 @@ chaos-report.json
 discovery.json
 journal.json
 chaostoolkit.log
+.pytest_cache/

@@ -15,7 +15,7 @@ from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
     run_experiment
 from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
     RunFlowEvent, ValidateFlowEvent
-from chaoslib.settings import load_settings
+from chaoslib.settings import load_settings, CHAOSTOOLKIT_CONFIG_PATH
 from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
@@ -61,10 +61,13 @@ def encoder(o: object) -> str:
               help='Disable logging to file entirely.')
 @click.option('--log-file', default="chaostoolkit.log", show_default=True,
               help="File path where to write the command's log.")
+@click.option('--settings', default=CHAOSTOOLKIT_CONFIG_PATH,
+              show_default=True, help="Path to the settings file.")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool = False,
         no_version_check: bool = False, change_dir: str = None,
-        no_log_file: bool = False, log_file: str = "chaostoolkit.log"):
+        no_log_file: bool = False, log_file: str = "chaostoolkit.log",
+        settings: str = CHAOSTOOLKIT_CONFIG_PATH):
     if verbose:
         logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
@@ -90,6 +93,10 @@ def cli(ctx: click.Context, verbose: bool = False,
     logger.debug("#" * 79)
     logger.debug("Running command '{}'".format(subcommand))
 
+    ctx.obj = {}
+    ctx.obj["settings_path"] = click.format_filename(settings)
+    logger.debug("Using settings file '{}'".format(ctx.obj["settings_path"]))
+
     if not no_version_check:
         check_newer_version(command=subcommand)
 
@@ -106,11 +113,12 @@ def cli(ctx: click.Context, verbose: bool = False,
 @click.option('--no-validation', is_flag=True,
               help='Do not validate the experiment before running.')
 @click.argument('path', type=click.Path(exists=True))
-def run(path: str, journal_path: str = "./journal.json", dry: bool = False,
-        no_validation: bool = False) -> Journal:
+@click.pass_context
+def run(ctx: click.Context, path: str, journal_path: str = "./journal.json",
+        dry: bool = False, no_validation: bool = False) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
-    settings = load_settings()
+    settings = load_settings(ctx.obj["settings_path"])
 
     notify(settings, RunFlowEvent.RunStarted, experiment)
 
@@ -139,9 +147,10 @@ def run(path: str, journal_path: str = "./journal.json", dry: bool = False,
 
 @cli.command()
 @click.argument('path', type=click.Path(exists=True))
-def validate(path: str) -> Experiment:
+@click.pass_context
+def validate(ctx: click.Context, path: str) -> Experiment:
     """Validate the experiment at PATH."""
-    settings = load_settings()
+    settings = load_settings(ctx.obj["settings_path"])
     experiment = load_experiment(click.format_filename(path))
     try:
         notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
@@ -166,11 +175,13 @@ def validate(path: str) -> Experiment:
               help='Path where to save the the discovery outcome.',
               show_default=True)
 @click.argument('package')
-def discover(package: str, discovery_path: str = "./discovery.json",
+@click.pass_context
+def discover(ctx: click.Context, package: str,
+             discovery_path: str = "./discovery.json",
              no_system_info: bool = False,
              no_install: bool = False) -> Discovery:
     """Discover capabilities and experiments."""
-    settings = load_settings()
+    settings = load_settings(ctx.obj["settings_path"])
     try:
         notify(settings, DiscoverFlowEvent.DiscoverStarted, package)
         discovery = disco(
@@ -198,12 +209,13 @@ def discover(package: str, discovery_path: str = "./discovery.json",
 @click.option('--experiment-path', default="./experiment.json",
               help='Path where to save the experiment.',
               show_default=True)
-def init(discovery_path: str = "./discovery.json",
+@click.pass_context
+def init(ctx: click.Context, discovery_path: str = "./discovery.json",
          experiment_path: str = "./experiment.json") -> Experiment:
     """
     Initialize a new experiment from discovered capabilities.
     """
-    settings = load_settings()
+    settings = load_settings(ctx.obj["settings_path"])
     notify(settings, InitFlowEvent.InitStarted)
     click.secho(
         "You are about to create an experiment.\n"
