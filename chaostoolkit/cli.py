@@ -115,7 +115,8 @@ def cli(ctx: click.Context, verbose: bool = False,
 @click.argument('path', type=click.Path(exists=True))
 @click.pass_context
 def run(ctx: click.Context, path: str, journal_path: str = "./journal.json",
-        dry: bool = False, no_validation: bool = False) -> Journal:
+        dry: bool = False, no_validation: bool = False,
+        fail_fast: bool = True) -> Journal:
     """Run the experiment given at PATH."""
     experiment = load_experiment(click.format_filename(path))
     settings = load_settings(ctx.obj["settings_path"])
@@ -141,6 +142,13 @@ def run(ctx: click.Context, path: str, journal_path: str = "./journal.json",
         notify(settings, RunFlowEvent.RunCompleted, journal)
     else:
         notify(settings, RunFlowEvent.RunFailed, journal)
+
+        # when set (default) we exit this command immediatly if the execution
+        # failed, was aborted or interrupted
+        # when unset, plugins can continue the processing. In that case, they
+        # are responsible to set the process exit code accordingly.
+        if fail_fast:
+            sys.exit(1)
 
     return journal
 

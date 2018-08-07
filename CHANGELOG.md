@@ -9,6 +9,13 @@
 - a new global flag `chaos --settings <path>` to explicitely specify the
   location of the Chaos Toolkit settings file
 
+## Changed
+
+- by default, the run command will now set the exit code to 1 when the
+  experiment is not successful (interrupted, aborted or failed). This can be
+  bypassed by plugins so they have the opportunity to process the journal as
+  well. In that case, they must set the exit code themselves to play nicely.
+
 ## [0.14.0][] - 2018-04-27
 
 [0.14.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.13.0...0.14.0
