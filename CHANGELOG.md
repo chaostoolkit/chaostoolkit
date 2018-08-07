@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.14.0...HEAD
 
+## Added
+
+- a new global flag `chaos --settings <path>` to explicitely specify the
+  location of the Chaos Toolkit settings file
+
 ## [0.14.0][] - 2018-04-27
 
 [0.14.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.13.0...0.14.0
