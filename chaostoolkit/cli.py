@@ -9,10 +9,10 @@ import sys
 from typing import List
 import uuid
 
-from chaoslib.exceptions import ChaosException, DiscoveryFailed
+from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
-from chaoslib.experiment import ensure_experiment_is_valid, load_experiment,\
-    run_experiment
+from chaoslib.experiment import ensure_experiment_is_valid, run_experiment
+from chaoslib.loader import load_experiment
 from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
     RunFlowEvent, ValidateFlowEvent
 from chaoslib.settings import load_settings, CHAOSTOOLKIT_CONFIG_PATH
@@ -112,14 +112,20 @@ def cli(ctx: click.Context, verbose: bool = False,
               help='Run the experiment without executing activities.')
 @click.option('--no-validation', is_flag=True,
               help='Do not validate the experiment before running.')
-@click.argument('path', type=click.Path(exists=True))
+@click.argument('source')
 @click.pass_context
-def run(ctx: click.Context, path: str, journal_path: str = "./journal.json",
+def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
         fail_fast: bool = True) -> Journal:
-    """Run the experiment given at PATH."""
-    experiment = load_experiment(click.format_filename(path))
+    """Run the experiment loaded from SOURCE, either a local file or a
+       HTTP resource."""
     settings = load_settings(ctx.obj["settings_path"])
+    try:
+        experiment = load_experiment(click.format_filename(source), settings)
+    except InvalidSource as x:
+        logger.error(str(x))
+        logger.debug(x)
+        sys.exit(1)
 
     notify(settings, RunFlowEvent.RunStarted, experiment)
 

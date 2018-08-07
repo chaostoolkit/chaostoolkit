@@ -8,6 +8,10 @@
 
 - a new global flag `chaos --settings <path>` to explicitely specify the
   location of the Chaos Toolkit settings file
+- experiments can now also be loaded from a HTTP(s) resource (with or without
+  auth) as per [#53][53]
+
+[53]: https://github.com/chaostoolkit/chaostoolkit/issues/53
 
 ## Changed
 
