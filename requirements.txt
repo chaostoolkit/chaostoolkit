@@ -3,3 +3,4 @@ click-plugins>=1.0.4
 logzero>=1.5.0
 chaostoolkit-lib>=1.3.0
 requests>=2.21
+python-json-logger>=0.1.11
