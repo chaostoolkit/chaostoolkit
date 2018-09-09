@@ -84,12 +84,22 @@ The core implementation of the Chaos Toolkit API can be found in the [chaostoolk
 The following free and open source extensions are available for your probes
 and/or actions:
 
+Infrastructure/Platform Fault Injections:
+
 * [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
-* [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
-* [chaostoolkit-aws][chaosaws]: AWS activities
-* [chaostoolkit-google-cloud][chaosgce]: Google Cloud Engine activities
-* [chaostoolkit-azure][chaosazure]: Microsoft Azure activities
 * [chaostoolkit-cloud-foundry][chaoscf]: Cloud Foundry activities
+* [chaostoolkit-aws][chaosaws]: AWS activities
+* [chaostoolkit-azure][chaosazure]: Microsoft Azure activities
+* [chaostoolkit-google-cloud][chaosgce]: Google Cloud Engine activities
+
+Application Fault Injections:
+
+* [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
+* [chaostoolkit-toxiproxy][chaostoxy]: Toxy Proxy fault injections
+* [chaostoolkit-spring][chaospring]: Spring Project fault injections
+
+Observability:
+
 * [chaostoolkit-prometheus][chaosprom]: Prometheus probes
 * [chaostoolkit-slack][chaosslack]: Slack notifications
 * [chaostoolkit-humio][chaoshumio]: Humio logging
@@ -103,6 +113,8 @@ and/or actions:
 [chaoscf]: https://github.com/chaostoolkit-incubator/chaostoolkit-cloud-foundry
 [chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-slack
 [chaoshumio]: https://github.com/chaostoolkit-incubator/chaostoolkit-humio
+[chaostoxy]: https://github.com/chaostoolkit-incubator/chaostoolkit-toxiproxy
+[chaospring]: https://github.com/chaostoolkit-incubator/chaostoolkit-spring
 
 ## Get involved!
 
