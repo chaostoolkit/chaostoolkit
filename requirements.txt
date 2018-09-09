@@ -1,6 +1,5 @@
 click
 click-plugins
-pycodestyle
 logzero
 chaostoolkit-lib>=0.20.0
 requests
