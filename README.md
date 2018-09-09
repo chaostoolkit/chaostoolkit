@@ -1,6 +1,7 @@
 # Chaos Toolkit - An Open API for Chaos Engineering
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
+[![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
 [![Python versions](https://img.shields.io/pypi/pyversions/chaostoolkit.svg)](https://www.python.org/)
 [![Requirements Status](https://requires.io/github/chaostoolkit/chaostoolkit/requirements.svg?branch=master)](https://requires.io/github/chaostoolkit/chaostoolkit/requirements/?branch=master)
