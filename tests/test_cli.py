@@ -190,7 +190,10 @@ def test_notify_discover_failure(disco, notify):
             ANY, DiscoverFlowEvent.DiscoverCompleted, discovered)
 
         f.seek(0)
-        assert json.loads(f.read()) == discovered
+        data = f.read()
+        if isinstance(data, bytes):
+            data = data.decode('utf-8')
+        assert json.loads(data) == discovered
 
 
 @patch('chaostoolkit.cli.notify', spec=True)
