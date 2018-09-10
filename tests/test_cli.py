@@ -225,11 +225,17 @@ def test_notify_init_complete(notify):
         'true',
         'default',
         'N',
+        'Y',
+        '1',
+        'Y',
+        'true',
+        'default',
+        'N',
         'N',
         'N'])
     runner = CliRunner()
     disco_path = os.path.join(
-        os.path.dirname(__file__), 'fixtures', 'discovery.json')
+        os.path.dirname(__file__), 'fixtures', 'disco.json')
     result = runner.invoke(cli, [
         'init', '--discovery-path', disco_path], input=inputs)
     assert result.exit_code == 0
