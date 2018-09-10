@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from decimal import Decimal
+import io
 import json
 import os
 import sys
@@ -210,3 +211,30 @@ def test_notify_discover_complete(disco, notify):
 
     notify.assert_any_call(ANY, DiscoverFlowEvent.DiscoverStarted, ANY)
     notify.assert_called_with(ANY, DiscoverFlowEvent.DiscoverFailed, ANY, err)
+
+
+@patch('chaostoolkit.cli.notify', spec=True)
+def test_notify_init_complete(notify):
+    # fill the inputs of the init command
+    inputs = '\n'.join([
+        'a dummy test',
+        'Y',
+        'a steady state hypo',
+        '1',
+        'Y',
+        'true',
+        'default',
+        'N',
+        'N',
+        'N'])
+    runner = CliRunner()
+    disco_path = os.path.join(
+        os.path.dirname(__file__), 'fixtures', 'discovery.json')
+    result = runner.invoke(cli, [
+        'init', '--discovery-path', disco_path], input=inputs)
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    notify.assert_any_call(ANY, InitFlowEvent.InitStarted)
+    notify.assert_any_call(ANY, InitFlowEvent.InitCompleted, ANY)
+    

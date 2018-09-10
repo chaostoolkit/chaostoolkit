@@ -1,0 +1,605 @@
+{
+  "chaoslib_version": "0.20.1",
+  "id": "3e6f8eac-0daf-4411-b8d3-395a2e937b42",
+  "target": "kubernetes",
+  "date": "2018-09-10T08:33:00.506506Z",
+  "platform": {
+    "system": "Linux",
+    "node": "sylvain-laptop",
+    "release": "4.15.0-32-generic",
+    "version": "#35-Ubuntu SMP Fri Aug 10 17:58:07 UTC 2018",
+    "machine": "x86_64",
+    "proc": "x86_64",
+    "python": "3.6.3"
+  },
+  "extension": {
+    "name": "chaostoolkit-kubernetes",
+    "version": "0.17.0"
+  },
+  "activities": [
+    {
+      "type": "action",
+      "name": "kill_microservice",
+      "mod": "chaosk8s.actions",
+      "doc": "Kill a microservice by `name` in the namespace `ns`.\n\nThe microservice is killed by deleting the deployment for it without\na graceful period to trigger an abrupt termination.\n\nThe selected resources are matched by the given `label_selector`.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "remove_service_endpoint",
+      "mod": "chaosk8s.actions",
+      "doc": "Remove the service endpoint that sits in front of microservices (pods).",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "scale_microservice",
+      "mod": "chaosk8s.actions",
+      "doc": "Scale a deployment up or down. The `name` is the name of the deployment.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "replicas",
+          "type": "integer"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "start_microservice",
+      "mod": "chaosk8s.actions",
+      "doc": "Start a microservice described by the deployment config, which must be the\npath to the JSON or YAML representation of the deployment.",
+      "arguments": [
+        {
+          "name": "spec_path",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "probe",
+      "name": "all_microservices_healthy",
+      "mod": "chaosk8s.probes",
+      "doc": "Check all microservices in the system are running and available.\n\nRaises :exc:`chaoslib.exceptions.FailedActivity` when the state is not\nas expected.",
+      "arguments": [
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "object"
+    },
+    {
+      "type": "probe",
+      "name": "deployment_is_not_fully_available",
+      "mod": "chaosk8s.probes",
+      "doc": "Wait until the deployment gets into an intermediate state where not all\nexpected replicas are available. Once this state is reached, return `True`.\nIf the state is not reached after `timeout` seconds, a\n:exc:`chaoslib.exceptions.FailedActivity` exception is raised.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "timeout",
+          "default": 30,
+          "type": "integer"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "probe",
+      "name": "microservice_available_and_healthy",
+      "mod": "chaosk8s.probes",
+      "doc": "Lookup a deployment by `name` in the namespace `ns`.\n\nThe selected resources are matched by the given `label_selector`.\n\nRaises :exc:`chaoslib.exceptions.FailedActivity` when the state is not\nas expected.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "object"
+    },
+    {
+      "type": "probe",
+      "name": "microservice_is_not_available",
+      "mod": "chaosk8s.probes",
+      "doc": "Lookup pods with a `name` label set to the given `name` in the specified\n`ns`.\n\nRaises :exc:`chaoslib.exceptions.FailedActivity` when one of the pods\nwith the specified `name` is in the `\"Running\"` phase.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "boolean"
+    },
+    {
+      "type": "probe",
+      "name": "read_microservices_logs",
+      "mod": "chaosk8s.probes",
+      "doc": "Fetch logs for all the pods with the label `\"name\"` set to `name` and\nreturn a dictionary with the keys being the pod's name and the values\nthe logs of said pod. If `name` is not provided, use only the\n`label_selector` instead.\n\nWhen your pod has several containers, you should also set `container_name`\nto clarify which container you want to read logs from.\n\nIf you provide `last`, this returns the logs of the last N seconds\nuntil now. This can set to a fluent delta such as `10 minutes`.\n\nYou may also set `from_previous` to `True` to capture the logs of a\nprevious pod's incarnation, if any.",
+      "arguments": [
+        {
+          "name": "name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "last",
+          "default": null,
+          "type": "object"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "from_previous",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "container_name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "mapping"
+    },
+    {
+      "type": "probe",
+      "name": "service_endpoint_is_initialized",
+      "mod": "chaosk8s.probes",
+      "doc": "Lookup a service endpoint by its name and raises :exc:`FailedProbe` when\nthe service was not found or not initialized.",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "terminate_pods",
+      "mod": "chaosk8s.pod.actions",
+      "doc": "Terminate a pod gracefully. Select the appropriate pods by label and/or\nname patterns. Whenever a pattern is provided for the name, all pods\nretrieved will be filtered out if their name do not match the given\npattern.\n\nIf neither `label_selector` nor `name_pattern` are provided, all pods\nin the namespace will be terminated.\n\nIf `all` is set to `True`, all matching pods will be terminated.\nIf `rand` is set to `True`, one random pod will be terminated.\nOtherwise, the first retrieved pod will be terminated.",
+      "arguments": [
+        {
+          "name": "label_selector",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "name_pattern",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "all",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "rand",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "probe",
+      "name": "count_pods",
+      "mod": "chaosk8s.pod.probes",
+      "doc": "Count the number of pods matching the given selector in a given `phase`, if\none is given.",
+      "arguments": [
+        {
+          "name": "label_selector",
+          "type": "string"
+        },
+        {
+          "name": "phase",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "integer"
+    },
+    {
+      "type": "probe",
+      "name": "pods_in_phase",
+      "mod": "chaosk8s.pod.probes",
+      "doc": "Lookup a pod by `label_selector` in the namespace `ns`.\n\nRaises :exc:`chaoslib.exceptions.FailedActivity` when the state is not\nas expected.",
+      "arguments": [
+        {
+          "name": "label_selector",
+          "type": "string"
+        },
+        {
+          "name": "phase",
+          "default": "Running",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "boolean"
+    },
+    {
+      "type": "probe",
+      "name": "pods_not_in_phase",
+      "mod": "chaosk8s.pod.probes",
+      "doc": "Lookup a pod by `label_selector` in the namespace `ns`.\n\nRaises :exc:`chaoslib.exceptions.FailedActivity` when the pod is in the\ngiven phase and should not have.",
+      "arguments": [
+        {
+          "name": "label_selector",
+          "type": "string"
+        },
+        {
+          "name": "phase",
+          "default": "Running",
+          "type": "string"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "boolean"
+    },
+    {
+      "type": "probe",
+      "name": "read_pod_logs",
+      "mod": "chaosk8s.pod.probes",
+      "doc": "Fetch logs for all the pods with the label `\"name\"` set to `name` and\nreturn a dictionary with the keys being the pod's name and the values\nthe logs of said pod. If `name` is not provided, use only the\n`label_selector` instead.\n\nWhen your pod has several containers, you should also set `container_name`\nto clarify which container you want to read logs from.\n\nIf you provide `last`, this returns the logs of the last N seconds\nuntil now. This can set to a fluent delta such as `10 minutes`.\n\nYou may also set `from_previous` to `True` to capture the logs of a\nprevious pod's incarnation, if any.",
+      "arguments": [
+        {
+          "name": "name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "last",
+          "default": null,
+          "type": "object"
+        },
+        {
+          "name": "ns",
+          "default": "default",
+          "type": "string"
+        },
+        {
+          "name": "from_previous",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "label_selector",
+          "default": "name in ({name})",
+          "type": "string"
+        },
+        {
+          "name": "container_name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "mapping"
+    },
+    {
+      "type": "action",
+      "name": "cordon_node",
+      "mod": "chaosk8s.node.actions",
+      "doc": "Cordon nodes matching the given label or name, so that no pods\nare scheduled on them any longer.",
+      "arguments": [
+        {
+          "name": "name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "create_node",
+      "mod": "chaosk8s.node.actions",
+      "doc": "Create one new node in the cluster.\n\nDue to the way things work on certain cloud providers, you won't be able\nto use this meaningfully on them. For instance on GCE, this will likely\nfail.\n\nSee also: https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#idempotency",
+      "arguments": [
+        {
+          "name": "meta",
+          "default": null,
+          "type": "mapping"
+        },
+        {
+          "name": "spec",
+          "default": null,
+          "type": "mapping"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "object"
+    },
+    {
+      "type": "action",
+      "name": "delete_nodes",
+      "mod": "chaosk8s.node.actions",
+      "doc": "Delete nodes gracefully. Select the appropriate nodes by label.\n\nNodes are not drained beforehand so we can see how cluster behaves. Nodes\ncannot be restarted, they are really deleted. Please be careful when using\nthis action.\n\nOn certain cloud providers, you also need to delete the underneath VM\ninstance as well afterwards. This is the case on GCE for instance.\n\nIf `all` is set to `True`, all nodes will be terminated.\nIf `rand` is set to `True`, one random node will be terminated.\nIf \u0300`count` is set to a positive number, only a upto `count` nodes\n(randomly picked) will be terminated. Otherwise, the first retrieved node\nwill be terminated.",
+      "arguments": [
+        {
+          "name": "label_selector",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "all",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "rand",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "count",
+          "default": null,
+          "type": "integer"
+        },
+        {
+          "name": "grace_period_seconds",
+          "default": null,
+          "type": "integer"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "drain_nodes",
+      "mod": "chaosk8s.node.actions",
+      "doc": "Drain nodes matching the given label or name, so that no pods are scheduled\non them any longer and running pods are evicted.\n\nIt does a similar job to `kubectl drain --ignore-daemonsets` or\n`kubectl drain --delete-local-data --ignore-daemonsets` if\n`delete_pods_with_local_storage` is set to `True`. There is no\nequivalent to the `kubectl drain --force` flag.\n\nYou probably want to call `uncordon` from in your experiment's rollbacks.",
+      "arguments": [
+        {
+          "name": "name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "delete_pods_with_local_storage",
+          "default": false,
+          "type": "boolean"
+        },
+        {
+          "name": "timeout",
+          "default": 120,
+          "type": "integer"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ],
+      "return_type": "boolean"
+    },
+    {
+      "type": "action",
+      "name": "uncordon_node",
+      "mod": "chaosk8s.node.actions",
+      "doc": "Uncordon nodes matching the given label name, so that pods can be\nscheduled on them again.",
+      "arguments": [
+        {
+          "name": "name",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "label_selector",
+          "default": null,
+          "type": "string"
+        },
+        {
+          "name": "secrets",
+          "default": null,
+          "type": "mapping"
+        }
+      ]
+    }
+  ],
+  "system": null
+}
