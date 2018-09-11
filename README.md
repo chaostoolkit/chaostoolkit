@@ -126,8 +126,11 @@ Observability:
 ## Get involved!
 
 Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As such, we encourage and welcome you  to [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
+You can also use [StackOverflow][so] to ask any questions regarding using the
+Chaos Toolkit or Chaos Engineering.
 
 [join]: https://join.chaostoolkit.org/
+[so]: https://stackoverflow.com/questions/ask?tags=chaostoolkit+chaosengineering
 
 If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
 
