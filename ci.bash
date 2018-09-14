@@ -42,6 +42,15 @@ function release () {
         -H "Authorization: token "$TRAVIS_CI_TOKEN"" \
         -d '{"request": {"branch":"master", "message": "Rebuilding after new chaostoolkit release"}}' \
         https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-documentation/requests
+
+    echo "Creating a new binary bundle of the toolkit and all known drivers/plugins"
+    curl -s -X POST \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -H "Travis-API-Version: 3" \
+        -H "Authorization: token "$TRAVIS_CI_TOKEN"" \
+        -d '{"request": {"branch":"master", "message": "Rebuilding after new chaostoolkit release"}}' \
+        https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-bundler/requests
 }
 
 function main () {
