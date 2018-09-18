@@ -44,6 +44,8 @@ Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering throu
 
 ## Install or Upgrade
 
+### Install from Packages
+
 Generally speaking, you can install it as follows:
 
 ```
@@ -53,6 +55,18 @@ $ pip install -U chaostoolkit
 It is recommended that you create a Python virtual environment for running your chaos experiments. Full instructions for installing chaostoolkit and its requirements are available in the [installation documentation][install].
 
 [install]: http://chaostoolkit.org/reference/usage/install/
+
+### Download and run the bundle
+
+While installing via packages gives you the most control over what to deploy,
+you may also be interested in simply dowloading a standalone binary that can
+be run as-is.
+
+Download a copy from [here][download].
+
+[download]: https://github.com/chaostoolkit/chaostoolkit-bundler
+
+Whenever a new version is released, just download its copy again.
 
 ## Getting Started
 
