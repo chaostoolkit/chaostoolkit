@@ -149,6 +149,9 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     else:
         notify(settings, RunFlowEvent.RunFailed, journal)
 
+        if journal.get("deviated", False):
+            notify(settings, RunFlowEvent.RunDeviated, journal)
+
         # when set (default) we exit this command immediatly if the execution
         # failed, was aborted or interrupted
         # when unset, plugins can continue the processing. In that case, they
