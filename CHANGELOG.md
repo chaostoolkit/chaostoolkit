@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.15.0...HEAD
 
+### Added
+
+- send a `RunFlowEvent.RunDeviated` event in addition to other events when the
+  steady state deviated after the experimental method [#56][56]
+
+[56]: https://github.com/chaostoolkit/chaostoolkit/issues/56
+
 ## [0.15.0][] - 2018-08-09
 
 [0.15.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.14.0...0.15.0
