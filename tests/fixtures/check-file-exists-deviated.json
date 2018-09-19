@@ -1,0 +1,33 @@
+{
+    "title": "Check file is there",
+    "description": "This is a test experiment",
+    "steady-state-hypothesis": {
+        "title": "Services are all available and healthy",
+        "probes": [
+            {
+                "name": "check-file-exists",
+                "type": "probe",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "os.path",
+                    "func": "exists",
+                    "arguments": {
+                        "path": "tests/fixtures/dummy.txt"
+                    }
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "name": "remove-file",
+            "type": "action",
+            "provider": {
+                "type": "process",
+                "path": "rm",
+                "arguments": "tests/fixtures/dummy.txt"
+            }
+        }
+    ]
+}
