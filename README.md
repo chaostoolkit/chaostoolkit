@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/pypi/v/chaostoolkit.svg)](https://img.shields.io/pypi/v/chaostoolkit.svg)
 [![License](https://img.shields.io/pypi/l/chaostoolkit.svg)](https://img.shields.io/pypi/l/chaostoolkit.svg)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchaostoolkit%2Fchaostoolkit.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchaostoolkit%2Fchaostoolkit?ref=badge_shield)
 
 
 [![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
@@ -149,3 +150,7 @@ Chaos Toolkit or Chaos Engineering.
 If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
 
 Finally you can always email `contact@chaostoolkit.org` with any questions as well.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchaostoolkit%2Fchaostoolkit.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchaostoolkit%2Fchaostoolkit?ref=badge_large)
