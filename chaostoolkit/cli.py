@@ -423,7 +423,7 @@ def add_activities(activities: List[Activity], pool: List[Activity],
     activity["provider"]["arguments"] = {}
 
     click.secho(
-        "\nYou now need to fill the arguments for thi activity. Default\n"
+        "\nYou now need to fill the arguments for this activity. Default\n"
         "values will be shown between brackets. You may simply press return\n"
         "to use it or not set any value.", fg="blue")
     for arg in selected.get("arguments", []):
