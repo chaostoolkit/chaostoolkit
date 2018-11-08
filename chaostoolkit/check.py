@@ -19,6 +19,7 @@ def check_newer_version(command: str):
     inviting the user to upgrade its environment.
     """
     try:
+        command = command.strip()
         r = requests.get(LATEST_RELEASE_URL, timeout=(2, 30),
                          params={"current": __version__, "command": command})
         if r.status_code == 200:

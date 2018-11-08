@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.16.0...HEAD
 
+### Changed
+
+- strip command name before sending it to check newer version as sometimes
+  we get a tabulation character in there
+
 ## [0.16.0][] - 2018-09-19
 
 [0.16.0]: https://github.com/chaostoolkit/chaostoolkit/compare/0.15.0...0.16.0
