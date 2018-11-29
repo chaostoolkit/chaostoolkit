@@ -4,6 +4,14 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.16.0...HEAD
 
+### Added
+
+- add `info` command to display basic information such as version of the
+  toolkit core library or installed extensions. Display also the current
+  settings [#64][64]
+
+[64]: https://github.com/chaostoolkit/chaostoolkit/issues/64
+
 ### Changed
 
 - strip command name before sending it to check newer version as sometimes
