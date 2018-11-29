@@ -26,7 +26,7 @@ def check_newer_version(command: str):
             payload = r.json()
             latest_version = payload["version"]
             if payload.get("up_to_date") is False:
-                logger.warn(
+                logger.warning(
                     "\nThere is a new version ({v}) of the chaostoolkit "
                     "available.\n"
                     "You may upgrade by typing:\n\n"
