@@ -16,6 +16,7 @@
 
 - strip command name before sending it to check newer version as sometimes
   we get a tabulation character in there
+- swap `logger.warn` for `logger.warning` as the former is obsolete
 
 ## [0.16.0][] - 2018-09-19
 
