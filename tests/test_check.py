@@ -31,7 +31,8 @@ def test_version_is_not_newer(requests):
 
 @patch("chaostoolkit.check.requests", autospec=True)
 def test_version_is_newer(requests):
-    newer_version = semver.bump_minor(__version__)
+    version = __version__.replace("rc", "-rc")
+    newer_version = semver.bump_minor(version)
     requests.get.return_value = FakeResponse(
         200,
         "http://someplace//usage/latest/",
