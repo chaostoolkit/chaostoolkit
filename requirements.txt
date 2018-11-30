@@ -1,5 +1,5 @@
 click
 click-plugins
 logzero
-chaostoolkit-lib>=0.22.1
+chaostoolkit-lib>=0.22.2
 requests
