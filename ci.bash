@@ -59,7 +59,7 @@ function main () {
     run-test || return 1
 
     if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.5+$ ]]; then
-        if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?$ ]]; then
             echo "Releasing tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
             release || return 1
         fi

@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/0.17.1...HEAD
 
+## Changed
+
+- Handle RC versioning when building release
+
 ## [0.17.1][] - 2018-11-30
 
 [0.17.1]: https://github.com/chaostoolkit/chaostoolkit/compare/0.17.0...0.17.1
