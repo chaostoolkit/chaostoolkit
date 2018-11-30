@@ -1,5 +1,5 @@
-click
-click-plugins
-logzero
-chaostoolkit-lib>=0.22.2
-requests
+click==7.0
+click-plugins==1.0.4
+logzero==1.5.0
+chaostoolkit-lib==1.0.0rc1
+requests==2.20.1

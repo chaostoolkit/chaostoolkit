@@ -7,6 +7,7 @@
 ## Changed
 
 - Handle RC versioning when building release
+- Pin dependency versions
 
 ## [0.17.1][] - 2018-11-30
 
