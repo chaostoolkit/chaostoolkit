@@ -6,7 +6,7 @@ import json
 import logging
 import os
 import sys
-from typing import List, NoReturn
+from typing import List
 import uuid
 
 from chaoslib import __version__ as chaoslib_version
@@ -188,7 +188,7 @@ def validate(ctx: click.Context, path: str) -> Experiment:
 @cli.command()
 @click.argument('target')
 @click.pass_context
-def info(ctx: click.Context, target: str) -> NoReturn:
+def info(ctx: click.Context, target: str):
     """Display information about the Chaos Toolkit environment.
 
     Available targets are:
