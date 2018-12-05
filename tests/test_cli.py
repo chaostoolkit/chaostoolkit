@@ -97,10 +97,12 @@ def test_json_encoder_uuid():
 def test_change_directory(log_file):
     runner = CliRunner()
 
-    curdir = os.getcwd()
+    curdir = os.path.normpath(os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), '..'))
+    subdir = os.path.join(curdir, 'tests', 'fixtures')
     try:
-        result = runner.invoke(cli, ['--change-dir', '/tmp', 'run'])
-        assert os.getcwd() == '/tmp'
+        result = runner.invoke(cli, ['--change-dir', subdir, 'run'])
+        assert os.getcwd() == subdir
     finally:
         os.chdir(curdir)
     assert os.getcwd() == curdir
@@ -122,10 +124,12 @@ def test_dry(log_file):
 
 @patch('chaostoolkit.cli.notify', spec=True)
 def test_notify_run_complete(notify, log_file):
+    testdir = os.path.normpath(os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), '..'))
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'check-file-exists.json')
-    result = runner.invoke(cli, ['run', exp_path])
+    result = runner.invoke(cli, ['--change-dir', testdir, 'run', exp_path])
     assert result.exit_code == 0
     assert result.exception is None
 
