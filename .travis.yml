@@ -2,10 +2,28 @@ language: python
 sudo: required
 services:
 - docker
-python:
-- 3.5
-- 3.6
-- "3.7-dev"
+
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    python: 3.5
+  - os: linux
+    dist: trusty
+    python: 3.6
+  - os: linux
+    dist: trusty
+    python: "3.7-dev"
+  - os: osx
+    language: generic
+
+before_install: |
+  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    brew upgrade python3
+    python3 --version
+    python3 -m pip install -U pip
+    which pip3
+  fi
 
 install:
 - pip install -U pip setuptools wheel
