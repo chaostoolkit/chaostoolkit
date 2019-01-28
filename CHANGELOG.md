@@ -2,7 +2,16 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc1...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc2...HEAD
+
+## [1.0.0rc2][] - 2018-01-28
+
+[1.0.0rc2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc1...1.0.0rc2
+
+## Changed
+
+- Bump to chaostoolkit-lib 1.0.0rc2
+- Enable MacOSX travis build to ensure Chaos Toolkit does build there
 
 ## [1.0.0rc1][] - 2018-11-30
 
