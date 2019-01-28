@@ -8,20 +8,20 @@ function lint () {
 
 function build () {
     echo "Building the choastoolkit package"
-    python setup.py build
+    python3 setup.py build
 }
 
 function run-test () {
     echo "Running the tests"
-    python setup.py test
+    python3 setup.py test
 }
 
 function release () {
     echo "Releasing the pachaage"
-    python setup.py release
+    python3 setup.py release
 
     echo "Publishing to PyPI"
-    pip install twine
+    pip3 install twine
     twine upload dist/* -u ${PYPI_USER_NAME} -p ${PYPI_PWD}
 
     echo "Building the Docker image"
