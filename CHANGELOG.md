@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc3...HEAD
 
+## Changed
+
+- Cleaned up package metadata
+
 ## [1.0.0rc4][] - 2018-02-21
 
 [1.0.0rc4]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc3...1.0.0rc4

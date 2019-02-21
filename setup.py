@@ -3,23 +3,36 @@
 
 import sys
 import io
+from os.path import abspath, dirname, join, normpath
 
 import setuptools
 
-sys.path.insert(0, ".")
-from chaostoolkit import __version__
-sys.path.remove(".")
+
+def get_version_from_package() -> str:
+    """
+    Read the package version from the source without importing it.
+    """
+    path = join(dirname(__file__), "chaostoolkit/__init__.py")
+    path = normpath(abspath(path))
+    with open(path) as f:
+        for line in f:
+            if line.startswith("__version__"):
+                token, version = line.split(" = ", 1)
+                version = version.replace("'", "").strip()
+                return version
+
 
 name = 'chaostoolkit'
-desc = 'Chaos engineering toolkit'
+desc = 'Chaos Engineering Toolkit'
 
 with io.open('README.md', encoding='utf-8') as strm:
     long_desc = strm.read()
 
 classifiers = [
-    'Development Status :: 4 - Beta',  
+    'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
-    'License :: Freely Distributable',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: System Administrators',
     'Operating System :: OS Independent',
     'License :: OSI Approved :: Apache Software License',
     'Programming Language :: Python',
@@ -29,12 +42,13 @@ classifiers = [
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: Implementation',
     'Programming Language :: Python :: Implementation :: CPython',
-    'Topic :: System :: Distributed Computing'
+    'Topic :: System :: Distributed Computing',
+    'Topic :: Utilities'
 ]
-author = 'chaostoolkit Team'
+author = 'Chaos Toolkit Team'
 author_email = 'contact@chaostoolkit.org'
-url = 'http://chaostoolkit.org'
-license = 'Apache License Version 2.0'
+url = 'https://chaostoolkit.org'
+license = 'Apache Software License 2.0'
 packages = [
     'chaostoolkit'
 ]
@@ -51,7 +65,7 @@ with io.open('requirements.txt') as f:
 
 setup_params = dict(
     name=name,
-    version=__version__,
+    version=get_version_from_package(),
     description=desc,
     long_description=long_desc,
     long_description_content_type='text/markdown',
