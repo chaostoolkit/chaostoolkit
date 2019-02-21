@@ -1,5 +1,5 @@
-click==7.0
-click-plugins==1.0.4
-logzero==1.5.0
+click>=7.0
+click-plugins>=1.0.4
+logzero>=1.5.0
 chaostoolkit-lib>=1.0.0
 requests>=2.21
