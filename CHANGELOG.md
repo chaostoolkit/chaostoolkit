@@ -7,6 +7,7 @@
 ## Added
 
 - Ensure requirements-dev.txt is bundled with the package
+- Bumped chaostoolkit-lib to 1.0.0
 
 ## [1.0.0rc3][] - 2018-01-29
 
