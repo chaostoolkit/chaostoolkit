@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc3...HEAD
 
+## Added
+
+- Ensure requirements-dev.txt is bundled with the package
+
 ## [1.0.0rc3][] - 2018-01-29
 
 [1.0.0rc3]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc2...1.0.0rc3
