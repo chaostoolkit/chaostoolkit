@@ -26,13 +26,14 @@ def check_newer_version(command: str):
             payload = r.json()
             latest_version = payload["version"]
             if payload.get("up_to_date") is False:
+                options = '--pre' if 'rc' in latest_version else ''
                 logger.warning(
                     "\nThere is a new version ({v}) of the chaostoolkit "
                     "available.\n"
                     "You may upgrade by typing:\n\n"
-                    "$ pip install -U chaostoolkit\n\n"
+                    "$ pip install -U chaostoolkit {opt}\n\n"
                     "Please review changes at {u}\n".format(
-                        u=CHANGELOG_URL, v=latest_version))
+                        u=CHANGELOG_URL, v=latest_version, opt=options))
                 return latest_version
     except Exception:
         pass
