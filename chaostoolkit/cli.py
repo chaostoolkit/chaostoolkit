@@ -88,7 +88,8 @@ def cli(ctx: click.Context, verbose: bool = False,
     colors = logzero.LogFormatter.DEFAULT_COLORS.copy()
     colors[logging.CRITICAL] = logzero.ForegroundColors.RED
     logzero.formatter(
-        formatter=logzero.LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors),
+        formatter=logzero.LogFormatter(
+            fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors),
         update_custom_handlers=False)
 
     subcommand = ctx.invoked_subcommand
