@@ -25,7 +25,7 @@ def check_newer_version(command: str):
         if r.status_code == 200:
             payload = r.json()
             latest_version = payload["version"]
-            if payload.get("up_to_date") is False:                
+            if payload.get("up_to_date") is False:
                 options = '--pre -U' if 'rc' in latest_version else '-U'
                 logger.warning(
                     "\nThere is a new version ({v}) of the chaostoolkit "
