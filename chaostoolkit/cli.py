@@ -123,15 +123,18 @@ def cli(ctx: click.Context, verbose: bool = False,
 @click.pass_context
 def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
-        fail_fast: bool = True) -> Journal:
+        no_exit: bool = False) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource."""
-    settings = load_settings(ctx.obj["settings_path"])
+    settings = load_settings(ctx.obj["settings_path"]) or {}
     initialize_global_controls(settings)
+    has_deviated = False
+    has_failed = False
 
     try:
         try:
-            experiment = load_experiment(click.format_filename(source), settings)
+            experiment = load_experiment(
+                click.format_filename(source), settings)
         except InvalidSource as x:
             logger.error(str(x))
             logger.debug(x)
@@ -150,26 +153,25 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         experiment["dry"] = dry
 
         journal = run_experiment(experiment)
+        has_deviated = journal.get("deviated", False)
+        has_failed = journal["status"] != "completed"
 
         with io.open(journal_path, "w") as r:
-            json.dump(journal, r, indent=2, ensure_ascii=False, default=encoder)
+            json.dump(
+                journal, r, indent=2, ensure_ascii=False, default=encoder)
 
         if journal["status"] == "completed":
             notify(settings, RunFlowEvent.RunCompleted, journal)
-        else:
+        elif has_failed:
             notify(settings, RunFlowEvent.RunFailed, journal)
 
-            if journal.get("deviated", False):
+            if has_deviated:
                 notify(settings, RunFlowEvent.RunDeviated, journal)
-
-            # when set (default) we exit this command immediatly if the execution
-            # failed, was aborted or interrupted
-            # when unset, plugins can continue the processing. In that case, they
-            # are responsible to set the process exit code accordingly.
-            if fail_fast:
-                sys.exit(1)
     finally:
         cleanup_global_controls()
+
+    if (has_failed or has_deviated) and not no_exit:
+        ctx.exit(1)
 
     return journal
 

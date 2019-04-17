@@ -19,6 +19,9 @@ import pytest
 
 from chaostoolkit.cli import cli, encoder
 
+empty_settings_path = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), 'fixtures', 'empty-settings.yaml'))
+
 
 def test_source_experiment_is_mandatory():
     runner = CliRunner()
@@ -101,7 +104,10 @@ def test_change_directory(log_file):
         os.path.abspath(os.path.dirname(__file__)), '..'))
     subdir = os.path.join(curdir, 'tests', 'fixtures')
     try:
-        result = runner.invoke(cli, ['--change-dir', subdir, 'run'])
+        result = runner.invoke(
+            cli, [
+                '--settings', empty_settings_path, '--change-dir', subdir,
+                'run'])
         assert os.getcwd() == subdir
     finally:
         os.chdir(curdir)
@@ -113,6 +119,7 @@ def test_dry(log_file):
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'check-file-exists.json')
     result = runner.invoke(cli, [
+        '--settings', empty_settings_path,
         '--log-file', log_file.name, 'run', '--dry', exp_path])
     assert result.exit_code == 0
     assert result.exception is None
@@ -129,7 +136,11 @@ def test_notify_run_complete(notify, log_file):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'check-file-exists.json')
-    result = runner.invoke(cli, ['--change-dir', testdir, 'run', exp_path])
+    result = runner.invoke(
+        cli, [
+            '--settings', empty_settings_path, '--change-dir', testdir,
+            'run', exp_path
+        ])
     assert result.exit_code == 0
     assert result.exception is None
 
@@ -142,7 +153,8 @@ def test_notify_run_failure(notify, log_file):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'check-file-exists-fail.json')
-    result = runner.invoke(cli, ['run', exp_path])
+    result = runner.invoke(
+        cli, ['--settings', empty_settings_path, 'run', exp_path])
     assert result.exit_code == 1
     assert result.exception
 
@@ -158,9 +170,12 @@ def test_notify_run_failure_with_deviation(notify, log_file):
         'check-file-exists-deviated.json')
     dummy_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'dummy.txt')
+    settings_path = os.path.join(
+        os.path.dirname(__file__), 'fixtures', 'fake_settings.yaml')
 
     with open(dummy_path, 'w'):
-        result = runner.invoke(cli, ['run', exp_path])
+        result = runner.invoke(
+            cli, ['--settings', empty_settings_path, 'run', exp_path])
     assert result.exit_code == 1
     assert result.exception
 
@@ -174,7 +189,8 @@ def test_notify_validate_complete(notify):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'check-file-exists.json')
-    result = runner.invoke(cli, ['validate', exp_path])
+    result = runner.invoke(
+        cli, ['--settings', empty_settings_path, 'validate', exp_path])
     assert result.exit_code == 0
     assert result.exception is None
 
@@ -187,7 +203,8 @@ def test_notify_validate_failure(notify):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'invalid-plan.json')
-    result = runner.invoke(cli, ['validate', exp_path])
+    result = runner.invoke(
+        cli, ['--settings', empty_settings_path, 'validate', exp_path])
     assert result.exit_code == 1
     assert result.exception
 
@@ -204,6 +221,7 @@ def test_notify_discover_failure(disco, notify):
 
         runner = CliRunner()
         result = runner.invoke(cli, [
+            '--settings', empty_settings_path,
             'discover', '--discovery-path', f.name,
             '--no-install', 'chaostoolkit-kubernetes'])
         assert result.exit_code == 0
@@ -228,6 +246,7 @@ def test_notify_discover_complete(disco, notify):
 
     runner = CliRunner()
     result = runner.invoke(cli, [
+        '--settings', empty_settings_path,
         'discover', '--no-install', 'chaostoolkit-kubernetes'])
     assert result.exit_code == 0
     assert result.exception is None
@@ -260,6 +279,7 @@ def test_notify_init_complete(notify):
     disco_path = os.path.join(
         os.path.dirname(__file__), 'fixtures', 'disco.json')
     result = runner.invoke(cli, [
+        '--settings', empty_settings_path,
         'init', '--discovery-path', disco_path], input=inputs)
     assert result.exit_code == 0
     assert result.exception is None
