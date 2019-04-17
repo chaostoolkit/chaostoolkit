@@ -4,6 +4,29 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0...HEAD
 
+## Added
+
+- Bump to Chaos Toolkit library 1.2.0
+- Allow to declare and load controls from settings so they are globally
+  applied to all your runs [chaostoolkit-lib#99][99]
+
+  In your settings file, at `~/.chaostooltkit-lib/settings.yaml` add, for
+  instance:
+
+  ```yaml
+  controls:
+  my-own-control:
+    provider:
+      module: mypackage.mycontrole_module
+      type: python
+  ```
+
+  This will load `mypackage/mycontrole_module.py` from your `PYTHONPATH`
+  and use it as a [control][].
+
+[control]: https://docs.chaostoolkit.org/reference/extending/create-control-extension/
+[99]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/99
+
 ## [1.0.0][] - 2018-02-21
 
 [1.0.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0rc4...1.0.0
