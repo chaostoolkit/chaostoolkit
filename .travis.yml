@@ -14,8 +14,6 @@ matrix:
   - os: linux
     dist: trusty
     python: "3.7-dev"
-  - os: osx
-    language: generic
 
 before_install: |
   if [ "$TRAVIS_OS_NAME" == "osx" ]; then
