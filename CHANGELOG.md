@@ -24,6 +24,7 @@
   This will load `mypackage/mycontrole_module.py` from your `PYTHONPATH`
   and use it as a [control][].
 - Remove MacOSX build. Way too long for any benefits.
+- Build against stable Python 3.7
 
 [control]: https://docs.chaostoolkit.org/reference/extending/create-control-extension/
 [99]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/99

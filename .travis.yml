@@ -12,8 +12,8 @@ matrix:
     dist: trusty
     python: 3.6
   - os: linux
-    dist: trusty
-    python: "3.7-dev"
+    dist: xenial
+    python: 3.7
 
 before_install: |
   if [ "$TRAVIS_OS_NAME" == "osx" ]; then
