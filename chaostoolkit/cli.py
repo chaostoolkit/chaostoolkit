@@ -138,7 +138,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         except InvalidSource as x:
             logger.error(str(x))
             logger.debug(x)
-            sys.exit(1)
+            ctx.exit(1)
 
         notify(settings, RunFlowEvent.RunStarted, experiment)
 
@@ -148,7 +148,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
             except ChaosException as x:
                 logger.error(str(x))
                 logger.debug(x)
-                sys.exit(1)
+                ctx.exit(1)
 
         experiment["dry"] = dry
 
@@ -192,7 +192,7 @@ def validate(ctx: click.Context, path: str) -> Experiment:
         notify(settings, ValidateFlowEvent.ValidateFailed, experiment, x)
         logger.error(str(x))
         logger.debug(x)
-        sys.exit(1)
+        ctx.exit(1)
 
     return experiment
 
