@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.1.0...HEAD
 
+### Changed
+
+- Moved loading global controls back into `run_experiment` itself
+  [chaostoolkit-lib#116][116]
+
+[116]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/116
+
 ## [1.1.0][] - 2018-04-17
 
 [1.1.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.0.0...1.1.0

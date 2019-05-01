@@ -10,8 +10,6 @@ from typing import List
 import uuid
 
 from chaoslib import __version__ as chaoslib_version
-from chaoslib.control import initialize_global_controls, \
-    cleanup_global_controls
 from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, run_experiment
@@ -127,48 +125,44 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
-    initialize_global_controls(settings)
     has_deviated = False
     has_failed = False
 
     try:
+        experiment = load_experiment(
+            click.format_filename(source), settings)
+    except InvalidSource as x:
+        logger.error(str(x))
+        logger.debug(x)
+        ctx.exit(1)
+
+    notify(settings, RunFlowEvent.RunStarted, experiment)
+
+    if not no_validation:
         try:
-            experiment = load_experiment(
-                click.format_filename(source), settings)
-        except InvalidSource as x:
+            ensure_experiment_is_valid(experiment)
+        except ChaosException as x:
             logger.error(str(x))
             logger.debug(x)
             ctx.exit(1)
 
-        notify(settings, RunFlowEvent.RunStarted, experiment)
+    experiment["dry"] = dry
 
-        if not no_validation:
-            try:
-                ensure_experiment_is_valid(experiment)
-            except ChaosException as x:
-                logger.error(str(x))
-                logger.debug(x)
-                ctx.exit(1)
+    journal = run_experiment(experiment, settings=settings)
+    has_deviated = journal.get("deviated", False)
+    has_failed = journal["status"] != "completed"
 
-        experiment["dry"] = dry
+    with io.open(journal_path, "w") as r:
+        json.dump(
+            journal, r, indent=2, ensure_ascii=False, default=encoder)
 
-        journal = run_experiment(experiment)
-        has_deviated = journal.get("deviated", False)
-        has_failed = journal["status"] != "completed"
+    if journal["status"] == "completed":
+        notify(settings, RunFlowEvent.RunCompleted, journal)
+    elif has_failed:
+        notify(settings, RunFlowEvent.RunFailed, journal)
 
-        with io.open(journal_path, "w") as r:
-            json.dump(
-                journal, r, indent=2, ensure_ascii=False, default=encoder)
-
-        if journal["status"] == "completed":
-            notify(settings, RunFlowEvent.RunCompleted, journal)
-        elif has_failed:
-            notify(settings, RunFlowEvent.RunFailed, journal)
-
-            if has_deviated:
-                notify(settings, RunFlowEvent.RunDeviated, journal)
-    finally:
-        cleanup_global_controls()
+        if has_deviated:
+            notify(settings, RunFlowEvent.RunDeviated, journal)
 
     if (has_failed or has_deviated) and not no_exit:
         ctx.exit(1)
