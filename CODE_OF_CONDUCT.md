@@ -1,11 +1,11 @@
 # Chaos Toolkit Code Of Conduct
 
-Chaos Toolkit adopts Debian project's Code Of Conduct for it's
+Chaos Toolkit adopts Debian project's Code Of Conduct for its
 participants and contributors.
 
 ## Be respectful
 
-In ChaosToolkit project, inevitably there will be people with whom you
+In the Chaos Toolkit project, inevitably there will be people with whom you
 may disagree, or find it difficult to cooperate. Accept that, but even
 so, remain respectful. Disagreement is no excuse for poor behaviour or
 personal attacks, and a community in which people feel threatened is
