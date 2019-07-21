@@ -43,4 +43,4 @@ def test_unknown_type():
 
     with pytest.raises(TypeError) as x:
         json.dumps({"d": Dummy()})
-    assert "not JSON serializable" in str(x)
+    assert "not JSON serializable" in str(x.value)
