@@ -23,7 +23,7 @@ The Chaos Toolkit has two main purposes:
 * To provide a full chaos engineering implementation that simplifies the adoption of chaos engineering by providing an easy starting point for applying the discipline.
 * To define an open API with the community so that any chaos experiment can be executed consistently using integrations with the many commercial, private and open source chaos implementations that are emerging.
 
-![Chaos Toolkit](https://chaostoolkit.org/static/chaos-toolkit-schema.fbdfc57a.svg)
+![Chaos Toolkit](https://docs.chaostoolkit.org/static/images/schema-1920.svg)
 
 ### Simplifying Adoption of Chaos Engineering
 
@@ -40,7 +40,7 @@ Following the
 
 Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering through it's JSON/YAML-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
 
-[api]: http://chaostoolkit.org/reference/api/experiment/
+[api]: https://docs.chaostoolkit.org/reference/api/experiment/
 
 ## Install or Upgrade
 
@@ -54,7 +54,7 @@ $ pip install -U chaostoolkit
 
 It is recommended that you create a Python virtual environment for running your chaos experiments. Full instructions for installing chaostoolkit and its requirements are available in the [installation documentation][install].
 
-[install]: http://chaostoolkit.org/reference/usage/install/
+[install]: https://docs.chaostoolkit.org/reference/usage/install/
 
 ### Download and run the bundle
 
@@ -97,7 +97,7 @@ In terms of implementation, the [Chaos Toolkit currently supports][extend] probe
 
 The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
-[extend]: http://chaostoolkit.org/reference/extending/approaches/
+[extend]: https://docs.chaostoolkit.org/reference/extending/approaches/
 [chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
 
 ### Current Known Extensions
