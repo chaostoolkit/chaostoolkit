@@ -21,35 +21,15 @@ from chaoslib.settings import load_settings, CHAOSTOOLKIT_CONFIG_PATH
 from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
-import logzero
 from logzero import logger
 from pkg_resources import iter_entry_points
 
-from chaostoolkit import __version__
+from chaostoolkit import __version__, encoder
 from chaostoolkit.check import check_newer_version
+from chaostoolkit.logging import configure_logger
 
 
 __all__ = ["cli"]
-
-
-def encoder(o: object) -> str:
-    """
-    Perform some additional encoding for types JSON doesn't support natively.
-
-    We don't try to respect any ECMA specification here as we want to retain
-    as much information as we can.
-    """
-    if isinstance(o, (date, datetime)):
-        # we do not meddle with the timezone and assume the date was stored
-        # with the right information of timezone as +-HH:MM
-        return o.isoformat()
-    elif isinstance(o, decimal.Decimal):
-        return str(o)
-    elif isinstance(o, uuid.UUID):
-        return str(o)
-
-    raise TypeError(
-        "Object of type '{}' is not JSON serializable".format(type(o)))
 
 
 @click.group()
@@ -63,34 +43,25 @@ def encoder(o: object) -> str:
               help='Disable logging to file entirely.')
 @click.option('--log-file', default="chaostoolkit.log", show_default=True,
               help="File path where to write the command's log.")
+@click.option('--log-format', default="string", show_default=False,
+              help="Console logging format: string, json.",
+              type=click.Choice(['string', 'json']))
 @click.option('--settings', default=CHAOSTOOLKIT_CONFIG_PATH,
               show_default=True, help="Path to the settings file.")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool = False,
         no_version_check: bool = False, change_dir: str = None,
         no_log_file: bool = False, log_file: str = "chaostoolkit.log",
-        settings: str = CHAOSTOOLKIT_CONFIG_PATH):
-    if verbose:
-        logzero.loglevel(logging.DEBUG, update_custom_handlers=False)
-        fmt = "%(color)s[%(asctime)s %(levelname)s] "\
-              "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        log_format: str = "string", settings: str = CHAOSTOOLKIT_CONFIG_PATH):
+
+    if no_log_file:
+        configure_logger(
+            verbose=verbose, log_format=log_format,
+            context_id=str(uuid.uuid4()))
     else:
-        logzero.loglevel(logging.INFO, update_custom_handlers=False)
-        fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
-
-    if not no_log_file:
-        # let's ensure we log at DEBUG level
-        logger.setLevel(logging.DEBUG)
-        logzero.logfile(
-            click.format_filename(log_file), mode='a',
-            loglevel=logging.DEBUG)
-
-    colors = logzero.LogFormatter.DEFAULT_COLORS.copy()
-    colors[logging.CRITICAL] = logzero.ForegroundColors.RED
-    logzero.formatter(
-        formatter=logzero.LogFormatter(
-            fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors),
-        update_custom_handlers=False)
+        configure_logger(
+            verbose=verbose, log_file=log_file, log_format=log_format,
+            context_id=str(uuid.uuid4()))
 
     subcommand = ctx.invoked_subcommand
 

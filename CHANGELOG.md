@@ -8,6 +8,12 @@
 
 [1.2.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.1.0...1.2.0
 
+### Added
+
+- Support for structured logging [#122][122]
+
+[122]: https://github.com/chaostoolkit/chaostoolkit/issues/122
+
 ### Changed
 
 - Moved loading global controls back into `run_experiment` itself
