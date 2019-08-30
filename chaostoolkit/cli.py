@@ -10,6 +10,7 @@ from typing import List
 import uuid
 
 from chaoslib import __version__ as chaoslib_version
+from chaoslib.control import load_global_controls
 from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
 from chaoslib.experiment import ensure_experiment_is_valid, run_experiment
@@ -98,6 +99,8 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings = load_settings(ctx.obj["settings_path"]) or {}
     has_deviated = False
     has_failed = False
+
+    load_global_controls(settings)
 
     try:
         experiment = load_experiment(

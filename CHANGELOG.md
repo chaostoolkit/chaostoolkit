@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.2.0...HEAD
 
+### Added
+
+- Load global controls before we even read the experiments so we can apply
+  them before and after loading the experiment.
+
 ## [1.2.0][] - 2018-04-17
 
 [1.2.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.1.0...1.2.0
