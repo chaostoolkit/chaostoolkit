@@ -145,12 +145,19 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
 
 
 @cli.command()
-@click.argument('path', type=click.Path(exists=True))
+@click.argument('path')
 @click.pass_context
 def validate(ctx: click.Context, path: str) -> Experiment:
     """Validate the experiment at PATH."""
     settings = load_settings(ctx.obj["settings_path"])
-    experiment = load_experiment(click.format_filename(path))
+    try:
+        experiment = load_experiment(
+            click.format_filename(path), settings)
+    except InvalidSource as x:
+        logger.error(str(x))
+        logger.debug(x)
+        ctx.exit(1)
+
     try:
         notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
         ensure_experiment_is_valid(experiment)

@@ -202,3 +202,12 @@ To run the tests for the project execute the following:
 ```
 $ pytest
 ```
+
+### Code Style
+
+This project uses the `pycodestyle` tool to maintain code style consistency. You can use this 
+locally to ensure your code will pass the CI build by executing:
+
+```
+$ pycodestyle --exclude=tests
+```
