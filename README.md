@@ -179,7 +179,7 @@ If you wish to develop on this project, make sure to install the development
 dependencies. But first, [create a virtual environment][venv] and then install
 those dependencies.
 
-[venv]: http://chaostoolkit.org/reference/usage/install/#create-a-virtual-environment
+[venv]: http://docs.chaostoolkit.org/reference/usage/install/#create-a-virtual-environment
 
 
 ```console
