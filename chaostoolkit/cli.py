@@ -95,7 +95,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
         no_exit: bool = False) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
-       HTTP resource."""
+       HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
     has_deviated = False
     has_failed = False
