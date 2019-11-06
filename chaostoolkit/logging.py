@@ -3,7 +3,7 @@ import logging
 import uuid
 
 import logzero
-from logzero import logger, LogFormatter, setup_default_logger
+from logzero import LogFormatter, setup_default_logger, ForegroundColors
 from pythonjsonlogger import jsonlogger
 
 from chaostoolkit import encoder
@@ -34,13 +34,23 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
     out of band to anywhere else.
     """
     log_level = logging.INFO
+
+    # we define colors ourselves as critical is missing in default ones
+    colors = {
+        logging.DEBUG: ForegroundColors.CYAN,
+        logging.INFO: ForegroundColors.GREEN,
+        logging.WARNING: ForegroundColors.YELLOW,
+        logging.ERROR: ForegroundColors.RED,
+        logging.CRITICAL: ForegroundColors.RED
+    }
     fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
     if verbose:
         log_level = logging.DEBUG
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
 
-    formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S")
+    formatter = LogFormatter(
+        fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
     if log_format == 'json':
         fmt = "(process) (asctime) (levelname) (module) (lineno) (message)"
         if context_id:
@@ -59,6 +69,7 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
         logger.setLevel(logging.DEBUG)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
-        formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S")
+        formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S",
+                                 colors=colors)
         logzero.logfile(log_file, formatter=formatter, mode='a',
                         loglevel=logging.DEBUG)

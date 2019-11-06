@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.3.0...HEAD
 
+### Added
+
+- Add critical level color to the logger
+
 ### Changed
 
 * Fixed Dockerfile so the right dependencies are installed at build time
