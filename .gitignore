@@ -110,6 +110,8 @@ docs/site/
 junit-test-results.xml
 experiment.log
 experiment.json
+experiment.yaml
+experiment.yml
 output.png
 chaos-report.json
 discovery.json

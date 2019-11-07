@@ -4,3 +4,4 @@ logzero>=1.5.0
 chaostoolkit-lib>=1.6.0
 requests>=2.21
 python-json-logger>=0.1.11
+PyYAML>=5.1.2

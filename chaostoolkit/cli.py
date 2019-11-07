@@ -24,6 +24,7 @@ import click
 from click_plugins import with_plugins
 from logzero import logger
 from pkg_resources import iter_entry_points
+import yaml
 
 from chaostoolkit import __version__, encoder
 from chaostoolkit.check import check_newer_version
@@ -253,14 +254,13 @@ def discover(ctx: click.Context, package: str,
               help='Path to the discovery outcome.',
               show_default=True, type=click.Path(exists=False))
 @click.option('--experiment-path', default="./experiment.json",
-              help='Path where to save the experiment.',
+              type=click.Path(exists=False),
+              help='Path where to save the experiment (.yaml or .json)',
               show_default=True)
 @click.pass_context
 def init(ctx: click.Context, discovery_path: str = "./discovery.json",
          experiment_path: str = "./experiment.json") -> Experiment:
-    """
-    Initialize a new experiment from discovered capabilities.
-    """
+    """Initialize a new experiment from discovered capabilities."""
     settings = load_settings(ctx.obj["settings_path"])
     notify(settings, InitFlowEvent.InitStarted)
     click.secho(
@@ -371,8 +371,16 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json",
             add_activities(activities, rollbacks)
             base_experiment["rollbacks"] = rollbacks
 
+    if is_yaml(experiment_path):
+        output = yaml.dump(base_experiment,
+                           indent=4,
+                           default_flow_style=False,
+                           sort_keys=False)
+    else:
+        output = json.dumps(base_experiment, indent=4, default=encoder)
+
     with open(experiment_path, "w") as e:
-        e.write(json.dumps(base_experiment, indent=4, default=encoder))
+        e.write(output)
 
     click.echo(
         "\nExperiment created and saved in '{e}'".format(e=experiment_path))
@@ -383,6 +391,11 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json",
 
 # keep this after the cli group declaration for plugins to override defaults
 with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
+
+
+def is_yaml(experiment_path: str) -> bool:
+    _, ext = os.path.splitext(experiment_path)
+    return ext.lower() in (".yaml", ".yml")
 
 
 def add_activities(activities: List[Activity], pool: List[Activity],

@@ -276,14 +276,28 @@ def test_notify_init_complete(notify):
         'N',
         'N'])
     runner = CliRunner()
-    disco_path = os.path.join(
-        os.path.dirname(__file__), 'fixtures', 'disco.json')
-    result = runner.invoke(cli, [
-        '--settings', empty_settings_path,
-        'init', '--discovery-path', disco_path], input=inputs)
-    assert result.exit_code == 0
-    assert result.exception is None
 
-    notify.assert_any_call(ANY, InitFlowEvent.InitStarted)
-    notify.assert_any_call(ANY, InitFlowEvent.InitCompleted, ANY)
-    
+    base_path = os.path.dirname(__file__)
+    disco_path = os.path.join(base_path, 'fixtures', 'disco.json')
+    export_path_json = os.path.join(base_path, 'experiment.json')
+    export_path_yaml = os.path.join(base_path, 'experiment.yaml')
+
+    export_paths = [None, export_path_json, export_path_yaml]
+
+    for export_path in export_paths:
+        cli_params = ['--settings', empty_settings_path,
+                      'init', '--discovery-path', disco_path]
+
+        if export_path:
+            cli_params.extend(['--experiment-path', export_path])
+        else:
+            export_path = os.path.join(os.getcwd(), "experiment.json")
+
+        result = runner.invoke(cli, cli_params, input=inputs)
+
+        assert result.exit_code == 0
+        assert result.exception is None
+        assert os.path.exists(export_path)
+
+        notify.assert_any_call(ANY, InitFlowEvent.InitStarted)
+        notify.assert_any_call(ANY, InitFlowEvent.InitCompleted, ANY)
