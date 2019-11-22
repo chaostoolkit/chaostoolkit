@@ -7,6 +7,11 @@
 ### Added
 
 - Add critical level color to the logger
+- Add chaos init exports experiment also in yaml format
+
+  ```
+  chaos init --experiment-path prod-experiment.yaml
+  ```
 
 ### Changed
 
