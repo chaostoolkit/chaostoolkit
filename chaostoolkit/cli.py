@@ -54,16 +54,18 @@ __all__ = ["cli"]
 def cli(ctx: click.Context, verbose: bool = False,
         no_version_check: bool = False, change_dir: str = None,
         no_log_file: bool = False, log_file: str = "chaostoolkit.log",
-        log_format: str = "string", settings: str = CHAOSTOOLKIT_CONFIG_PATH):
+        log_format: str = "string", settings: str = CHAOSTOOLKIT_CONFIG_PATH,
+        log_prefix: str = None
+        ):
 
     if no_log_file:
         configure_logger(
             verbose=verbose, log_format=log_format,
-            context_id=str(uuid.uuid4()))
+            context_id=str(uuid.uuid4()), log_prefix=log_prefix)
     else:
         configure_logger(
             verbose=verbose, log_file=log_file, log_format=log_format,
-            context_id=str(uuid.uuid4()))
+            context_id=str(uuid.uuid4()), log_prefix=log_prefix)
 
     subcommand = ctx.invoked_subcommand
 

@@ -23,7 +23,7 @@ class ChaosToolkitContextFilter(logging.Filter):
 
 def configure_logger(verbose: bool = False, log_format: str = "string",
                      log_file: str = None, logger_name: str = "chaostoolkit",
-                     context_id: str = None):
+                     context_id: str = None, log_prefix: str = None):
     """
     Configure the chaostoolkit logger.
 
@@ -44,10 +44,12 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
         logging.CRITICAL: ForegroundColors.RED
     }
     fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
+    fmt = (fmt, log_prefix + fmt)[log_prefix is not None]
     if verbose:
         log_level = logging.DEBUG
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        fmt = (fmt, log_prefix + fmt)[log_prefix is not None]
 
     formatter = LogFormatter(
         fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
@@ -69,6 +71,7 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
         logger.setLevel(logging.DEBUG)
         fmt = "%(color)s[%(asctime)s %(levelname)s] "\
               "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        fmt = (fmt, log_prefix + fmt)[log_prefix is not None]
         formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S",
                                  colors=colors)
         logzero.logfile(log_file, formatter=formatter, mode='a',
