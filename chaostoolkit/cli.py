@@ -50,6 +50,8 @@ __all__ = ["cli"]
               type=click.Choice(['string', 'json']))
 @click.option('--settings', default=CHAOSTOOLKIT_CONFIG_PATH,
               show_default=True, help="Path to the settings file.")
+@click.option('--log-prefix', default=None,
+              show_default=True, help="Added format or added string to be suffixed with log line")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool = False,
         no_version_check: bool = False, change_dir: str = None,
