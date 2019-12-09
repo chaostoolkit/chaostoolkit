@@ -16,6 +16,7 @@
 ### Changed
 
 * Fixed Dockerfile so the right dependencies are installed at build time
+* Replaced pkg_resource usage with python 3.8 backport importlib_metadata
 
 ## [1.3.0][] - 2019-09-03
 
