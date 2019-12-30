@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-from datetime import date, datetime
-import decimal
 import io
 import json
-import logging
 import os
-import sys
 from typing import List
 import uuid
 
@@ -22,8 +18,8 @@ from chaoslib.settings import load_settings, CHAOSTOOLKIT_CONFIG_PATH
 from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
+import importlib_metadata
 from logzero import logger
-from pkg_resources import iter_entry_points
 import yaml
 
 from chaostoolkit import __version__, encoder
@@ -392,7 +388,8 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json",
 
 
 # keep this after the cli group declaration for plugins to override defaults
-with_plugins(iter_entry_points('chaostoolkit.cli_plugins'))(cli)
+with_plugins(
+    importlib_metadata.entry_points().get('chaostoolkit.cli_plugins'))(cli)
 
 
 def is_yaml(experiment_path: str) -> bool:
