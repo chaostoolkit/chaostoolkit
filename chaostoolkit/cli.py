@@ -167,7 +167,9 @@ def validate(ctx: click.Context, path: str) -> Experiment:
 
 
 @cli.command()
-@click.argument('target')
+@click.argument('target',
+                type=click.Choice(['core', 'settings', 'extensions']),
+                metavar="TARGET")
 @click.pass_context
 def info(ctx: click.Context, target: str):
     """Display information about the Chaos Toolkit environment.
