@@ -118,3 +118,9 @@ discovery.json
 journal.json
 chaostoolkit.log
 .pytest_cache/
+
+# Misc from Mac OS
+.DS_Store
+
+# Pycharm
+.idea
