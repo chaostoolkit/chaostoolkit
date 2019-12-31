@@ -9,6 +9,7 @@ from chaoslib import __version__ as chaoslib_version
 from chaoslib.control import load_global_controls
 from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
+from chaoslib.discovery.discover import portable_type_name_to_python_type
 from chaoslib.experiment import ensure_experiment_is_valid, run_experiment
 from chaoslib.info import list_extensions
 from chaoslib.loader import load_experiment
@@ -484,10 +485,11 @@ def add_activities(activities: List[Activity], pool: List[Activity],
             arg_default = arg["default"]
             if arg_default is None:
                 arg_default = ""
+        arg_type = portable_type_name_to_python_type(arg["type"])
         question = "Argument's value for '{a}'".format(a=arg_name)
         m = s(question, fg='yellow')
         arg_value = click.prompt(
-            m, default=arg_default, show_default=True)
+            m, default=arg_default, show_default=True, type=arg_type)
 
         # now, if the user didn't input anything and the default was
         # None, we override it back to None
