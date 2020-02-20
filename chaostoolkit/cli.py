@@ -18,7 +18,10 @@ from chaoslib.settings import load_settings, CHAOSTOOLKIT_CONFIG_PATH
 from chaoslib.types import Activity, Discovery, Experiment, Journal
 import click
 from click_plugins import with_plugins
-import importlib_metadata
+try:
+    import importlib.metadata as importlib_metadata
+except ImportError:
+    import importlib_metadata
 from logzero import logger
 import yaml
 

@@ -4,6 +4,18 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.0...HEAD
 
+### Added
+
+* Added build for Python 3.8
+
+### Changed
+
+* Fixed `importlib_metadata` different naming between Python 3.8 and
+  earlier [#162][162]
+
+[162]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/162
+
+
 ## [1.4.0][] - 2020-02-20
 
 [1.4.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.3.0...1.4.0
