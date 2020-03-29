@@ -137,7 +137,7 @@ discovered.
 
 * [ ] command line flags to pass variables as a file or directly via the
   cli [#175][175]
-* [ ] enable steady-state execution strategies
+* [x] enable steady-state execution strategies
 * [x] add a command to the cli to set properties in the settings file [#65][65]
 * [ ] enable extending secrets backend [#114][114]
 * [ ] improve `discover` and `init` commands to make them more useful/usable
