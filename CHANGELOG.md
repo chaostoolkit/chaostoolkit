@@ -7,6 +7,9 @@
 ### Changed
 
 * Migrates CI/CD from TravisCI to Github Actions
+* [Potentially breaking] Build the Docker image with a non-root user by default (rootless container).
+  This is a potentially breaking change if you created your own docker image
+  using the chaostoolkit/chaostoolkit as a base image.
 
 ## [1.4.1][] - 2020-02-20
 
