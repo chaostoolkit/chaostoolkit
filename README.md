@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/pypi/l/chaostoolkit.svg)](https://img.shields.io/pypi/l/chaostoolkit.svg)
 
 
-[![Build Status](https://travis-ci.org/chaostoolkit/chaostoolkit.svg?branch=master)](https://travis-ci.org/chaostoolkit/chaostoolkit)
+[![Build](https://github.com/chaostoolkit/chaostoolkit/workflows/Build/badge.svg)](https://github.com/chaostoolkit/chaostoolkit/actions?query=workflow%3ABuild)
 [![codecov](https://codecov.io/gh/chaostoolkit/chaostoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/chaostoolkit/chaostoolkit)
 
 
