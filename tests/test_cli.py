@@ -28,7 +28,8 @@ def test_source_experiment_is_mandatory():
     result = runner.invoke(cli, ['run'])
     assert result.exit_code == 2
     assert result.exception
-    assert 'Error: Missing argument "SOURCE".' in result.output
+    assert 'Error: Missing argument "SOURCE".' in result.output or \
+           'Error: Missing argument \'SOURCE\'.' in result.output
 
 
 def test_source_path_must_exist(log_file):
