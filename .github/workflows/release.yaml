@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
+
+jobs:
+  release-to-pypi:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.5'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: chaostoolkit
+        TWINE_PASSWORD: ${{ secrets.PYPI_PWD }}
+      run: |
+        python3 setup.py release
+        twine upload dist/*
+    # push artifacts for other jobs to use
+    - name: Upload packages as artifacts
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: chaostoolkit-packages
+        path: dist/chaostoolkit-*
+
+  build-docker-image:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+    - run: echo "Release new docker image with tag ${{ env.RELEASE_VERSION }}"
+    - name: Building the Docker image
+      env:
+        DOCKER_TAG: ${{ env.RELEASE_VERSION }}
+      run: |
+        docker build -t chaostoolkit/chaostoolkit .
+        docker tag chaostoolkit/chaostoolkit:latest chaostoolkit/chaostoolkit:${DOCKER_TAG}
+    - name: Publishing to the Docker repository
+      env:
+        DOCKER_TAG: ${{ env.RELEASE_VERSION }}
+        DOCKER_USER_NAME: chaostoolkit
+        DOCKER_PWD: ${{ secrets.DOCKER_PWD }}
+      run: |
+        docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_PWD}
+        docker push chaostoolkit/chaostoolkit:$DOCKER_TAG
+        docker push chaostoolkit/chaostoolkit:latest
+
+  trigger-build-doc:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Rebuilding the documentation
+        env:
+          TRAVIS_CI_TOKEN: ${{ secrets.TRAVIS_CI_TOKEN }}
+        run: >
+          curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -H "Travis-API-Version: 3" \
+            -H "Authorization: token "$TRAVIS_CI_TOKEN"" \
+            -d '{"request": {"branch":"master", "message": "Rebuilding after new chaostoolkit release"}}' \
+            https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-documentation/requests
+
+  trigger-build-bundle:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Creating a new binary bundle of the toolkit and all known drivers/plugins
+        env:
+          TRAVIS_CI_TOKEN: ${{ secrets.TRAVIS_CI_TOKEN }}
+        run: >
+          curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -H "Travis-API-Version: 3" \
+            -H "Authorization: token "$TRAVIS_CI_TOKEN"" \
+            -d '{"request": {"branch":"master", "message": "Rebuilding after new chaostoolkit release"}}' \
+            https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-bundler/requests
+
+  create-gh-release:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Create Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  upload-gh-release-assets:
+    runs-on: ubuntu-16.04
+    needs:
+      - create-gh-release
+      - release-to-pypi
+    steps:
+      - name: Download pypi artifacts
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: chaostoolkit-packages
+          path: dist
+      - name: Upload wheel & source dist to GH release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*.whl,dist/*.tar.gz"
+          artifact: ""
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true

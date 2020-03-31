@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.1...HEAD
 
+### Changed
+
+* Migrates CI/CD from TravisCI to Github Actions
+
 ## [1.4.1][] - 2020-02-20
 
 [1.4.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.0...1.4.1
