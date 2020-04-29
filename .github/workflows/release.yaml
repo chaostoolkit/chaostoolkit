@@ -116,3 +116,20 @@ jobs:
           artifact: ""
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
+
+  notify-to-slack:
+    runs-on: ubuntu-16.04
+    needs:
+      - create-gh-release
+      - release-to-pypi
+      - upload-gh-release-assets
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+      - run: echo "Notify new Chaos Tooolkit release ${{ env.RELEASE_VERSION }} to slack"
+      - name: notify to CTK releases channel on slack
+        uses: Ilshidur/action-slack@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        with:
+          args: "New Chaos Toolkit version '${{ env.RELEASE_VERSION }}' released!"
