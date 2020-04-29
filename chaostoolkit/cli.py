@@ -104,8 +104,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     load_global_controls(settings)
 
     try:
-        experiment = load_experiment(
-            click.format_filename(source), settings)
+        experiment = load_experiment(source, settings)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -146,14 +145,14 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
 
 
 @cli.command()
-@click.argument('path')
+@click.argument('source')
 @click.pass_context
-def validate(ctx: click.Context, path: str) -> Experiment:
-    """Validate the experiment at PATH."""
+def validate(ctx: click.Context, source: str) -> Experiment:
+    """Validate the experiment at SOURCE."""
     settings = load_settings(ctx.obj["settings_path"])
 
     try:
-        experiment = load_experiment(click.format_filename(path))
+        experiment = load_experiment(source)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
