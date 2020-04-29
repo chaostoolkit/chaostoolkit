@@ -90,11 +90,13 @@ def cli(ctx: click.Context, verbose: bool = False,
               help='Run the experiment without executing activities.')
 @click.option('--no-validation', is_flag=True,
               help='Do not validate the experiment before running.')
+@click.option('--no-verify-tls', is_flag=True,
+              help='Do not verify TLS certificate.')
 @click.argument('source')
 @click.pass_context
 def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
-        no_exit: bool = False) -> Journal:
+        no_exit: bool = False, no_verify_tls: bool = False) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
@@ -104,7 +106,8 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     load_global_controls(settings)
 
     try:
-        experiment = load_experiment(source, settings)
+        experiment = load_experiment(
+            source, settings, verify_tls=not no_verify_tls)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -145,14 +148,18 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
 
 
 @cli.command()
+@click.option('--no-verify-tls', is_flag=True,
+              help='Do not verify TLS certificate.')
 @click.argument('source')
 @click.pass_context
-def validate(ctx: click.Context, source: str) -> Experiment:
+def validate(ctx: click.Context, source: str,
+             no_verify_tls: bool = False) -> Experiment:
     """Validate the experiment at SOURCE."""
     settings = load_settings(ctx.obj["settings_path"])
 
     try:
-        experiment = load_experiment(source)
+        experiment = load_experiment(
+            source, settings, verify_tls=not no_verify_tls)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
