@@ -2,7 +2,11 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.1...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.2...HEAD
+
+## [1.4.2][] - 2020-04-29
+
+[1.4.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.1...1.4.2
 
 ### Added
 * New flag `--no-verify-tls` to `chaos run` and `chaos validate`commands;
