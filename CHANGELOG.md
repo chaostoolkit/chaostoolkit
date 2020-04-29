@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.1...HEAD
 
+### Added
+* New flag `--no-verify-tls` to `chaos run` and `chaos validate`commands;
+  it disables TLS certificate verification when source is downloaded
+  over a self-signed certificate endpoint.
+
 ### Changed
 
 * Migrates CI/CD from TravisCI to Github Actions
