@@ -132,4 +132,4 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         with:
-          args: "New Chaos Toolkit version '${{ env.RELEASE_VERSION }}' released!"
+          args: "New Chaos Toolkit version `${{ env.RELEASE_VERSION }}` released!"
