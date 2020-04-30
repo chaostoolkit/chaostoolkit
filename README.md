@@ -5,7 +5,6 @@
 
 
 [![Build](https://github.com/chaostoolkit/chaostoolkit/workflows/Build/badge.svg)](https://github.com/chaostoolkit/chaostoolkit/actions?query=workflow%3ABuild)
-[![codecov](https://codecov.io/gh/chaostoolkit/chaostoolkit/branch/master/graph/badge.svg)](https://codecov.io/gh/chaostoolkit/chaostoolkit)
 
 
 [![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
