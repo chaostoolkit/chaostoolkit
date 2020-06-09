@@ -130,3 +130,35 @@ a release date in mind for now.
 
 In this section, we will link to future milestones so that can be easily
 discovered.
+
+### v1.x
+
+#### Novelties
+
+* command line flags to pass variables as a file or directly via the
+  cli
+* enable steady-state execution strategies
+* add a command to the cli to set properties in the settings file [#65][65]
+* enable extending secrets backend [#114][114]
+* improve `discover` and `init` commands to make them more useful/usable
+* improve json format logging [#173][173]
+* improve documentation
+* create an official repository/package of common tolerances
+* create an official repository/package for common controls
+
+[65]: https://github.com/chaostoolkit/chaostoolkit/issues/65
+[114]: https://github.com/chaostoolkit/chaostoolkit/issues/114
+[173]: https://github.com/chaostoolkit/chaostoolkit/issues/173
+
+#### Deprecation
+
+* the notification API in favour to more specific internal events
+* archive chaosplatform projects and move them to the [attic][]
+
+[attic]: https://github.com/chaostoolkit-attic
+
+
+### v2.x
+
+To be defined :)
+
