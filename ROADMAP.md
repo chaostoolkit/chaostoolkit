@@ -136,7 +136,7 @@ discovered.
 #### Novelties
 
 * [ ] command line flags to pass variables as a file or directly via the
-  cli
+  cli [#175][175]
 * [ ] enable steady-state execution strategies
 * [ ] add a command to the cli to set properties in the settings file [#65][65]
 * [ ] enable extending secrets backend [#114][114]
@@ -149,6 +149,7 @@ discovered.
 [65]: https://github.com/chaostoolkit/chaostoolkit/issues/65
 [114]: https://github.com/chaostoolkit/chaostoolkit/issues/114
 [173]: https://github.com/chaostoolkit/chaostoolkit/issues/173
+[175]: https://github.com/chaostoolkit/chaostoolkit/issues/175
 
 #### Deprecation
 
