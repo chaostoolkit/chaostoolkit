@@ -101,40 +101,10 @@ The core implementation of the Chaos Toolkit API can be found in the [chaostoolk
 
 ### Current Known Extensions
 
-The following free and open source extensions are available for your probes
-and/or actions:
+The Chaos Toolkit is made of [many extensions][ext] that you can simply download
+and add to your environment to use.
 
-Infrastructure/Platform Fault Injections:
-
-* [chaostoolkit-kubernetes][chaoskube]: Kubernetes activities
-* [chaostoolkit-cloud-foundry][chaoscf]: Cloud Foundry activities
-* [chaostoolkit-aws][chaosaws]: AWS activities
-* [chaostoolkit-azure][chaosazure]: Microsoft Azure activities
-* [chaostoolkit-google-cloud][chaosgce]: Google Cloud Engine activities
-
-Application Fault Injections:
-
-* [chaostoolkit-gremlin][chaosgremlin]: Gremlin, Inc activities
-* [chaostoolkit-toxiproxy][chaostoxy]: Toxy Proxy fault injections
-* [chaostoolkit-spring][chaospring]: Spring Project fault injections
-
-Observability:
-
-* [chaostoolkit-prometheus][chaosprom]: Prometheus probes
-* [chaostoolkit-slack][chaosslack]: Slack notifications
-* [chaostoolkit-humio][chaoshumio]: Humio logging
-
-[chaoskube]: https://github.com/chaostoolkit/chaostoolkit-kubernetes-support
-[chaosgremlin]: https://github.com/chaostoolkit-incubator/chaostoolkit-gremlin
-[chaosaws]: https://github.com/chaostoolkit-incubator/chaostoolkit-aws
-[chaosazure]: https://github.com/chaostoolkit-incubator/chaostoolkit-azure
-[chaosgce]: https://github.com/chaostoolkit-incubator/chaostoolkit-google-cloud
-[chaosprom]: https://github.com/chaostoolkit-incubator/chaostoolkit-prometheus
-[chaoscf]: https://github.com/chaostoolkit-incubator/chaostoolkit-cloud-foundry
-[chaosslack]: https://github.com/chaostoolkit-incubator/chaostoolkit-slack
-[chaoshumio]: https://github.com/chaostoolkit-incubator/chaostoolkit-humio
-[chaostoxy]: https://github.com/chaostoolkit-incubator/chaostoolkit-toxiproxy
-[chaospring]: https://github.com/chaostoolkit-incubator/chaostoolkit-spring
+[ext]: https://pypi.org/search/?q=chaostoolkit
 
 ## Get involved!
 
