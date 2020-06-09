@@ -35,7 +35,7 @@ supports better governance and a more active contribution dynamic.
 
 [ojongerius]: https://github.com/ojongerius
 [#74]: https://github.com/chaostoolkit/chaostoolkit/issues/74
-[#165]: https://github.com/chaostoolkit/chaostoolkit/issues/165
+[165]: https://github.com/chaostoolkit/chaostoolkit/issues/165
 
 
 ## Governance
@@ -135,16 +135,16 @@ discovered.
 
 #### Novelties
 
-* command line flags to pass variables as a file or directly via the
+* [ ] command line flags to pass variables as a file or directly via the
   cli
-* enable steady-state execution strategies
-* add a command to the cli to set properties in the settings file [#65][65]
-* enable extending secrets backend [#114][114]
-* improve `discover` and `init` commands to make them more useful/usable
-* improve json format logging [#173][173]
-* improve documentation
-* create an official repository/package of common tolerances
-* create an official repository/package for common controls
+* [ ] enable steady-state execution strategies
+* [ ] add a command to the cli to set properties in the settings file [#65][65]
+* [ ] enable extending secrets backend [#114][114]
+* [ ] improve `discover` and `init` commands to make them more useful/usable
+* [ ] improve json format logging [#173][173]
+* [ ] improve documentation
+* [ ] create an official repository/package of common tolerances
+* [ ] create an official repository/package for common controls
 
 [65]: https://github.com/chaostoolkit/chaostoolkit/issues/65
 [114]: https://github.com/chaostoolkit/chaostoolkit/issues/114
@@ -152,8 +152,8 @@ discovered.
 
 #### Deprecation
 
-* the notification API in favour to more specific internal events
-* archive chaosplatform projects and move them to the [attic][]
+* [ ] the notification API in favour to more specific internal events
+* [ ] archive chaosplatform projects and move them to the [attic][]
 
 [attic]: https://github.com/chaostoolkit-attic
 
