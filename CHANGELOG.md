@@ -4,6 +4,16 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.5.0...HEAD
 
+## Added
+
+- The `--var` and `--var-file` flags to override values in the configuration,
+  and secrets for var files, blocks of the experiments. They take precedence
+  for inlined values and allow to have data files managed externally to the
+  experiment itself when environment variables are not an option for example.
+  [#175][175]
+
+[175]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/175
+
 ## [1.5.0][] - 2020-07-06
 
 [1.5.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.2...1.5.0
