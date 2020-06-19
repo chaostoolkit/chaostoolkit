@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.2...HEAD
 
+### Added
+
+- Commands to get/set/remove an entry from the settings as well as show
+  the settings file entirely [#65][65]
+
+[65]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/65
+
 ## [1.4.2][] - 2020-04-29
 
 [1.4.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.4.1...1.4.2
