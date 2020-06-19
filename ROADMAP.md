@@ -145,11 +145,14 @@ discovered.
 * [ ] improve documentation
 * [ ] create an official repository/package of common tolerances
 * [ ] create an official repository/package for common controls
+* [ ] support finer control over rollbacks and when they should be
+      executed [#177][177]
 
 [65]: https://github.com/chaostoolkit/chaostoolkit/issues/65
 [114]: https://github.com/chaostoolkit/chaostoolkit/issues/114
 [173]: https://github.com/chaostoolkit/chaostoolkit/issues/173
 [175]: https://github.com/chaostoolkit/chaostoolkit/issues/175
+[177]: https://github.com/chaostoolkit/chaostoolkit/issues/177
 
 #### Deprecation
 
