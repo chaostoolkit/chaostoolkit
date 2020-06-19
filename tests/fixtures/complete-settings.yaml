@@ -1,0 +1,13 @@
+auths:
+    chaos.example.com:8443:
+        type: bearer
+        value: a1234
+controls:
+    my-control:
+        provider:
+            arguments:
+                recipients:
+                    - name: john
+                      message: hello world
+                    - name: jane
+                      message: hello as well
