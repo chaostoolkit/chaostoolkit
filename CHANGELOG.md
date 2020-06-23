@@ -8,8 +8,32 @@
 
 - Commands to get/set/remove an entry from the settings as well as show
   the settings file entirely [#65][65]
+- Rollbacs runtime strategy flag [#176][176]
+  
+  Backwars compatible default strategy to run the rollbacks. This will run
+  unless of a failed probe in the hypothesis or when a control interrupted
+  the experiment (not passing the flag is equivalent to this):
+  ```
+  $ chaos run --rollback-strategy=default experiment.json
+  ```
+
+  Always run the rollbacks:
+  ```
+  $ chaos run --rollback-strategy=always experiment.json
+  ```
+
+  Never run the rollbacks:
+  ```
+  $ chaos run --rollback-strategy=never experiment.json
+  ```
+
+  Run the rollbacks only when deviated:
+  ```
+  $ chaos run --rollback-strategy=deviated experiment.json
+  ```
 
 [65]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/65
+[176]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/176
 
 ## [1.4.2][] - 2020-04-29
 
