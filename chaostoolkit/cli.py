@@ -94,11 +94,16 @@ def cli(ctx: click.Context, verbose: bool = False,
               help='Do not validate the experiment before running.')
 @click.option('--no-verify-tls', is_flag=True,
               help='Do not verify TLS certificate.')
+@click.option('--rollback-strategy', default="default", show_default=False,
+              help="Rollback runtime strategy. Default is to never play them "
+                   "on interruption or failed hypothesis.",
+              type=click.Choice(['default', 'always', 'never', 'deviated']))
 @click.argument('source')
 @click.pass_context
 def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
-        no_exit: bool = False, no_verify_tls: bool = False) -> Journal:
+        no_exit: bool = False, no_verify_tls: bool = False,
+        rollback_strategy: str = "default") -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
@@ -126,6 +131,9 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
             ctx.exit(1)
 
     experiment["dry"] = dry
+    settings.setdefault(
+        "runtime", {}).setdefault("rollbacks", {}).setdefault(
+            "strategy", rollback_strategy)
 
     journal = run_experiment(experiment, settings=settings)
     has_deviated = journal.get("deviated", False)
