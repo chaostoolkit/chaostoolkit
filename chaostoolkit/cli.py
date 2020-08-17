@@ -2,11 +2,11 @@
 import io
 import json
 import os
-import re
 from typing import List
+from typing import Any, Dict, List
 import uuid
 
-from chaoslib import __version__ as chaoslib_version
+from chaoslib import __version__ as chaoslib_version, merge_vars, convert_vars
 from chaoslib.control import load_global_controls
 from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
@@ -85,6 +85,18 @@ def cli(ctx: click.Context, verbose: bool = False,
         os.chdir(change_dir)
 
 
+def validate_vars(ctx: click.Context, param: click.Option,
+                  value: List[str]) -> Dict[str, Any]:
+    """
+    Process all `--var key=value` and return a dictionnary of them with the
+    value converted to the appropriate type.
+    """
+    try:
+        convert_vars(value)
+    except ValueError as x:
+        raise click.BadParameter(str(x))
+
+
 @cli.command()
 @click.option('--journal-path', default="./journal.json",
               help='Path where to save the journal from the execution.')
@@ -98,17 +110,33 @@ def cli(ctx: click.Context, verbose: bool = False,
               help="Rollback runtime strategy. Default is to never play them "
                    "on interruption or failed hypothesis.",
               type=click.Choice(['default', 'always', 'never', 'deviated']))
+@click.option('--var', multiple=True, callback=validate_vars,
+              help='Specify substitution values for configuration only. Can '
+                   'be provided multiple times. The pattern must be '
+                   'key=value or key:type=value. In that latter case, the '
+                   'value will be casted as the specified type. Supported '
+                   'types are: int, float, bytes. No type specified means '
+                   'a utf-8 decoded string.')
+@click.option('--var-file', multiple=True, type=click.Path(exists=True),
+              help='Specify files that contain configuration and secret '
+                   'substitution values. Either as a json/yaml payload where '
+                   'each key has a value mapping to a configuration entry. '
+                   'Or a .env file defining environment variables. '
+                   'Can be provided multiple times.')
 @click.argument('source')
 @click.pass_context
 def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
         no_exit: bool = False, no_verify_tls: bool = False,
-        rollback_strategy: str = "default") -> Journal:
+        rollback_strategy: str = "default",
+        var: Dict[str, Any] = None, var_file: List[str] = None) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
     has_deviated = False
     has_failed = False
+
+    experiment_vars = merge_vars(var, var_file)
 
     load_global_controls(settings)
 
@@ -135,7 +163,8 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
 
-    journal = run_experiment(experiment, settings=settings)
+    journal = run_experiment(
+        experiment, settings=settings, experiment_vars=experiment_vars)
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
 
