@@ -135,7 +135,7 @@ discovered.
 
 #### Novelties
 
-* [ ] command line flags to pass variables as a file or directly via the
+* [x] command line flags to pass variables as a file or directly via the
   cli [#175][175]
 * [x] enable steady-state execution strategies
 * [x] add a command to the cli to set properties in the settings file [#65][65]
@@ -158,7 +158,7 @@ discovered.
 
 #### Deprecation
 
-* [ ] the notification API in favour to more specific internal events
+* [x] the notification API in favour to more specific internal events
 * [ ] archive chaosplatform projects and move them to the [attic][]
 
 [attic]: https://github.com/chaostoolkit-attic
