@@ -18,7 +18,8 @@ from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
     RunFlowEvent, ValidateFlowEvent
 from chaoslib.settings import load_settings, locate_settings_entry, \
     save_settings, CHAOSTOOLKIT_CONFIG_PATH
-from chaoslib.types import Activity, Discovery, Experiment, Journal, Settings
+from chaoslib.types import Activity, Discovery, Experiment, Journal, \
+    Schedule, Strategy
 import click
 from click_plugins import with_plugins
 try:
@@ -123,13 +124,30 @@ def validate_vars(ctx: click.Context, param: click.Option,
                    'each key has a value mapping to a configuration entry. '
                    'Or a .env file defining environment variables. '
                    'Can be provided multiple times.')
+@click.option('--hypothesis-strategy', default="default",
+              type=click.Choice([
+                  "default", "before-method-only", "after-method-only",
+                  "during-method-only", "continously"
+              ], case_sensitive=True),
+              help='Strategy to execute the hypothesis during the run.')
+@click.option('--hypothesis-frequency', default=1.0, type=float,
+              help='Pace at which running the hypothesis. '
+                   'Only applies when strategy is either: '
+                   'during-method-only or continously')
+@click.option('--fail-fast', is_flag=True, default=False,
+              help='When running in the during-method-onlyt or continous '
+                   'strategies, indicate the hypothesis can fail the '
+                   'experiment as soon as it deviates once. Otherwise, keeps '
+                   'running until the end of the experiment.')
 @click.argument('source')
 @click.pass_context
 def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         dry: bool = False, no_validation: bool = False,
         no_exit: bool = False, no_verify_tls: bool = False,
         rollback_strategy: str = "default",
-        var: Dict[str, Any] = None, var_file: List[str] = None) -> Journal:
+        var: Dict[str, Any] = None, var_file: List[str] = None,
+        hypothesis_strategy: str = "default",
+        hypothesis_frequency: float = 1.0, fail_fast: bool = False) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
        HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
@@ -162,9 +180,14 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings.setdefault(
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
+    hypothesis_strategy = Strategy.from_string(hypothesis_strategy)
+    schedule = Schedule(
+        continous_hypothesis_frequency=hypothesis_frequency,
+        fail_fast=fail_fast)
 
     journal = run_experiment(
-        experiment, settings=settings, experiment_vars=experiment_vars)
+        experiment, settings=settings, strategy=hypothesis_strategy,
+        schedule=schedule)
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
 
