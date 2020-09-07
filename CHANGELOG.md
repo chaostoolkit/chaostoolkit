@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.7.0...HEAD
 
+## [1.7.0][] - 2020-09-07
+
+[1.7.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.6.0...1.7.0
+
 ### Added
 
 * Add the `--hypothesis-strategy` flag to the `run` command. It defines how the
