@@ -35,6 +35,8 @@ jobs:
 
   build-docker-image:
     runs-on: ubuntu-16.04
+    needs:
+      - release-to-pypi
     steps:
     - uses: actions/checkout@v2
     - run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
