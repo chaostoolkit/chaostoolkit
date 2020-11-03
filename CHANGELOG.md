@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.7.0...HEAD
 
+### Changed
+
+- Pass extra variables down to the runner for substitution
+  [chaostoolkit-lib#192][ctklib192]
+
+[ctklib192]: https://github.com/chaostoolkit/chaostoolkit-lib/issues/192
+
 ## [1.7.0][] - 2020-09-07
 
 [1.7.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.6.0...1.7.0

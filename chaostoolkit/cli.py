@@ -187,7 +187,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
 
     journal = run_experiment(
         experiment, settings=settings, strategy=hypothesis_strategy,
-        schedule=schedule)
+        schedule=schedule, experiment_vars=experiment_vars)
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
 

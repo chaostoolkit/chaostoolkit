@@ -1,7 +1,7 @@
 click>=7.0
 click-plugins>=1.0.4
 logzero>=1.5.0
-chaostoolkit-lib~=1.13
+chaostoolkit-lib~=1.15
 #chaostoolkit-lib@git+https://github.com/chaostoolkit/chaostoolkit-lib@refactor-run-experiment#egg=chaostoolkit-lib
 requests>=2.21
 python-json-logger>=0.1.11
