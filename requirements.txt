@@ -5,5 +5,6 @@ chaostoolkit-lib~=1.15
 #chaostoolkit-lib@git+https://github.com/chaostoolkit/chaostoolkit-lib@refactor-run-experiment#egg=chaostoolkit-lib
 requests>=2.21
 python-json-logger>=0.1.11
-PyYAML>=5.1.2
+pyyaml~=5.3; python_version < '3.6'
+pyyaml~=5.4; python_version >= '3.6'
 importlib-metadata>=1.2.0; python_version < '3.8'
