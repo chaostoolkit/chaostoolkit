@@ -9,6 +9,7 @@
 - Updated pyyaml to due to CVE-2020-14343 [#206][206]
 - Pinning Chaos Toolkit lib to strictly less than 1.19.0 as it'll be the last
   one supporting Python 3.5 [#194][194]
+- Moved to setup.cfg to manage build 
 
 [206]: https://github.com/chaostoolkit/chaostoolkit/issues/206
 [194]: https://github.com/chaostoolkit/chaostoolkit/issues/194
