@@ -58,8 +58,6 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
         formatter = jsonlogger.JsonFormatter(
             fmt, json_default=encoder, timestamp=True)
 
-    # sadly, no other way to specify the name of the default logger publicly
-    LOGZERO_DEFAULT_LOGGER = logger_name
     logger = setup_default_logger(level=log_level, formatter=formatter)
     if context_id:
         logger.addFilter(ChaosToolkitContextFilter(logger_name, context_id))

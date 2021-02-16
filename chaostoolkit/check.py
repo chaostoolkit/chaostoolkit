@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
-
 from logzero import logger
 import requests
 

@@ -2,7 +2,6 @@
 import io
 import json
 import os
-from typing import List
 from typing import Any, Dict, List
 import uuid
 
@@ -463,7 +462,7 @@ def discover(ctx: click.Context, package: str,
               help='Path where to save the experiment (.yaml or .json)',
               show_default=True)
 @click.pass_context
-def init(ctx: click.Context, discovery_path: str = "./discovery.json",
+def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C901
          experiment_path: str = "./experiment.json") -> Experiment:
     """Initialize a new experiment from discovered capabilities."""
     settings = load_settings(ctx.obj["settings_path"])
@@ -604,7 +603,7 @@ def is_yaml(experiment_path: str) -> bool:
     return ext.lower() in (".yaml", ".yml")
 
 
-def add_activities(activities: List[Activity], pool: List[Activity],
+def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C901
                    with_tolerance: bool = False):
     """
     Add activities to the given pool.
