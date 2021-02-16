@@ -143,8 +143,8 @@ discovered.
 * [ ] improve `discover` and `init` commands to make them more useful/usable
 * [ ] improve json format logging [#173][173]
 * [ ] improve documentation
-* [ ] create an official repository/package of common tolerances
-* [ ] create an official repository/package for common controls
+* [x] create an official repository/package of common tolerances
+* [x] create an official repository/package for common controls
 * [x] add a flag to control the rollbacks strategy [#176][176]
 * [ ] support finer control over rollbacks and when they should be
       executed [#177][177]
