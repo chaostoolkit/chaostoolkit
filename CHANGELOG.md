@@ -4,6 +4,15 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.7.1...HEAD
 
+### Changed
+
+- Updated pyyaml to due to CVE-2020-14343 [#206][206]
+- Pinning Chaos Toolkit lib to strictly less than 1.19.0 as it'll be the last
+  one supporting Python 3.5 [#194][194]
+
+[206]: https://github.com/chaostoolkit/chaostoolkit/issues/206
+[194]: https://github.com/chaostoolkit/chaostoolkit/issues/194
+
 ## [1.7.1][] - 2020-11-03
 
 [1.7.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.7.0...1.7.1
