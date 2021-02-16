@@ -453,7 +453,7 @@ def discover(ctx: click.Context, package: str,
     return discovery
 
 
-@cli.command()
+@cli.command() #noqa: C901
 @click.option('--discovery-path', default="./discovery.json",
               help='Path to the discovery outcome.',
               show_default=True, type=click.Path(exists=False))
