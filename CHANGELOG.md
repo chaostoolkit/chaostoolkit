@@ -2,13 +2,21 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.1...HEAD
+
+## [1.8.1][] - 2021-02-17
+
+[1.8.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.0...1.8.1
+
+**LAST VERSION SUPPORTING PYTHON 3.5**
+
+### Changed
+
+- Updated build scripts to support latest setuptools to build package properly
 
 ## [1.8.0][] - 2021-02-17
 
 [1.8.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.7.1...1.8.0
-
-**LAST VERSION SUPPORTING PYTHON 3.5**
 
 ### Changed
 
