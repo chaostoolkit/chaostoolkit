@@ -39,7 +39,7 @@ jobs:
       - release-to-pypi
     steps:
     - uses: actions/checkout@v2
-    - run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+    - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
     - run: echo "Release new docker image with tag ${{ env.RELEASE_VERSION }}"
     - name: Building the Docker image
       env:
@@ -127,7 +127,7 @@ jobs:
       - upload-gh-release-assets
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+      - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
       - run: echo "Notify new Chaos Tooolkit release ${{ env.RELEASE_VERSION }} to slack"
       - name: notify to CTK releases channel on slack
         uses: Ilshidur/action-slack@master
