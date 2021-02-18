@@ -1,6 +1,6 @@
 pycodestyle
 coverage
-pytest>=2.8
+pytest>=6.2
 pytest-cov
 pytest-sugar
 semver

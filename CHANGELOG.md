@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.1...HEAD
 
+### Changed
+
+- Remove Python 3.5 support. Requires 3.6 at least now until end of 2021 when
+  [Python 3.6 reaches EOL][pyeol].
+
+[pyeol]: https://devguide.python.org/#status-of-python-branches
+
 ## [1.8.1][] - 2021-02-17
 
 [1.8.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.0...1.8.1
