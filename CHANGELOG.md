@@ -2,14 +2,19 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.1...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...HEAD
+
+## [1.9.0][] - 2021-02-18
+
+[1.9.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.1...1.9.0
 
 ### Changed
 
-- Remove Python 3.5 support. Requires 3.6 at least now until end of 2021 when
-  [Python 3.6 reaches EOL][pyeol].
+- Remove Python 3.5 support. [Requires 3.6][208] at least now until end of 2021
+  when [Python 3.6 reaches EOL][pyeol].
 
 [pyeol]: https://devguide.python.org/#status-of-python-branches
+[208]: https://github.com/chaostoolkit/chaostoolkit/issues/208
 
 ## [1.8.1][] - 2021-02-17
 
