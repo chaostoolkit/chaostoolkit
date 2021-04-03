@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...HEAD
 
+### Changed
+
+- Correct mispelling 'continously' to 'continuously' in the --hypothesis-strategy tags from cli.py.
+
 ## [1.9.0][] - 2021-02-18
 
 [1.9.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.8.1...1.9.0
@@ -35,7 +39,7 @@
 - Updated pyyaml to due to CVE-2020-14343 [#206][206]
 - Pinning Chaos Toolkit lib to strictly less than 1.19.0 as it'll be the last
   one supporting Python 3.5 [#194][194]
-- Moved to setup.cfg to manage build 
+- Moved to setup.cfg to manage build
 
 [206]: https://github.com/chaostoolkit/chaostoolkit/issues/206
 [194]: https://github.com/chaostoolkit/chaostoolkit/issues/194
@@ -107,7 +111,7 @@
 - Commands to get/set/remove an entry from the settings as well as show
   the settings file entirely [#65][65]
 - Rollbacs runtime strategy flag [#176][176]
-  
+
   Backwars compatible default strategy to run the rollbacks. This will run
   unless of a failed probe in the hypothesis or when a control interrupted
   the experiment (not passing the flag is equivalent to this):

@@ -126,13 +126,13 @@ def validate_vars(ctx: click.Context, param: click.Option,
 @click.option('--hypothesis-strategy', default="default",
               type=click.Choice([
                   "default", "before-method-only", "after-method-only",
-                  "during-method-only", "continously"
+                  "during-method-only", "continuously"
               ], case_sensitive=True),
               help='Strategy to execute the hypothesis during the run.')
 @click.option('--hypothesis-frequency', default=1.0, type=float,
               help='Pace at which running the hypothesis. '
                    'Only applies when strategy is either: '
-                   'during-method-only or continously')
+                   'during-method-only or continuously')
 @click.option('--fail-fast', is_flag=True, default=False,
               help='When running in the during-method-onlyt or continous '
                    'strategies, indicate the hypothesis can fail the '
