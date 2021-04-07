@@ -30,6 +30,7 @@ import yaml
 
 from chaostoolkit import __version__, encoder
 from chaostoolkit.check import check_newer_version
+from chaostoolkit.check import check_hypothesis_strategy_spelling
 from chaostoolkit.logging import configure_logger
 
 
@@ -126,7 +127,7 @@ def validate_vars(ctx: click.Context, param: click.Option,
 @click.option('--hypothesis-strategy', default="default",
               type=click.Choice([
                   "default", "before-method-only", "after-method-only",
-                  "during-method-only", "continuously"
+                  "during-method-only", "continuously","continously"
               ], case_sensitive=True),
               help='Strategy to execute the hypothesis during the run.')
 @click.option('--hypothesis-frequency', default=1.0, type=float,
@@ -179,7 +180,9 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings.setdefault(
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
-    hypothesis_strategy = Strategy.from_string(hypothesis_strategy)
+
+    hypothesis_strategy=check_hypothesis_strategy_spelling(hypothesis_strategy)
+
     schedule = Schedule(
         continous_hypothesis_frequency=hypothesis_frequency,
         fail_fast=fail_fast)

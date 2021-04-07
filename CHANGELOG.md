@@ -7,6 +7,7 @@
 ### Changed
 
 - Correct mispelling 'continously' to 'continuously' in the --hypothesis-strategy tags from cli.py.
+- Allow handling of "continous" with a deprecation message.
 
 ## [1.9.0][] - 2021-02-18
 
