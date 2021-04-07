@@ -18,7 +18,7 @@ from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
 from chaoslib.settings import load_settings, locate_settings_entry, \
     save_settings, CHAOSTOOLKIT_CONFIG_PATH
 from chaoslib.types import Activity, Discovery, Experiment, Journal, \
-    Schedule, Strategy
+    Schedule
 import click
 from click_plugins import with_plugins
 try:
@@ -30,6 +30,7 @@ import yaml
 
 from chaostoolkit import __version__, encoder
 from chaostoolkit.check import check_newer_version
+from chaostoolkit.check import check_hypothesis_strategy_spelling
 from chaostoolkit.logging import configure_logger
 
 
@@ -126,13 +127,13 @@ def validate_vars(ctx: click.Context, param: click.Option,
 @click.option('--hypothesis-strategy', default="default",
               type=click.Choice([
                   "default", "before-method-only", "after-method-only",
-                  "during-method-only", "continously"
+                  "during-method-only", "continuously", "continously"
               ], case_sensitive=True),
               help='Strategy to execute the hypothesis during the run.')
 @click.option('--hypothesis-frequency', default=1.0, type=float,
               help='Pace at which running the hypothesis. '
                    'Only applies when strategy is either: '
-                   'during-method-only or continously')
+                   'during-method-only or continuously')
 @click.option('--fail-fast', is_flag=True, default=False,
               help='When running in the during-method-onlyt or continous '
                    'strategies, indicate the hypothesis can fail the '
@@ -179,7 +180,10 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings.setdefault(
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
-    hypothesis_strategy = Strategy.from_string(hypothesis_strategy)
+
+    hypothesis_strategy = check_hypothesis_strategy_spelling(
+        hypothesis_strategy)
+
     schedule = Schedule(
         continous_hypothesis_frequency=hypothesis_frequency,
         fail_fast=fail_fast)

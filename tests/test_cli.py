@@ -14,12 +14,13 @@ from chaoslib.exceptions import DiscoveryFailed
 from chaoslib.notification import DiscoverFlowEvent, InitFlowEvent, \
     RunFlowEvent, ValidateFlowEvent
 from chaoslib.settings import CHAOSTOOLKIT_CONFIG_PATH
+from chaoslib.types import Strategy
 import click
 from click.testing import CliRunner
 import pytest
 import yaml
-
 from chaostoolkit.cli import cli, encoder
+from chaostoolkit.check import check_hypothesis_strategy_spelling
 
 empty_settings_path = os.path.abspath(os.path.join(
         os.path.dirname(__file__), 'fixtures', 'empty-settings.yaml'))
@@ -443,7 +444,7 @@ def test_set_settings_entry():
             ]
         )
         assert result.exit_code == 0
-    
+
         result = runner.invoke(
             cli,
             [
@@ -473,7 +474,7 @@ def test_set_settings_entry_as_a_list():
             ]
         )
         assert result.exit_code == 0
-    
+
         result = runner.invoke(
             cli,
             [
@@ -503,7 +504,7 @@ def test_set_settings_entry_as_a_int():
             ]
         )
         assert result.exit_code == 0
-    
+
         result = runner.invoke(
             cli,
             [
@@ -552,7 +553,7 @@ def test_remove_settings_entry():
             ]
         )
         assert result.exit_code == 0
-    
+
         result = runner.invoke(
             cli,
             [
@@ -562,3 +563,10 @@ def test_remove_settings_entry():
             ]
         )
         assert result.exit_code == 1
+
+
+def test_check_hypothesis_strategy_spelling() :
+        assert check_hypothesis_strategy_spelling("continuously") == Strategy.CONTINOUS
+        assert check_hypothesis_strategy_spelling("continously") == Strategy.CONTINOUS
+        assert check_hypothesis_strategy_spelling("continuously") ==check_hypothesis_strategy_spelling("continously")
+        assert check_hypothesis_strategy_spelling("default") == Strategy.DEFAULT
