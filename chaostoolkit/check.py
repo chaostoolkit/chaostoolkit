@@ -38,12 +38,16 @@ def check_newer_version(command: str):
     except Exception:
         pass
 
+
 def check_hypothesis_strategy_spelling(hypothesis_strategy: str):
-  """
-  Check the spelling of the hypothesis strategy to handle continous and continuous strategy.
-  """
-  if hypothesis_strategy == "continuously":
-    return Strategy.from_string("continously")
-  elif hypothesis_strategy == "continously":
-    logger.warning("\"continously\" hypothesis-strategy is deprecated and will be removed in a future version. Please use \"continuously\" instead.")
-  return Strategy.from_string(hypothesis_strategy)
+    """
+    Check the spelling of the hypothesis strategy to handle
+    continous and continuous as strategy options.
+    """
+    if hypothesis_strategy == "continuously":
+        return Strategy.from_string("continously")
+    elif hypothesis_strategy == "continously":
+        logger.warning("\"continously\" hypothesis-strategy is deprecated and",
+                       "will be removed in a future version.",
+                       "Please use \"continuously\" instead.")
+    return Strategy.from_string(hypothesis_strategy)
