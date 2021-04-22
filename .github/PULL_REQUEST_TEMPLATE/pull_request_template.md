@@ -10,6 +10,8 @@
 
 # Checklist
 - [ ] Tests
+- [ ] Changelog Entry
+- [ ] Squash Requests
 - [ ] Translations
 - [ ] Documentation
 
