@@ -11,7 +11,7 @@
 # Checklist
 - [ ] Tests
 - [ ] Changelog Entry
-- [ ] Squash Requests
+- [ ] Squash Commits
 - [ ] Documentation
 
 # Screenshots
