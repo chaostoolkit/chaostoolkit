@@ -1,21 +1,16 @@
 # Related Issue
-- issue goes here
+- Please create an issue to dicuss the problem and link it to this PR
 
 # Proposed Changes
-- change 1
-- change 2
+- Change 1
+- Change 2
 
 # Additional Information
 - any additional information or context
 
-# Checklist
+# Please ensure you have completed the following list before submitting your PR
 - [ ] Tests
 - [ ] Changelog Entry
-- [ ] Squash Commits
+- [ ] Squash commits to simpliffy and speed up review
 - [ ] Documentation
 
-# Screenshots
-
-Original      |   Updated
-:--------------------:|:--------------------:
-** original screenshot ** | ** updated screenshot **
