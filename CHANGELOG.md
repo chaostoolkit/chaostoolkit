@@ -2,11 +2,16 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.1...HEAD
+
+## [1.9.1][] - 2021-05-31
+
+[1.9.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...1.9.1
 
 ### Changed
 
-- Fixed `--var` and `--var-file` arguments parsing by addition of missing return into `validate_vars` function
+- Fixed `--var` and `--var-file` arguments parsing by addition of missing
+  return into `validate_vars` function
 
 ## [1.9.0][] - 2021-02-18
 
