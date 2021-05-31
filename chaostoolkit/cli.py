@@ -92,7 +92,7 @@ def validate_vars(ctx: click.Context, param: click.Option,
     value converted to the appropriate type.
     """
     try:
-        convert_vars(value)
+        return convert_vars(value)
     except ValueError as x:
         raise click.BadParameter(str(x))
 
