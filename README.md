@@ -47,7 +47,7 @@ Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering throu
 
 Generally speaking, you can install it as follows:
 
-```
+```console
 $ pip install -U chaostoolkit
 ```
 
@@ -74,11 +74,11 @@ generate a report of the findings from the experiment to then share with your te
 
 Running an experiment is as simple as:
 
-```
+```console
 $ chaos run experiment.json
 ```
 
-The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON (YAML is also supported), and runs its steps sequentially. A full specifiction of this experiment description file can be found in the [main project documentation][api].
+The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON (YAML is also supported), and runs its steps sequentially. A full specification of this experiment description file can be found in the [main project documentation][api].
 
 [json]: https://www.json.org/
 
@@ -88,7 +88,7 @@ The Chaos Toolkit takes experiments defined in a [JSON format][json] description
 
 The Chaos Toolkit plays the experiment description that you provide to it. 
 Experiments are made up of probes and actions (to vary real-world events during an experiment). We are always looking for community contribution and ideas around
-what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and evironment.
+what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and environment.
 
 If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea.
 
@@ -168,6 +168,6 @@ environment, even when running from the `chaos` command locally.
 
 To run the tests for the project execute the following:
 
-```
+```console
 $ pytest
 ```
