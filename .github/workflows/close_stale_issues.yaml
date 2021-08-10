@@ -1,0 +1,16 @@
+name: Close Stale Issues
+on:
+  workflow_dispatch:
+
+jobs:
+  close-stale-issues:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/stale@v4
+        with:
+          debug-only: true
+          days-before-issues-stale: 365
+          days-before-issue-close: 7
+          # For now, don't mark PRs stale and don't close them
+          days-before-pr-stale: -1
+          days-before-pr-closed: -1
