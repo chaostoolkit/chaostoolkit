@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/stale@v4
         with:
+          operations-per-run: 200
           stale-issue-message: 'This Issue has not been active in 365 days. To re-activate this Issue, remove the `Stale` label or comment on it. If not re-activated, this Issue will be closed in 7 days.'
           close-issue-message: 'This Issue was closed because it was not reactivated after 7 days of being marked `Stale`.'
           days-before-issue-stale: 365
