@@ -1,14 +1,20 @@
 name: Close Stale Issues
 on:
   workflow_dispatch:
+  schedule:
+    # Every Sunday at 00:00
+    - cron: '0 0 * * 0'
 
 jobs:
   close-stale-issues:
+    permissions:
+      issues: write
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/stale@v4
         with:
-          debug-only: true
+          stale-issue-message: 'This Issue has not been active in 365 days. To re-activate this Issue, remove the `Stale` label or comment on it. If not re-activated, this Issue will be closed in 7 days.'
+          close-issue-message: 'This Issue was closed because it was not reactivated after 7 days of being marked `Stale`.'
           days-before-issue-stale: 365
           days-before-issue-close: 7
           # For now, don't mark PRs stale and don't close them
