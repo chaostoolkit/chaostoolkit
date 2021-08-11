@@ -6,7 +6,8 @@
 
 ### Added
 
-* Add debug version of `.github/workflows/close_stale_issues.yaml`
+* Add `.github/workflows/close_stale_issues.yaml` to mark Issues stale after `365` days
+  Also closes them after `7` days of being `Stale`
 
 ## [1.9.1][] - 2021-05-31
 
