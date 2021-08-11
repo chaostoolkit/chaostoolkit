@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.1...HEAD
 
+### Added
+
+* Add debug version of `.github/workflows/close_stale_issues.yaml`
+
 ## [1.9.1][] - 2021-05-31
 
 [1.9.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...1.9.1
