@@ -9,6 +9,12 @@
 * Add `.github/workflows/close_stale_issues.yaml` to mark Issues stale after `365` days
   Also closes them after `7` days of being `Stale`
 
+### Changed
+
+* Dockerfile now requires `--build-arg ctkversion=<version>` when building
+* `.github/workflows/release.yaml` now uses a retry step for Docker builds to ensure we dont
+  lose a race condition between PyPi and our build step
+
 ## [1.9.1][] - 2021-05-31
 
 [1.9.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.0...1.9.1
