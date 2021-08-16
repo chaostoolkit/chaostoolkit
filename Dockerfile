@@ -2,10 +2,12 @@ FROM python:3.6-alpine
 
 LABEL maintainer="chaostoolkit <contact@chaostoolkit.org>"
 
+ARG ctkversion
+
 RUN apk add --no-cache --virtual build-deps gcc g++ git libffi-dev linux-headers \
         python3-dev musl-dev && \
     pip install --no-cache-dir -q -U pip setuptools && \
-    pip install --no-cache-dir chaostoolkit && \
+    pip install --no-cache-dir chaostoolkit==${ctkversion} && \
     apk del build-deps
 
 RUN addgroup --gid 1001 svc
