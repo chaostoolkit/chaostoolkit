@@ -490,7 +490,6 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
         click.echo("No discovery was found, let's create an empty experiment")
 
     base_experiment = {
-        "version": "1.0.0",
         "title": "",
         "description": "N/A",
         "tags": []
