@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.2...HEAD
 
+### Changed
+
+* Fixed typo in `chaos init` prompt from `reognised` to `recognised`
+
 ## [1.9.2][] - 2021-08-16
 
 [1.9.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.1...1.9.2
