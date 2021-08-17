@@ -658,7 +658,7 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
         click.secho(
             "\nA steady-state probe requires a tolerance value, "
             "within which\n"
-            "your system is in a reognised `normal` state.\n",
+            "your system is in a recognised `normal` state.\n",
             fg="blue")
         tolerance_value = click.prompt(
             s("What is the tolerance for this probe?", fg='green'))
