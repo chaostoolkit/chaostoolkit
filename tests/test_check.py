@@ -3,9 +3,10 @@ from unittest.mock import patch
 
 import semver
 
-from chaostoolkit import __version__
-from chaostoolkit.check import check_newer_version
 
+from chaostoolkit import __version__
+from chaostoolkit.check import check_newer_version, check_hypothesis_strategy_spelling
+from chaoslib.types import Strategy
 
 class FakeResponse:
     def __init__(self, status=200, url=None, response=None):
@@ -41,3 +42,17 @@ def test_version_is_newer(requests):
 
     latest_version = check_newer_version(command="init")
     assert latest_version == __version__
+
+
+def test_that_correct_continuous_option_is_valid():
+    output = check_hypothesis_strategy_spelling("continuously")
+    assert output == Strategy.CONTINUOUS
+
+@patch("chaostoolkit.check.logger", autospec=True)
+def test_that_incorrect_continuous_option_is_valid(logger):
+    output = check_hypothesis_strategy_spelling("continously")
+    logger.warning.assert_called_once_with(
+        ("\nThe \"--hypothesis-strategy=continously\" command is depreciating "
+        "and will be removed in a future version\n"
+        "Instead, please use \"--hypothesis-strategy=continuously\""))
+    assert output == Strategy.CONTINUOUS

@@ -7,6 +7,10 @@
 ### Changed
 
 * Fixed typo in `chaos init` prompt from `reognised` to `recognised`
+* Changed `--hypothesis-strategy` method `continously` to `continuously`
+* Changed `Schedule` paramater from `continous_hypothesis_frequency` to
+  `continuous_hypothesis_frequency`
+* Changed other minor typos
 
 ## [1.9.2][] - 2021-08-16
 
@@ -20,7 +24,7 @@
 ### Changed
 
 * Dockerfile now requires `--build-arg ctkversion=<version>` when building
-* `.github/workflows/release.yaml` now uses a retry step for Docker builds to ensure we dont
+* `.github/workflows/release.yaml` now uses a retry step for Docker builds to ensure we don't
   lose a race condition between PyPi and our build step
 
 ## [1.9.1][] - 2021-05-31
@@ -104,7 +108,7 @@
 * Add the `--fail-fast` flag to the `run` command. This flag is
   only meaningful with `--hypothesis-strategy=during-method-only|continously`.
   If set, this indicates the experiment should be marked as deviating
-  immediatly. When not provided, the hypothesis runs until the end of the
+  immediately. When not provided, the hypothesis runs until the end of the
   method without terminating the experiment
 
 ### Changed
@@ -250,7 +254,7 @@
 - Allow to declare and load controls from settings so they are globally
   applied to all your runs [chaostoolkit-lib#99][99]
 
-  In your settings file, at `~/.chaostooltkit-lib/settings.yaml` add, for
+  In your settings file, at `~/.chaostoolkit-lib/settings.yaml` add, for
   instance:
 
   ```yaml
@@ -425,7 +429,7 @@
 - You can bypass argument in the init command via empty string [#29][29]
 - Allow to create steady-state hypothesis from init command [#28][28]
 - Allow to set rollbacks from init command [#30][30]
-- Pass command executed to checker for compatbility [#36][36]
+- Pass command executed to checker for compatability [#36][36]
 - Better logging of failed discovery [chaostoolkit-lib#29][29lib]
 - Depending now on chaostoolkit-lib 0.14.0
 

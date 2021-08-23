@@ -3,8 +3,9 @@ from logzero import logger
 import requests
 
 from chaostoolkit import __version__
+from chaoslib.types import Strategy
 
-__all__ = ["check_newer_version"]
+__all__ = ["check_newer_version", "check_hypothesis_strategy_spelling"]
 
 LATEST_RELEASE_URL = "https://releases.chaostoolkit.org/latest"
 CHANGELOG_URL = "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
@@ -35,3 +36,17 @@ def check_newer_version(command: str):
                 return latest_version
     except Exception:
         pass
+
+
+def check_hypothesis_strategy_spelling(hypothesis_strategy: str):
+    """
+    Checking for incorrectly spelt commands supported by
+    previous versions of the cli
+    """
+    if hypothesis_strategy == "continously":
+        logger.warning(
+            "\nThe \"--hypothesis-strategy=continously\" command is "
+            "depreciating and will be removed in a future version\n"
+            "Instead, please use \"--hypothesis-strategy=continuously\"")
+        hypothesis_strategy = "continuously"
+    return Strategy.from_string(hypothesis_strategy)
