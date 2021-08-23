@@ -88,7 +88,7 @@ def cli(ctx: click.Context, verbose: bool = False,
 def validate_vars(ctx: click.Context, param: click.Option,
                   value: List[str]) -> Dict[str, Any]:
     """
-    Process all `--var key=value` and return a dictionnary of them with the
+    Process all `--var key=value` and return a dictionary of them with the
     value converted to the appropriate type.
     """
     try:
