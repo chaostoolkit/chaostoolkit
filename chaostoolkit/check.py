@@ -40,12 +40,13 @@ def check_newer_version(command: str):
 
 def check_hypothesis_strategy_spelling(hypothesis_strategy: str):
     """
-    Checking for incorrectly spelt commands supported by previous versions of the cli
+    Checking for incorrectly spelt commands supported by 
+    previous versions of the cli
     """
     if hypothesis_strategy == "continously":
         logger.warning(
-            "\nThe \"--hypothesis-strategy=continously\" command is depreciating "
-            "and will be removed in a future version\n"
+            "\nThe \"--hypothesis-strategy=continously\" command is "
+            "depreciating and will be removed in a future version\n"
             "Instead, please use \"--hypothesis-strategy=continuously\"")
         hypothesis_strategy = "continuously"
     return Strategy.from_string(hypothesis_strategy)
