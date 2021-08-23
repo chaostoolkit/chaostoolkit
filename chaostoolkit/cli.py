@@ -17,8 +17,7 @@ from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
     RunFlowEvent, ValidateFlowEvent
 from chaoslib.settings import load_settings, locate_settings_entry, \
     save_settings, CHAOSTOOLKIT_CONFIG_PATH
-from chaoslib.types import Activity, Discovery, Experiment, Journal, \
-    Schedule, Strategy
+from chaoslib.types import Activity, Discovery, Experiment, Journal, Schedule
 import click
 from click_plugins import with_plugins
 try:
@@ -30,7 +29,7 @@ import yaml
 
 from chaostoolkit import __version__, encoder
 from chaostoolkit.check import check_newer_version, \
-check_hypothesis_strategy_spelling
+    check_hypothesis_strategy_spelling
 from chaostoolkit.logging import configure_logger
 
 
@@ -180,7 +179,8 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings.setdefault(
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
-    hypothesis_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
+    hypothesis_strategy = \
+    check_hypothesis_strategy_spelling(hypothesis_strategy)
     schedule = Schedule(
         continuous_hypothesis_frequency=hypothesis_frequency,
         fail_fast=fail_fast)
