@@ -40,7 +40,7 @@ def check_newer_version(command: str):
 
 def check_hypothesis_strategy_spelling(hypothesis_strategy: str):
     """
-    Checking for incorrectly spelt commands supported by 
+    Checking for incorrectly spelt commands supported by
     previous versions of the cli
     """
     if hypothesis_strategy == "continously":

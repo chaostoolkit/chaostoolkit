@@ -180,7 +180,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
     hypothesis_strategy = \
-    check_hypothesis_strategy_spelling(hypothesis_strategy)
+        check_hypothesis_strategy_spelling(hypothesis_strategy)
     schedule = Schedule(
         continuous_hypothesis_frequency=hypothesis_frequency,
         fail_fast=fail_fast)
