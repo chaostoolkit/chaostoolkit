@@ -29,7 +29,8 @@ from logzero import logger
 import yaml
 
 from chaostoolkit import __version__, encoder
-from chaostoolkit.check import check_newer_version
+from chaostoolkit.check import check_newer_version, \
+check_hypothesis_strategy_spelling
 from chaostoolkit.logging import configure_logger
 
 
@@ -179,7 +180,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     settings.setdefault(
         "runtime", {}).setdefault("rollbacks", {}).setdefault(
             "strategy", rollback_strategy)
-    hypothesis_strategy = Strategy.from_string(hypothesis_strategy)
+    hypothesis_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
     schedule = Schedule(
         continuous_hypothesis_frequency=hypothesis_frequency,
         fail_fast=fail_fast)
