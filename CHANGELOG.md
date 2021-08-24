@@ -2,13 +2,17 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.2...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...HEAD
+
+## [1.9.3][] - 2021-08-24
+
+[1.9.3]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.2...1.9.3
 
 ### Changed
 
 * Fixed typo in `chaos init` prompt from `reognised` to `recognised`
 * Changed `--hypothesis-strategy` method `continously` to `continuously`
-* Changed `Schedule` paramater from `continous_hypothesis_frequency` to
+* Changed `Schedule` parameter from `continous_hypothesis_frequency` to
   `continuous_hypothesis_frequency`
 * Changed other minor typos
 
