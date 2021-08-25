@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...HEAD
 
+### Changed
+
+* Switched from pycodestyle/pylama to `black`, `flake8`, `isort`
+* Update CI builds to build, lint, and test
+
 ## [1.9.3][] - 2021-08-24
 
 [1.9.3]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.2...1.9.3
