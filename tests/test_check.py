@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import patch
 
-import semver
 from chaoslib.types import Strategy
 
 from chaostoolkit import __version__
@@ -32,8 +31,6 @@ def test_version_is_not_newer(requests):
 
 @patch("chaostoolkit.check.requests", autospec=True)
 def test_version_is_newer(requests):
-    version = __version__.replace("rc", "-rc")
-    newer_version = semver.bump_minor(version)
     requests.get.return_value = FakeResponse(
         200,
         "http://someplace//usage/latest/",

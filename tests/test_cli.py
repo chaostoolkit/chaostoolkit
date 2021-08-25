@@ -86,7 +86,7 @@ def test_json_encoder_failure():
     class Dummy:
         pass
 
-    with pytest.raises(TypeError) as x:
+    with pytest.raises(TypeError):
         encoder(Dummy())
 
 
@@ -113,7 +113,7 @@ def test_change_directory(log_file):
     )
     subdir = os.path.join(curdir, "tests", "fixtures")
     try:
-        result = runner.invoke(
+        runner.invoke(
             cli, ["--settings", empty_settings_path, "--change-dir", subdir, "run"]
         )
         assert os.getcwd() == subdir
@@ -188,9 +188,6 @@ def test_notify_run_failure_with_deviation(notify, log_file):
         os.path.dirname(__file__), "fixtures", "check-file-exists-deviated.json"
     )
     dummy_path = os.path.join(os.path.dirname(__file__), "fixtures", "dummy.txt")
-    settings_path = os.path.join(
-        os.path.dirname(__file__), "fixtures", "fake_settings.yaml"
-    )
 
     with open(dummy_path, "w"):
         result = runner.invoke(
@@ -376,7 +373,6 @@ def test_get_settings_entry_as_yaml():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -402,7 +398,6 @@ def test_get_settings_entry_as_json():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -429,7 +424,6 @@ def test_get_settings_entry_as_string():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -456,7 +450,6 @@ def test_get_settings_not_found_key_exits_with_1():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli, ["--settings", settings_path, "settings", "get", "burp"]
         )
@@ -473,7 +466,6 @@ def test_set_settings_not_found_key_exits_with_1():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli, ["--settings", settings_path, "settings", "set", "burp", '"hello"']
         )
@@ -490,7 +482,6 @@ def test_set_settings_entry():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -529,7 +520,6 @@ def test_set_settings_entry_as_a_list():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -568,7 +558,6 @@ def test_set_settings_entry_as_a_int():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
@@ -607,7 +596,6 @@ def test_remove_settings_not_found_key_exits_with_1():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli, ["--settings", settings_path, "settings", "remove", "burp"]
         )
@@ -624,7 +612,6 @@ def test_remove_settings_entry():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
         result = runner.invoke(
             cli,
             [
