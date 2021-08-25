@@ -2,7 +2,7 @@
 import decimal
 import json
 import uuid
-from datetime import date, datetime
+from datetime import datetime
 
 import pytest
 

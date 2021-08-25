@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-import io
 import json
 import os
 import shutil
-import sys
 import tempfile
 import uuid
 from datetime import datetime
 from decimal import Decimal
 from unittest.mock import ANY, patch
 
-import click
 import pytest
 import yaml
 from chaoslib.exceptions import DiscoveryFailed

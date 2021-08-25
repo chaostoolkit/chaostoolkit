@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import logging
 import tempfile
 
-import logzero
 import pytest
 
 
