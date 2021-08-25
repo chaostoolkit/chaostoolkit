@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from datetime import date, datetime
 import decimal
 import uuid
+from datetime import date, datetime
 
-__version__ = '1.9.3'
-__all__ = ['__version__', 'encoder']
+__version__ = "1.9.3"
+__all__ = ["__version__", "encoder"]
 
 
 def encoder(o: object) -> str:
@@ -23,5 +23,4 @@ def encoder(o: object) -> str:
     elif isinstance(o, uuid.UUID):
         return str(o)
 
-    raise TypeError(
-        "Object of type '{}' is not JSON serializable".format(type(o)))
+    raise TypeError("Object of type '{}' is not JSON serializable".format(type(o)))
