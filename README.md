@@ -30,7 +30,7 @@ Firstly the Chaos Toolkit aims to make it simple and straightforward to run
 experiments against your live system to build confidence in its behavior and learn about
 potential weaknesses.
 
-Following the 
+Following the
 [principles of chaos engineering][principles], the Chaos Toolkit aims to be the easiest way to apply these principles to your own complex, and even sometimes chaotic, systems.
 
 [principles]: http://principlesofchaos.org/
@@ -69,7 +69,7 @@ Whenever a new version is released, just download its copy again.
 
 ## Getting Started
 
-Once you have installed the Chaos Toolkit you can use it through its simple command line tool. The tool's main job is to run your experiment and then 
+Once you have installed the Chaos Toolkit you can use it through its simple command line tool. The tool's main job is to run your experiment and then
 generate a report of the findings from the experiment to then share with your team for discussion.
 
 Running an experiment is as simple as:
@@ -86,13 +86,13 @@ The Chaos Toolkit takes experiments defined in a [JSON format][json] description
 
 ## Extending the Chaos Toolkit
 
-The Chaos Toolkit plays the experiment description that you provide to it. 
+The Chaos Toolkit plays the experiment description that you provide to it.
 Experiments are made up of probes and actions (to vary real-world events during an experiment). We are always looking for community contribution and ideas around
 what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and environment.
 
 If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea.
 
-In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment definitions. 
+In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment definitions.
 
 The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
 
@@ -126,13 +126,14 @@ seeks [discussions][join] and continuous improvement.
 
 [join]: https://join.chaostoolkit.org/
 
-From a code perspective, if you wish to contribute, you will need to run a 
-Python 3.5+ environment. Then, fork this repository and submit a PR. The
-project cares for code readability and checks the code style to match best
-practices defined in [PEP8][pep8]. Please also make sure you provide tests
-whenever you submit a PR so we keep the code reliable.
+From a code perspective, if you wish to contribute, you will need to run a
+Python 3.6+ environment. Please, fork this project, write unit tests to cover
+the proposed changes, implement the changes, ensure they meet the formatting
+standards set out by `black`, `flake8`, and `isort`, and then raise a PR to the
+repository for review
 
-[pep8]: https://pycodestyle.readthedocs.io/en/latest/
+Please refer to the [formatting][#formatting-and-linting] section for more
+information on the formatting standards.
 
 The Chaos Toolkit projects require all contributors must sign a
 [Developer Certificate of Origin][dco] on each commit they would like to merge
@@ -152,13 +153,7 @@ those dependencies.
 
 
 ```console
-$ pip install -r requirements-dev.txt -r requirements.txt
-```
-
-Then, point your environment to this directory:
-
-```console
-$ pip install -e .
+$ make install-dev
 ```
 
 Now, you can edit the files and they will be automatically be seen by your
@@ -169,5 +164,33 @@ environment, even when running from the `chaos` command locally.
 To run the tests for the project execute the following:
 
 ```console
-$ pytest
+$ make tests
 ```
+
+### Formatting and Linting
+
+We use a combination of [`black`][black], [`flake8`][flake8], and [`isort`][isort]
+to both lint and format this repositories code.
+
+[black]: https://github.com/psf/black
+[flake8]: https://github.com/PyCQA/flake8
+[isort]: https://github.com/PyCQA/isort
+
+Before raising a Pull Request, we recommend you run formatting against your
+code with:
+
+```console
+$ make format
+```
+
+This will automatically format any code that doesn't adhere to the formatting
+standards.
+
+As some things are not picked up by the formatting, we also recommend you run:
+
+```console
+$ make lint
+```
+
+To ensure that any unused import statements/strings that are too long, etc.
+are also picked up.
