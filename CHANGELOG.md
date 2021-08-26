@@ -2,7 +2,11 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.4...HEAD
+
+## [1.9.4][] - 2021-08-26
+
+[1.9.4]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...1.9.4
 
 ### Changed
 
