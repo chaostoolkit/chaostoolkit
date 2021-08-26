@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import requests
 from chaoslib.types import Strategy
 from logzero import logger

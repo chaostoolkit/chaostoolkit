@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from unittest.mock import patch
 
 import semver
@@ -53,10 +52,8 @@ def test_that_correct_continuous_option_is_valid():
 def test_that_incorrect_continuous_option_is_valid(logger):
     output = check_hypothesis_strategy_spelling("continously")
     logger.warning.assert_called_once_with(
-        (
-            '\nThe "--hypothesis-strategy=continously" command is depreciating '
-            "and will be removed in a future version\n"
-            'Instead, please use "--hypothesis-strategy=continuously"'
-        )
+        '\nThe "--hypothesis-strategy=continously" command is depreciating '
+        "and will be removed in a future version\n"
+        'Instead, please use "--hypothesis-strategy=continuously"'
     )
     assert output == Strategy.CONTINUOUS

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import os
 import shutil
@@ -59,7 +58,7 @@ def test_default_settings_file(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    message = "Using settings file '{}'".format(CHAOSTOOLKIT_CONFIG_PATH)
+    message = f"Using settings file '{CHAOSTOOLKIT_CONFIG_PATH}'"
     assert message in log
 
 
@@ -78,7 +77,7 @@ def test_specify_settings_file(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    message = "Using settings file '{}'".format(settings_path)
+    message = f"Using settings file '{settings_path}'"
     assert message in log
 
 
