@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from typing import Union
 
 from chaostoolkit.types import MicroservicesStatus

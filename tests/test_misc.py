@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from chaostoolkit.cli import is_yaml
 
 

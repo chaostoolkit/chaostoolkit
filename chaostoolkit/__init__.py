@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import decimal
 import uuid
 from datetime import date, datetime
@@ -23,4 +22,4 @@ def encoder(o: object) -> str:
     elif isinstance(o, uuid.UUID):
         return str(o)
 
-    raise TypeError("Object of type '{}' is not JSON serializable".format(type(o)))
+    raise TypeError(f"Object of type '{type(o)}' is not JSON serializable")

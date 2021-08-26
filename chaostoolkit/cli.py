@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import io
 import json
 import os
@@ -103,7 +102,7 @@ def cli(
 
     # make it nicer for going through the log file
     logger.debug("#" * 79)
-    logger.debug("Running command '{}'".format(subcommand))
+    logger.debug(f"Running command '{subcommand}'")
 
     ctx.obj = {}
     ctx.obj["settings_path"] = click.format_filename(settings)
@@ -113,7 +112,7 @@ def cli(
         check_newer_version(command=subcommand)
 
     if change_dir:
-        logger.warning("Moving to {d}".format(d=change_dir))
+        logger.warning(f"Moving to {change_dir}")
         os.chdir(change_dir)
 
 
@@ -270,7 +269,7 @@ def run(
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
 
-    with io.open(journal_path, "w") as r:
+    with open(journal_path, "w") as r:
         json.dump(journal, r, indent=2, ensure_ascii=False, default=encoder)
 
     if journal["status"] == "completed":
@@ -495,7 +494,7 @@ def info(ctx: click.Context, target: str):
     elif target == "settings":
         settings_path = ctx.obj["settings_path"]
         if not os.path.isfile(settings_path):
-            click.echo("No settings file found at {}".format(settings_path))
+            click.echo(f"No settings file found at {settings_path}")
             return
 
         with open(settings_path) as f:
@@ -535,13 +534,13 @@ def discover(
         )
     except DiscoveryFailed as err:
         notify(settings, DiscoverFlowEvent.DiscoverFailed, package, err)
-        logger.debug("Failed to discover {}".format(package), exc_info=err)
+        logger.debug(f"Failed to discover {package}", exc_info=err)
         logger.fatal(str(err))
         return
 
     with open(discovery_path, "w") as d:
         d.write(json.dumps(discovery, indent=2, default=encoder))
-    logger.info("Discovery outcome saved in {p}".format(p=discovery_path))
+    logger.info(f"Discovery outcome saved in {discovery_path}")
 
     notify(settings, DiscoverFlowEvent.DiscoverCompleted, discovery)
     return discovery
@@ -689,7 +688,7 @@ def init(
     with open(experiment_path, "w") as e:
         e.write(output)
 
-    click.echo("\nExperiment created and saved in '{e}'".format(e=experiment_path))
+    click.echo(f"\nExperiment created and saved in '{experiment_path}'")
 
     notify(settings, InitFlowEvent.InitCompleted, base_experiment)
     return base_experiment
@@ -727,7 +726,7 @@ def add_activities(
     echo(
         "\n".join(
             [
-                "{i}) {t}".format(i=idx + 1, t=name)
+                f"{idx + 1}) {name}"
                 for (idx, (name, a)) in enumerate(activities)
             ]
         )
@@ -745,7 +744,7 @@ def add_activities(
     selected = activities[activity_index][1]
     selected_doc = selected.get("doc")
     if selected_doc:
-        click.secho("\n{}".format(selected_doc), fg="blue")
+        click.secho(f"\n{selected_doc}", fg="blue")
     m = s("Do you want to use this {a}?".format(a=selected["type"]), dim=True)
     if not click.confirm(m):
         m = s("Do you want to select another activity?", dim=True)
@@ -793,7 +792,7 @@ def add_activities(
             if arg_default is None:
                 arg_default = ""
         arg_type = portable_type_name_to_python_type(arg["type"])
-        question = "Argument's value for '{a}'".format(a=arg_name)
+        question = f"Argument's value for '{arg_name}'"
         m = s(question, fg="yellow")
         arg_value = click.prompt(
             m, default=arg_default, show_default=True, type=arg_type

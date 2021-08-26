@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import uuid
 
@@ -59,7 +58,7 @@ def configure_logger(
     if log_format == "json":
         fmt = "(process) (asctime) (levelname) (module) (lineno) (message)"
         if context_id:
-            fmt = "(context_id) {}".format(fmt)
+            fmt = f"(context_id) {fmt}"
         formatter = jsonlogger.JsonFormatter(fmt, json_default=encoder, timestamp=True)
 
     logger = setup_default_logger(level=log_level, formatter=formatter)
