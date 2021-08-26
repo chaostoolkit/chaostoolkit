@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import patch
 
+import semver
 from chaoslib.types import Strategy
 
 from chaostoolkit import __version__
@@ -31,14 +32,16 @@ def test_version_is_not_newer(requests):
 
 @patch("chaostoolkit.check.requests", autospec=True)
 def test_version_is_newer(requests):
+    version = __version__.replace("rc", "-rc")
+    newer_version = semver.bump_minor(version)
     requests.get.return_value = FakeResponse(
         200,
         "http://someplace//usage/latest/",
-        {"version": __version__, "up_to_date": False},
+        {"version": newer_version, "up_to_date": False},
     )
 
     latest_version = check_newer_version(command="init")
-    assert latest_version == __version__
+    assert latest_version == newer_version
 
 
 def test_that_correct_continuous_option_is_valid():
