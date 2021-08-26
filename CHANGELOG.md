@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...HEAD
+
+## [1.9.6][] - 2021-08-26
+
+[1.9.6]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...1.9.6
+
+### Fixed
+
+* Actually update the version of the lib on release
 
 ## [1.9.5][] - 2021-08-26
 
