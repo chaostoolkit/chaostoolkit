@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.4...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...HEAD
+
+## [1.9.5][] - 2021-08-26
+
+[1.9.5]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.4...1.9.5
+
+### Fixed
+
+* Fixed version extracting in `setup.py`
 
 ## [1.9.4][] - 2021-08-26
 
