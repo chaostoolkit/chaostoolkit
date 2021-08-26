@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from datetime import date, datetime
 import decimal
 import json
 import uuid
+from datetime import datetime
 
 import pytest
 
@@ -15,7 +15,7 @@ def test_encode_date_and_datetime():
     today = datetime.today()
 
     d = {"now": now, "utcnow": utcnow, "today": today}
-    
+
     doc = json.dumps(d, default=encoder)
 
     assert now.isoformat() in doc

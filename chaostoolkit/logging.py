@@ -3,7 +3,7 @@ import logging
 import uuid
 
 import logzero
-from logzero import LogFormatter, setup_default_logger, ForegroundColors
+from logzero import ForegroundColors, LogFormatter, setup_default_logger
 from pythonjsonlogger import jsonlogger
 
 from chaostoolkit import encoder
@@ -12,7 +12,7 @@ __all__ = ["configure_logger"]
 
 
 class ChaosToolkitContextFilter(logging.Filter):
-    def __init__(self, name: str = '', context_id: str = None):
+    def __init__(self, name: str = "", context_id: str = None):
         logging.Filter.__init__(self, name)
         self.context_id = context_id or str(uuid.uuid4())
 
@@ -21,9 +21,13 @@ class ChaosToolkitContextFilter(logging.Filter):
         return True
 
 
-def configure_logger(verbose: bool = False, log_format: str = "string",
-                     log_file: str = None, logger_name: str = "chaostoolkit",
-                     context_id: str = None):
+def configure_logger(
+    verbose: bool = False,
+    log_format: str = "string",
+    log_file: str = None,
+    logger_name: str = "chaostoolkit",
+    context_id: str = None,
+):
     """
     Configure the chaostoolkit logger.
 
@@ -41,22 +45,22 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
         logging.INFO: ForegroundColors.GREEN,
         logging.WARNING: ForegroundColors.YELLOW,
         logging.ERROR: ForegroundColors.RED,
-        logging.CRITICAL: ForegroundColors.RED
+        logging.CRITICAL: ForegroundColors.RED,
     }
     fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
     if verbose:
         log_level = logging.DEBUG
-        fmt = "%(color)s[%(asctime)s %(levelname)s] "\
-              "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        fmt = (
+            "%(color)s[%(asctime)s %(levelname)s] "
+            "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        )
 
-    formatter = LogFormatter(
-        fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
-    if log_format == 'json':
+    formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
+    if log_format == "json":
         fmt = "(process) (asctime) (levelname) (module) (lineno) (message)"
         if context_id:
             fmt = "(context_id) {}".format(fmt)
-        formatter = jsonlogger.JsonFormatter(
-            fmt, json_default=encoder, timestamp=True)
+        formatter = jsonlogger.JsonFormatter(fmt, json_default=encoder, timestamp=True)
 
     logger = setup_default_logger(level=log_level, formatter=formatter)
     if context_id:
@@ -65,9 +69,9 @@ def configure_logger(verbose: bool = False, log_format: str = "string",
     if log_file:
         # always everything as strings in the log file
         logger.setLevel(logging.DEBUG)
-        fmt = "%(color)s[%(asctime)s %(levelname)s] "\
-              "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
-        formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S",
-                                 colors=colors)
-        logzero.logfile(log_file, formatter=formatter, mode='a',
-                        loglevel=logging.DEBUG)
+        fmt = (
+            "%(color)s[%(asctime)s %(levelname)s] "
+            "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
+        )
+        formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
+        logzero.logfile(log_file, formatter=formatter, mode="a", loglevel=logging.DEBUG)

@@ -2,70 +2,102 @@
 import io
 import json
 import os
-from typing import Any, Dict, List
 import uuid
+from typing import Any, Dict, List
 
-from chaoslib import __version__ as chaoslib_version, merge_vars, convert_vars
+import click
+from chaoslib import __version__ as chaoslib_version
+from chaoslib import convert_vars, merge_vars
 from chaoslib.control import load_global_controls
-from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.discovery import discover as disco
 from chaoslib.discovery.discover import portable_type_name_to_python_type
+from chaoslib.exceptions import ChaosException, DiscoveryFailed, InvalidSource
 from chaoslib.experiment import ensure_experiment_is_valid, run_experiment
 from chaoslib.info import list_extensions
 from chaoslib.loader import load_experiment
-from chaoslib.notification import notify, DiscoverFlowEvent, InitFlowEvent, \
-    RunFlowEvent, ValidateFlowEvent
-from chaoslib.settings import load_settings, locate_settings_entry, \
-    save_settings, CHAOSTOOLKIT_CONFIG_PATH
+from chaoslib.notification import (
+    DiscoverFlowEvent,
+    InitFlowEvent,
+    RunFlowEvent,
+    ValidateFlowEvent,
+    notify,
+)
+from chaoslib.settings import (
+    CHAOSTOOLKIT_CONFIG_PATH,
+    load_settings,
+    locate_settings_entry,
+    save_settings,
+)
 from chaoslib.types import Activity, Discovery, Experiment, Journal, Schedule
-import click
 from click_plugins import with_plugins
+
 try:
     import importlib.metadata as importlib_metadata
 except ImportError:
     import importlib_metadata
-from logzero import logger
+
 import yaml
+from logzero import logger
 
 from chaostoolkit import __version__, encoder
-from chaostoolkit.check import check_newer_version, \
-    check_hypothesis_strategy_spelling
+from chaostoolkit.check import check_hypothesis_strategy_spelling, check_newer_version
 from chaostoolkit.logging import configure_logger
-
 
 __all__ = ["cli"]
 
 
 @click.group()
 @click.version_option(version=__version__)
-@click.option('--verbose', is_flag=True, help='Display debug level traces.')
-@click.option('--no-version-check', is_flag=True,
-              help='Do not search for an updated version of the chaostoolkit.')
-@click.option('--change-dir',
-              help='Change directory before running experiment.')
-@click.option('--no-log-file', is_flag=True,
-              help='Disable logging to file entirely.')
-@click.option('--log-file', default="chaostoolkit.log", show_default=True,
-              help="File path where to write the command's log.")
-@click.option('--log-format', default="string", show_default=False,
-              help="Console logging format: string, json.",
-              type=click.Choice(['string', 'json']))
-@click.option('--settings', default=CHAOSTOOLKIT_CONFIG_PATH,
-              show_default=True, help="Path to the settings file.")
+@click.option("--verbose", is_flag=True, help="Display debug level traces.")
+@click.option(
+    "--no-version-check",
+    is_flag=True,
+    help="Do not search for an updated version of the chaostoolkit.",
+)
+@click.option("--change-dir", help="Change directory before running experiment.")
+@click.option("--no-log-file", is_flag=True, help="Disable logging to file entirely.")
+@click.option(
+    "--log-file",
+    default="chaostoolkit.log",
+    show_default=True,
+    help="File path where to write the command's log.",
+)
+@click.option(
+    "--log-format",
+    default="string",
+    show_default=False,
+    help="Console logging format: string, json.",
+    type=click.Choice(["string", "json"]),
+)
+@click.option(
+    "--settings",
+    default=CHAOSTOOLKIT_CONFIG_PATH,
+    show_default=True,
+    help="Path to the settings file.",
+)
 @click.pass_context
-def cli(ctx: click.Context, verbose: bool = False,
-        no_version_check: bool = False, change_dir: str = None,
-        no_log_file: bool = False, log_file: str = "chaostoolkit.log",
-        log_format: str = "string", settings: str = CHAOSTOOLKIT_CONFIG_PATH):
+def cli(
+    ctx: click.Context,
+    verbose: bool = False,
+    no_version_check: bool = False,
+    change_dir: str = None,
+    no_log_file: bool = False,
+    log_file: str = "chaostoolkit.log",
+    log_format: str = "string",
+    settings: str = CHAOSTOOLKIT_CONFIG_PATH,
+):
 
     if no_log_file:
         configure_logger(
-            verbose=verbose, log_format=log_format,
-            context_id=str(uuid.uuid4()))
+            verbose=verbose, log_format=log_format, context_id=str(uuid.uuid4())
+        )
     else:
         configure_logger(
-            verbose=verbose, log_file=log_file, log_format=log_format,
-            context_id=str(uuid.uuid4()))
+            verbose=verbose,
+            log_file=log_file,
+            log_format=log_format,
+            context_id=str(uuid.uuid4()),
+        )
 
     subcommand = ctx.invoked_subcommand
 
@@ -85,8 +117,9 @@ def cli(ctx: click.Context, verbose: bool = False,
         os.chdir(change_dir)
 
 
-def validate_vars(ctx: click.Context, param: click.Option,
-                  value: List[str]) -> Dict[str, Any]:
+def validate_vars(
+    ctx: click.Context, param: click.Option, value: List[str]
+) -> Dict[str, Any]:
     """
     Process all `--var key=value` and return a dictionary of them with the
     value converted to the appropriate type.
@@ -98,57 +131,101 @@ def validate_vars(ctx: click.Context, param: click.Option,
 
 
 @cli.command()
-@click.option('--journal-path', default="./journal.json",
-              help='Path where to save the journal from the execution.')
-@click.option('--dry', is_flag=True,
-              help='Run the experiment without executing activities.')
-@click.option('--no-validation', is_flag=True,
-              help='Do not validate the experiment before running.')
-@click.option('--no-verify-tls', is_flag=True,
-              help='Do not verify TLS certificate.')
-@click.option('--rollback-strategy', default="default", show_default=False,
-              help="Rollback runtime strategy. Default is to never play them "
-                   "on interruption or failed hypothesis.",
-              type=click.Choice(['default', 'always', 'never', 'deviated']))
-@click.option('--var', multiple=True, callback=validate_vars,
-              help='Specify substitution values for configuration only. Can '
-                   'be provided multiple times. The pattern must be '
-                   'key=value or key:type=value. In that latter case, the '
-                   'value will be casted as the specified type. Supported '
-                   'types are: int, float, bytes. No type specified means '
-                   'a utf-8 decoded string.')
-@click.option('--var-file', multiple=True, type=click.Path(exists=True),
-              help='Specify files that contain configuration and secret '
-                   'substitution values. Either as a json/yaml payload where '
-                   'each key has a value mapping to a configuration entry. '
-                   'Or a .env file defining environment variables. '
-                   'Can be provided multiple times.')
-@click.option('--hypothesis-strategy', default="default",
-              type=click.Choice([
-                  "default", "before-method-only", "after-method-only",
-                  "during-method-only", "continuously", "continously"
-              ], case_sensitive=True),
-              help='Strategy to execute the hypothesis during the run.')
-@click.option('--hypothesis-frequency', default=1.0, type=float,
-              help='Pace at which running the hypothesis. '
-                   'Only applies when strategy is either: '
-                   'during-method-only or continuously')
-@click.option('--fail-fast', is_flag=True, default=False,
-              help='When running in the during-method-only or continuous '
-                   'strategies, indicate the hypothesis can fail the '
-                   'experiment as soon as it deviates once. Otherwise, keeps '
-                   'running until the end of the experiment.')
-@click.argument('source')
+@click.option(
+    "--journal-path",
+    default="./journal.json",
+    help="Path where to save the journal from the execution.",
+)
+@click.option(
+    "--dry", is_flag=True, help="Run the experiment without executing activities."
+)
+@click.option(
+    "--no-validation",
+    is_flag=True,
+    help="Do not validate the experiment before running.",
+)
+@click.option("--no-verify-tls", is_flag=True, help="Do not verify TLS certificate.")
+@click.option(
+    "--rollback-strategy",
+    default="default",
+    show_default=False,
+    help="Rollback runtime strategy. Default is to never play them "
+    "on interruption or failed hypothesis.",
+    type=click.Choice(["default", "always", "never", "deviated"]),
+)
+@click.option(
+    "--var",
+    multiple=True,
+    callback=validate_vars,
+    help="Specify substitution values for configuration only. Can "
+    "be provided multiple times. The pattern must be "
+    "key=value or key:type=value. In that latter case, the "
+    "value will be casted as the specified type. Supported "
+    "types are: int, float, bytes. No type specified means "
+    "a utf-8 decoded string.",
+)
+@click.option(
+    "--var-file",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="Specify files that contain configuration and secret "
+    "substitution values. Either as a json/yaml payload where "
+    "each key has a value mapping to a configuration entry. "
+    "Or a .env file defining environment variables. "
+    "Can be provided multiple times.",
+)
+@click.option(
+    "--hypothesis-strategy",
+    default="default",
+    type=click.Choice(
+        [
+            "default",
+            "before-method-only",
+            "after-method-only",
+            "during-method-only",
+            "continuously",
+            "continously",
+        ],
+        case_sensitive=True,
+    ),
+    help="Strategy to execute the hypothesis during the run.",
+)
+@click.option(
+    "--hypothesis-frequency",
+    default=1.0,
+    type=float,
+    help="Pace at which running the hypothesis. "
+    "Only applies when strategy is either: "
+    "during-method-only or continuously",
+)
+@click.option(
+    "--fail-fast",
+    is_flag=True,
+    default=False,
+    help="When running in the during-method-only or continuous "
+    "strategies, indicate the hypothesis can fail the "
+    "experiment as soon as it deviates once. Otherwise, keeps "
+    "running until the end of the experiment.",
+)
+@click.argument("source")
 @click.pass_context
-def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
-        dry: bool = False, no_validation: bool = False,
-        no_exit: bool = False, no_verify_tls: bool = False,
-        rollback_strategy: str = "default",
-        var: Dict[str, Any] = None, var_file: List[str] = None,
-        hypothesis_strategy: str = "default",
-        hypothesis_frequency: float = 1.0, fail_fast: bool = False) -> Journal:
+def run(
+    ctx: click.Context,
+    source: str,
+    journal_path: str = "./journal.json",
+    dry: bool = False,
+    no_validation: bool = False,
+    no_exit: bool = False,
+    no_verify_tls: bool = False,
+    rollback_strategy: str = "default",
+    var: Dict[str, Any] = None,
+    var_file: List[str] = None,
+    hypothesis_strategy: str = "default",
+    hypothesis_frequency: float = 1.0,
+    fail_fast: bool = False,
+) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
-       HTTP resource. SOURCE can be formatted as JSON or YAML."""
+    HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
     has_deviated = False
     has_failed = False
@@ -158,8 +235,7 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
     load_global_controls(settings)
 
     try:
-        experiment = load_experiment(
-            source, settings, verify_tls=not no_verify_tls)
+        experiment = load_experiment(source, settings, verify_tls=not no_verify_tls)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -176,24 +252,26 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
             ctx.exit(1)
 
     experiment["dry"] = dry
-    settings.setdefault(
-        "runtime", {}).setdefault("rollbacks", {}).setdefault(
-            "strategy", rollback_strategy)
-    hypothesis_strategy = \
-        check_hypothesis_strategy_spelling(hypothesis_strategy)
+    settings.setdefault("runtime", {}).setdefault("rollbacks", {}).setdefault(
+        "strategy", rollback_strategy
+    )
+    hypothesis_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
     schedule = Schedule(
-        continuous_hypothesis_frequency=hypothesis_frequency,
-        fail_fast=fail_fast)
+        continuous_hypothesis_frequency=hypothesis_frequency, fail_fast=fail_fast
+    )
 
     journal = run_experiment(
-        experiment, settings=settings, strategy=hypothesis_strategy,
-        schedule=schedule, experiment_vars=experiment_vars)
+        experiment,
+        settings=settings,
+        strategy=hypothesis_strategy,
+        schedule=schedule,
+        experiment_vars=experiment_vars,
+    )
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
 
     with io.open(journal_path, "w") as r:
-        json.dump(
-            journal, r, indent=2, ensure_ascii=False, default=encoder)
+        json.dump(journal, r, indent=2, ensure_ascii=False, default=encoder)
 
     if journal["status"] == "completed":
         notify(settings, RunFlowEvent.RunCompleted, journal)
@@ -210,18 +288,17 @@ def run(ctx: click.Context, source: str, journal_path: str = "./journal.json",
 
 
 @cli.command()
-@click.option('--no-verify-tls', is_flag=True,
-              help='Do not verify TLS certificate.')
-@click.argument('source')
+@click.option("--no-verify-tls", is_flag=True, help="Do not verify TLS certificate.")
+@click.argument("source")
 @click.pass_context
-def validate(ctx: click.Context, source: str,
-             no_verify_tls: bool = False) -> Experiment:
+def validate(
+    ctx: click.Context, source: str, no_verify_tls: bool = False
+) -> Experiment:
     """Validate the experiment at SOURCE."""
     settings = load_settings(ctx.obj["settings_path"])
 
     try:
-        experiment = load_experiment(
-            source, settings, verify_tls=not no_verify_tls)
+        experiment = load_experiment(source, settings, verify_tls=not no_verify_tls)
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -252,10 +329,15 @@ def settings():
 cli.add_command(settings)
 
 
-@settings.command('show')
-@click.option('--format', 'fmt', default="yaml", show_default=False,
-              help="Output format.",
-              type=click.Choice(['json', 'yaml']))
+@settings.command("show")
+@click.option(
+    "--format",
+    "fmt",
+    default="yaml",
+    show_default=False,
+    help="Output format.",
+    type=click.Choice(["json", "yaml"]),
+)
 @click.pass_context
 def show_settings(ctx: click.Context, fmt: str = "json"):
     """
@@ -264,8 +346,7 @@ def show_settings(ctx: click.Context, fmt: str = "json"):
     Be aware this will not obfuscate secret data.
     """
     if not os.path.isfile(ctx.obj["settings_path"]):
-        click.abort(
-            "No settings file found at {}".format(ctx.obj["settings_path"]))
+        click.abort("No settings file found at {}".format(ctx.obj["settings_path"]))
 
     settings = load_settings(ctx.obj["settings_path"]) or {}
     if fmt == "json":
@@ -277,9 +358,9 @@ def show_settings(ctx: click.Context, fmt: str = "json"):
 settings.add_command(show_settings)
 
 
-@settings.command('set')
-@click.argument('key', nargs=1)
-@click.argument('value', nargs=1)
+@settings.command("set")
+@click.argument("key", nargs=1)
+@click.argument("value", nargs=1)
 @click.pass_context
 def set_settings_value(ctx: click.Context, key: str, value: str = None):
     """
@@ -309,8 +390,8 @@ def set_settings_value(ctx: click.Context, key: str, value: str = None):
 settings.add_command(set_settings_value)
 
 
-@settings.command('remove')
-@click.argument('key', nargs=1)
+@settings.command("remove")
+@click.argument("key", nargs=1)
 @click.pass_context
 def remove_settings_value(ctx: click.Context, key: str):
     """
@@ -337,11 +418,16 @@ def remove_settings_value(ctx: click.Context, key: str):
 settings.add_command(remove_settings_value)
 
 
-@settings.command('get')
-@click.option('--format', 'fmt', default="yaml", show_default=False,
-              help="Output format.",
-              type=click.Choice(['string', 'json', 'yaml']))
-@click.argument('key', nargs=1)
+@settings.command("get")
+@click.option(
+    "--format",
+    "fmt",
+    default="yaml",
+    show_default=False,
+    help="Output format.",
+    type=click.Choice(["string", "json", "yaml"]),
+)
+@click.argument("key", nargs=1)
 @click.pass_context
 def get_settings_value(ctx: click.Context, key: str, fmt: str = "json"):
     """
@@ -370,9 +456,9 @@ settings.add_command(get_settings_value)
 
 
 @cli.command()
-@click.argument('target',
-                type=click.Choice(['core', 'settings', 'extensions']),
-                metavar="TARGET")
+@click.argument(
+    "target", type=click.Choice(["core", "settings", "extensions"]), metavar="TARGET"
+)
 @click.pass_context
 def info(ctx: click.Context, target: str):
     """Display information about the Chaos Toolkit environment.
@@ -390,24 +476,22 @@ def info(ctx: click.Context, target: str):
 
     if target == "core":
         fmt = "{:<20}{:<10}"
-        click.secho(
-            fmt.format("NAME", "VERSION"),
-            fg='bright_blue')
+        click.secho(fmt.format("NAME", "VERSION"), fg="bright_blue")
         click.echo(fmt.format("CLI", __version__))
         click.echo(fmt.format("Core library", chaoslib_version))
     elif target == "extensions":
         fmt = "{:<40}{:<10}{:30}{:50}"
         click.secho(
-            fmt.format("NAME", "VERSION", "LICENSE", "DESCRIPTION"),
-            fg='bright_blue')
+            fmt.format("NAME", "VERSION", "LICENSE", "DESCRIPTION"), fg="bright_blue"
+        )
         extensions = list_extensions()
         for extension in extensions:
-            summary = extension.summary.replace(
-                "Chaos Toolkit Extension for ", "")[:50]
+            summary = extension.summary.replace("Chaos Toolkit Extension for ", "")[:50]
             click.echo(
                 fmt.format(
-                    extension.name, extension.version, extension.license,
-                    summary))
+                    extension.name, extension.version, extension.license, summary
+                )
+            )
     elif target == "settings":
         settings_path = ctx.obj["settings_path"]
         if not os.path.isfile(settings_path):
@@ -419,26 +503,36 @@ def info(ctx: click.Context, target: str):
 
 
 @cli.command()
-@click.option('--no-system-info', is_flag=True,
-              help='Do not discover system information.')
-@click.option('--no-install', is_flag=True,
-              help='Assume package already in PYTHONPATH.')
-@click.option('--discovery-path', default="./discovery.json",
-              help='Path where to save the the discovery outcome.',
-              show_default=True)
-@click.argument('package')
+@click.option(
+    "--no-system-info", is_flag=True, help="Do not discover system information."
+)
+@click.option(
+    "--no-install", is_flag=True, help="Assume package already in PYTHONPATH."
+)
+@click.option(
+    "--discovery-path",
+    default="./discovery.json",
+    help="Path where to save the the discovery outcome.",
+    show_default=True,
+)
+@click.argument("package")
 @click.pass_context
-def discover(ctx: click.Context, package: str,
-             discovery_path: str = "./discovery.json",
-             no_system_info: bool = False,
-             no_install: bool = False) -> Discovery:
+def discover(
+    ctx: click.Context,
+    package: str,
+    discovery_path: str = "./discovery.json",
+    no_system_info: bool = False,
+    no_install: bool = False,
+) -> Discovery:
     """Discover capabilities and experiments."""
     settings = load_settings(ctx.obj["settings_path"])
     try:
         notify(settings, DiscoverFlowEvent.DiscoverStarted, package)
         discovery = disco(
-            package_name=package, discover_system=not no_system_info,
-            download_and_install=not no_install)
+            package_name=package,
+            discover_system=not no_system_info,
+            download_and_install=not no_install,
+        )
     except DiscoveryFailed as err:
         notify(settings, DiscoverFlowEvent.DiscoverFailed, package, err)
         logger.debug("Failed to discover {}".format(package), exc_info=err)
@@ -447,24 +541,33 @@ def discover(ctx: click.Context, package: str,
 
     with open(discovery_path, "w") as d:
         d.write(json.dumps(discovery, indent=2, default=encoder))
-    logger.info("Discovery outcome saved in {p}".format(
-        p=discovery_path))
+    logger.info("Discovery outcome saved in {p}".format(p=discovery_path))
 
     notify(settings, DiscoverFlowEvent.DiscoverCompleted, discovery)
     return discovery
 
 
-@cli.command() #noqa: C901
-@click.option('--discovery-path', default="./discovery.json",
-              help='Path to the discovery outcome.',
-              show_default=True, type=click.Path(exists=False))
-@click.option('--experiment-path', default="./experiment.json",
-              type=click.Path(exists=False),
-              help='Path where to save the experiment (.yaml or .json)',
-              show_default=True)
+@cli.command()  # noqa: C901
+@click.option(
+    "--discovery-path",
+    default="./discovery.json",
+    help="Path to the discovery outcome.",
+    show_default=True,
+    type=click.Path(exists=False),
+)
+@click.option(
+    "--experiment-path",
+    default="./experiment.json",
+    type=click.Path(exists=False),
+    help="Path where to save the experiment (.yaml or .json)",
+    show_default=True,
+)
 @click.pass_context
-def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C901
-         experiment_path: str = "./experiment.json") -> Experiment:
+def init(
+    ctx: click.Context,
+    discovery_path: str = "./discovery.json",  # noqa: C901
+    experiment_path: str = "./experiment.json",
+) -> Experiment:
     """Initialize a new experiment from discovered capabilities."""
     settings = load_settings(ctx.obj["settings_path"])
     notify(settings, InitFlowEvent.InitStarted)
@@ -481,7 +584,8 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
         "Only the method is required. Also your experiment will\n"
         "not run unless you define at least one activity (probe or action)\n"
         "within it",
-        fg="blue")
+        fg="blue",
+    )
 
     discovery = None
     if discovery_path and os.path.exists(discovery_path):
@@ -490,15 +594,11 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
     else:
         click.echo("No discovery was found, let's create an empty experiment")
 
-    base_experiment = {
-        "title": "",
-        "description": "N/A",
-        "tags": []
-    }
+    base_experiment = {"title": "", "description": "N/A", "tags": []}
 
     s = click.style
 
-    title = click.prompt(s("Experiment's title", fg='green'), type=str)
+    title = click.prompt(s("Experiment's title", fg="green"), type=str)
     base_experiment["title"] = title
 
     click.secho(
@@ -518,13 +618,14 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
         "hypothesis is\n"
         "and so instead you might create an experiment "
         "without one\n"
-        "This is why the stead state hypothesis is optional.", fg="blue")
-    m = s('Do you want to define a steady state hypothesis now?',
-          dim=True)
+        "This is why the stead state hypothesis is optional.",
+        fg="blue",
+    )
+    m = s("Do you want to define a steady state hypothesis now?", dim=True)
     if click.confirm(m):
         hypo = {}
 
-        title = click.prompt(s("Hypothesis's title", fg='green'), type=str)
+        title = click.prompt(s("Hypothesis's title", fg="green"), type=str)
         hypo["title"] = title
         hypo["probes"] = []
 
@@ -537,7 +638,8 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
             click.secho(
                 "\nYou may now define probes that will determine\n"
                 "the steady-state of your system.",
-                fg="blue")
+                fg="blue",
+            )
             add_activities(activities, hypo["probes"], with_tolerance=True)
 
         base_experiment["steady-state-hypothesis"] = hypo
@@ -553,9 +655,10 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
             "An experimental method can also contain probes to gather"
             " additional\n"
             "information about your system as your method is executed.",
-            fg="blue")
+            fg="blue",
+        )
 
-        m = s('Do you want to define an experimental method?', dim=True)
+        m = s("Do you want to define an experimental method?", dim=True)
         if click.confirm(m):
             activities = [(a["name"], a) for a in discovery["activities"]]
             add_activities(activities, base_experiment["method"])
@@ -564,8 +667,9 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
             "\nAn experiment may optionally define a set of remedial"
             " actions\nthat are used to rollback the system to a given"
             " state.",
-            fg="blue")
-        m = s('Do you want to add some rollbacks now?', dim=True)
+            fg="blue",
+        )
+        m = s("Do you want to add some rollbacks now?", dim=True)
         if click.confirm(m):
             rollbacks = []
             activities = []
@@ -576,26 +680,23 @@ def init(ctx: click.Context, discovery_path: str = "./discovery.json", #noqa: C9
             base_experiment["rollbacks"] = rollbacks
 
     if is_yaml(experiment_path):
-        output = yaml.dump(base_experiment,
-                           indent=4,
-                           default_flow_style=False,
-                           sort_keys=False)
+        output = yaml.dump(
+            base_experiment, indent=4, default_flow_style=False, sort_keys=False
+        )
     else:
         output = json.dumps(base_experiment, indent=4, default=encoder)
 
     with open(experiment_path, "w") as e:
         e.write(output)
 
-    click.echo(
-        "\nExperiment created and saved in '{e}'".format(e=experiment_path))
+    click.echo("\nExperiment created and saved in '{e}'".format(e=experiment_path))
 
     notify(settings, InitFlowEvent.InitCompleted, base_experiment)
     return base_experiment
 
 
 # keep this after the cli group declaration for plugins to override defaults
-with_plugins(
-    importlib_metadata.entry_points().get('chaostoolkit.cli_plugins'))(cli)
+with_plugins(importlib_metadata.entry_points().get("chaostoolkit.cli_plugins"))(cli)
 
 
 def is_yaml(experiment_path: str) -> bool:
@@ -603,20 +704,18 @@ def is_yaml(experiment_path: str) -> bool:
     return ext.lower() in (".yaml", ".yml")
 
 
-def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C901
-                   with_tolerance: bool = False):
+def add_activities(
+    activities: List[Activity],
+    pool: List[Activity],  # noqa: C901
+    with_tolerance: bool = False,
+):
     """
     Add activities to the given pool.
     """
     base_activity = {
         "type": None,
         "name": None,
-        "provider": {
-            "type": "python",
-            "module": None,
-            "func": None,
-            "arguments": {}
-        }
+        "provider": {"type": "python", "module": None, "func": None, "arguments": {}},
     }
 
     s = click.style
@@ -624,14 +723,16 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
     if len(activities) > 20:
         echo = click.echo_via_pager
 
-    click.echo(s(
-        'Add an activity', fg='green'))
-    echo("\n".join([
-        "{i}) {t}".format(
-            i=idx+1, t=name) for (idx, (name, a)) in enumerate(
-                activities)]))
-    activity_index = click.prompt(s(
-        "Activity (0 to escape)", fg='green'), type=int)
+    click.echo(s("Add an activity", fg="green"))
+    echo(
+        "\n".join(
+            [
+                "{i}) {t}".format(i=idx + 1, t=name)
+                for (idx, (name, a)) in enumerate(activities)
+            ]
+        )
+    )
+    activity_index = click.prompt(s("Activity (0 to escape)", fg="green"), type=int)
     if not activity_index:
         return
 
@@ -645,9 +746,9 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
     selected_doc = selected.get("doc")
     if selected_doc:
         click.secho("\n{}".format(selected_doc), fg="blue")
-    m = s('Do you want to use this {a}?'.format(a=selected['type']), dim=True)
+    m = s("Do you want to use this {a}?".format(a=selected["type"]), dim=True)
     if not click.confirm(m):
-        m = s('Do you want to select another activity?', dim=True)
+        m = s("Do you want to select another activity?", dim=True)
         if not click.confirm(m):
             return
         add_activities(activities, pool)
@@ -660,9 +761,11 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
             "\nA steady-state probe requires a tolerance value, "
             "within which\n"
             "your system is in a recognised `normal` state.\n",
-            fg="blue")
+            fg="blue",
+        )
         tolerance_value = click.prompt(
-            s("What is the tolerance for this probe?", fg='green'))
+            s("What is the tolerance for this probe?", fg="green")
+        )
         activity["tolerance"] = tolerance_value
     activity["provider"] = {"type": "python"}
     activity["provider"]["module"] = selected["mod"]
@@ -672,7 +775,9 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
     click.secho(
         "\nYou now need to fill the arguments for this activity. Default\n"
         "values will be shown between brackets. You may simply press return\n"
-        "to use it or not set any value.", fg="blue")
+        "to use it or not set any value.",
+        fg="blue",
+    )
     for arg in selected.get("arguments", []):
         arg_name = arg["name"]
         if arg_name in ("secrets", "configuration"):
@@ -689,9 +794,10 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
                 arg_default = ""
         arg_type = portable_type_name_to_python_type(arg["type"])
         question = "Argument's value for '{a}'".format(a=arg_name)
-        m = s(question, fg='yellow')
+        m = s(question, fg="yellow")
         arg_value = click.prompt(
-            m, default=arg_default, show_default=True, type=arg_type)
+            m, default=arg_default, show_default=True, type=arg_type
+        )
 
         # now, if the user didn't input anything and the default was
         # None, we override it back to None
@@ -703,7 +809,7 @@ def add_activities(activities: List[Activity], pool: List[Activity],  #noqa: C90
         activity["provider"]["arguments"][arg["name"]] = arg_value
     pool.append(activity)
 
-    m = s('Do you want to select another activity?', dim=True)
+    m = s("Do you want to select another activity?", dim=True)
     if not click.confirm(m):
         return
     add_activities(activities, pool)
