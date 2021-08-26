@@ -1,4 +1,3 @@
-import io
 import json
 import os
 import uuid
@@ -724,12 +723,7 @@ def add_activities(
 
     click.echo(s("Add an activity", fg="green"))
     echo(
-        "\n".join(
-            [
-                f"{idx + 1}) {name}"
-                for (idx, (name, a)) in enumerate(activities)
-            ]
-        )
+        "\n".join([f"{idx + 1}) {name}" for (idx, (name, a)) in enumerate(activities)])
     )
     activity_index = click.prompt(s("Activity (0 to escape)", fg="green"), type=int)
     if not activity_index:
