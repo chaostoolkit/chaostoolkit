@@ -1,0 +1,48 @@
+name: Check PR
+
+on:
+  pull_request:
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Changelog modified
+        uses: dangoslen/changelog-enforcer@v2
+        with:
+          changeLogPath: 'CHANGELOG.md'
+          missingUpdateErrorMessage: |
+            Please include an entry into `CHANGELOG.md` to describe what happened in the PR
+  check-tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get changed files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: Determine if Tests modified
+        id: modified
+        run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            if [[ ${changed_file} =~ ^tests\/.*test_.*\.py$ ]];
+            then
+              echo "::set-output name=MODIFIED::TRUE"; # Tests were modified
+              exit 0
+            fi
+          done
+          echo "::set-output name=MODIFIED::FALSE" # Tests were not modified
+          exit 0
+      - name: Comment on PR
+        if: ${{ steps.modified.outputs.MODIFIED == 'FALSE' }}
+        uses: JoseThen/comment-pr@v1.1.0
+        with:
+          comment: |
+            ## :warning: Tests not modified :warning:
+            We've noticed your Pull Request did not modify any tests :mag:
+
+            If your change requires tests, please add them :smile:
+
+            You'll notice that the `check-tests` step passed with :white_check_mark:, this
+            is not a confirmation that you've modified tests.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
