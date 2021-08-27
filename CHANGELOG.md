@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...HEAD
 
+### Added
+
+* Added `.github/workflows/check_pr.yaml` which checks if a PR has modified the
+CHANGELOG.md and if it changed/added tests
+
 ## [1.9.6][] - 2021-08-26
 
 [1.9.6]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...1.9.6
