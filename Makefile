@@ -1,10 +1,10 @@
 .PHONY: install
 install:
+	pip install --upgrade pip setuptools wheel
 	pip install -r requirements.txt
 
 .PHONY: install-dev
 install-dev: install
-	pip install --upgrade pip setuptools wheel
 	pip install -r requirements-dev.txt
 	python setup.py develop
 
