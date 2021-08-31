@@ -15,7 +15,7 @@ def get_version_from_package() -> str:
         for line in f:
             if line.startswith("__version__"):
                 token, version = line.split(" = ", 1)
-                version = version.replace("'", "").strip()
+                version = version.replace("\"", "").strip()
                 return version
 
 

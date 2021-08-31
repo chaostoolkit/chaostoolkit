@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-import json
-import os.path
 from typing import Union
 
-from chaostoolkit.types import MicroservicesStatus, Probe
+from chaostoolkit.types import MicroservicesStatus
 
 
 def all_microservices_healthy() -> MicroservicesStatus:

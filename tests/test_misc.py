@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-import pytest
 from chaostoolkit.cli import is_yaml
 
 

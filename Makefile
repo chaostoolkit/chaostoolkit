@@ -1,0 +1,28 @@
+.PHONY: install
+install:
+	pip install -r requirements.txt
+
+.PHONY: install-dev
+install-dev: install
+	pip install --upgrade pip setuptools wheel
+	pip install -r requirements-dev.txt
+	python setup.py develop
+
+.PHONY: build
+build:
+	python setup.py build
+
+.PHONY: lint
+lint:
+	flake8 chaostoolkit/ tests/
+	isort --check-only --profile black chaostoolkit/ tests/
+	black --check --diff chaostoolkit/ tests/
+
+.PHONY: format
+format:
+	isort --profile black chaostoolkit/ tests/
+	black chaostoolkit/ tests/
+
+.PHONY: tests
+tests:
+	pytest

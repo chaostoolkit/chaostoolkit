@@ -1,7 +1,8 @@
-pycodestyle
+black
 coverage
+flake8
+isort
 pytest>=6.2
 pytest-cov
 pytest-sugar
 semver
-pylama

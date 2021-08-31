@@ -2,7 +2,40 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...HEAD
+
+### Added
+
+* Added `.github/workflows/check_pr.yaml` which checks if a PR has modified the
+CHANGELOG.md and if it changed/added tests
+
+## [1.9.6][] - 2021-08-26
+
+[1.9.6]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...1.9.6
+
+### Fixed
+
+* Actually update the version of the lib on release
+
+## [1.9.5][] - 2021-08-26
+
+[1.9.5]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.4...1.9.5
+
+### Fixed
+
+* Fixed version extracting in `setup.py`
+
+## [1.9.4][] - 2021-08-26
+
+[1.9.4]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.3...1.9.4
+
+### Changed
+
+* Bump version of `chaostoolkit-lib` to `~=1.21`
+* Switched from pycodestyle/pylama to `black`, `flake8`, `isort`
+* Update CI builds to build, lint, and test
+* Applied `black`, `flake8`, and `isort` across the codebase
+* Ran `pyupgrade --py36-plus`
 
 ## [1.9.3][] - 2021-08-24
 
