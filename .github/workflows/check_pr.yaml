@@ -24,14 +24,23 @@ jobs:
       - name: Determine if Tests modified
         id: modified
         run: |
+          py_file_change = FALSE
           for changed_file in ${{ steps.files.outputs.all }}; do
             if [[ ${changed_file} =~ ^tests\/.*test_.*\.py$ ]];
             then
               echo "::set-output name=MODIFIED::TRUE"; # Tests were modified
               exit 0
+            elif [[ ${changed_file} =~ ^.*\.py$ ]];
+            then
+              py_file_change = TRUE # Python file was modified
             fi
           done
-          echo "::set-output name=MODIFIED::FALSE" # Tests were not modified
+          if [ ${py_file_change} == TRUE];
+          then
+            echo "::set-output name=MODIFIED::FALSE" # Tests were not modified
+            exit 0
+          fi
+          echo "::set-output name=MODIFIED::TRUE" # Tests did not need to be modified
           exit 0
       - name: Comment on PR
         if: ${{ steps.modified.outputs.MODIFIED == 'FALSE' }}
