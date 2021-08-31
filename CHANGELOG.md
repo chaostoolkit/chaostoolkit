@@ -8,6 +8,8 @@
 
 * Added `.github/workflows/check_pr.yaml` which checks if a PR has modified the
 CHANGELOG.md and if it changed/added tests
+* Moved `pip install --upgrade pip setuptools wheel` step from `install-dev` to
+`install` in the Makefile
 
 ## [1.9.6][] - 2021-08-26
 
