@@ -10,6 +10,8 @@
 CHANGELOG.md and if it changed/added tests
 * Moved `pip install --upgrade pip setuptools wheel` step from `install-dev` to
 `install` in the Makefile
+* Updated `check-pr` workflow to ensure `.py` files have been modified before
+issuing a "Tests Not Modified" warning
 
 ## [1.9.6][] - 2021-08-26
 
