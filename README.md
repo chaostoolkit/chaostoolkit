@@ -3,9 +3,7 @@
 [![Version](https://img.shields.io/pypi/v/chaostoolkit.svg)](https://img.shields.io/pypi/v/chaostoolkit.svg)
 [![License](https://img.shields.io/pypi/l/chaostoolkit.svg)](https://img.shields.io/pypi/l/chaostoolkit.svg)
 
-
 [![Build](https://github.com/chaostoolkit/chaostoolkit/workflows/Build/badge.svg)](https://github.com/chaostoolkit/chaostoolkit/actions?query=workflow%3ABuild)
-
 
 [![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
@@ -108,16 +106,16 @@ and add to your environment to use.
 
 ## Get involved!
 
-Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As such, we encourage and welcome you  to [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
-You can also use [StackOverflow][so] to ask any questions regarding using the
-Chaos Toolkit or Chaos Engineering.
+Chaos Toolkit's mission is to provide an open API to chaos engineering in all its forms. As such, we encourage and welcome you to [join][join] our open community Slack team to discuss and share your experiments and needs with the community.
 
 [join]: https://join.chaostoolkit.org/
-[so]: https://stackoverflow.com/questions/ask?tags=chaostoolkit+chaosengineering
 
-If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
+If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any requests or discussions around the Chaos Toolkit.
+For any questions regarding the Chaos Toolkit, be sure to open a question on [StackOverflow][so] using the "chaostoolkit" tag to alert one of our developers to your question.
 
-Finally you can always email `contact@chaostoolkit.org` with any questions as well.
+[so]: https://stackoverflow.com/questions/ask?tags=chaostoolkit
+
+Finally, you can always email `contact@chaostoolkit.org` with any questions as well.
 
 ## Contribute
 
@@ -142,7 +140,6 @@ the rules of the DCO before submitting a PR.
 
 [dco]: https://github.com/probot/dco#how-it-works
 
-
 ### Develop
 
 If you wish to develop on this project, make sure to install the development
@@ -150,7 +147,6 @@ dependencies. But first, [create a virtual environment][venv] and then install
 those dependencies.
 
 [venv]: http://docs.chaostoolkit.org/reference/usage/install/#create-a-virtual-environment
-
 
 ```console
 $ make install-dev
