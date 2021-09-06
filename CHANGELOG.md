@@ -10,6 +10,8 @@
 CHANGELOG.md and if it changed/added tests
 * Moved `pip install --upgrade pip setuptools wheel` step from `install-dev` to
 `install` in the Makefile
+* Added information about a Stack Overflow migration for Chaos Toolkit questions
+to the `README.md`
 
 ## [1.9.6][] - 2021-08-26
 
