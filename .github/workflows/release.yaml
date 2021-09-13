@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-changelog:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Check Changelog Modified
@@ -21,13 +21,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Get changed files
-        uses: jitterbit/get-changed-files@v1
+        uses: tj-actions/changed-files@v1.1.2
         id: files
       - name: Determine if __init__.py modified
         id: modified
         run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
+          for changed_file in ${{ steps.files.outputs.all_modified_files }}; do
             if [[ ${changed_file} == "chaostoolkit/__init__.py" ]];
             then
               echo "::set-output name=MODIFIED::TRUE"; # __init__.py was modified
@@ -44,7 +46,7 @@ jobs:
               core.setFailed('__init__.py was not modified')
   release-to-pypi:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -71,7 +73,7 @@ jobs:
 
   build-docker-image:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     needs:
       - release-to-pypi
     steps:
@@ -101,7 +103,7 @@ jobs:
 
   trigger-build-doc:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Rebuilding the documentation
         env:
@@ -117,7 +119,7 @@ jobs:
 
   trigger-build-bundle:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Creating a new binary bundle of the toolkit and all known drivers/plugins
         env:
@@ -133,7 +135,7 @@ jobs:
 
   create-gh-release:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Create Release
         uses: actions/create-release@latest
@@ -147,7 +149,7 @@ jobs:
 
   upload-gh-release-assets:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     needs:
       - create-gh-release
       - release-to-pypi
@@ -167,7 +169,7 @@ jobs:
 
   notify-to-slack:
     needs: [check-changelog, check-init]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     needs:
       - create-gh-release
       - release-to-pypi
