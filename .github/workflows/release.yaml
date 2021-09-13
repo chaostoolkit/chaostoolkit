@@ -16,8 +16,7 @@ jobs:
       - name: Get changed files
         uses: tj-actions/changed-files@v1.1.2
         id: files
-      - name: Determine if __init__.py modified
-        id: modified
+      - name: Determine if files modified
         run: |
           init_modified=false
           changelog_modified=false
