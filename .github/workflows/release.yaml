@@ -7,8 +7,44 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
+  check-release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Get changed files
+        uses: tj-actions/changed-files@v1.1.2
+        id: files
+      - name: Determine if files modified
+        run: |
+          init_modified=false
+          changelog_modified=false
+          for changed_file in ${{ steps.files.outputs.all_modified_files }}; do
+            if [[ ${changed_file} == "chaostoolkit/__init__.py" ]];
+            then
+              init_modified=true # __init__.py was modified
+            elif [[ ${changed_file} == "CHANGELOG.md" ]];
+            then
+              changelog_modified=true # CHANGELOG.md was modified
+            fi
+          done
+          if [[ ${init_modified} == false ]];
+          then
+            echo "__init__.py was not modified"
+          fi
+          if [[ ${changelog_modified} == false ]];
+          then
+            echo "CHANGELOG.md was not modified"
+          fi
+          if [[ ${init_modified} == false || ${changelog_modified} == false ]];
+          then
+            exit 1
+          fi
+          exit 0
   release-to-pypi:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -34,7 +70,8 @@ jobs:
         path: dist/chaostoolkit-*
 
   build-docker-image:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     needs:
       - release-to-pypi
     steps:
@@ -63,7 +100,8 @@ jobs:
         docker push chaostoolkit/chaostoolkit:latest
 
   trigger-build-doc:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     steps:
       - name: Rebuilding the documentation
         env:
@@ -78,7 +116,8 @@ jobs:
             https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-documentation/requests
 
   trigger-build-bundle:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     steps:
       - name: Creating a new binary bundle of the toolkit and all known drivers/plugins
         env:
@@ -93,7 +132,8 @@ jobs:
             https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-bundler/requests
 
   create-gh-release:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     steps:
       - name: Create Release
         uses: actions/create-release@latest
@@ -106,7 +146,8 @@ jobs:
           prerelease: false
 
   upload-gh-release-assets:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     needs:
       - create-gh-release
       - release-to-pypi
@@ -125,7 +166,8 @@ jobs:
           allowUpdates: true
 
   notify-to-slack:
-    runs-on: ubuntu-16.04
+    needs: [check-release]
+    runs-on: ubuntu-20.04
     needs:
       - create-gh-release
       - release-to-pypi
@@ -133,7 +175,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
-      - run: echo "Notify new Chaos Tooolkit release ${{ env.RELEASE_VERSION }} to slack"
+      - run: echo "Notify new Chaos Toolkit release ${{ env.RELEASE_VERSION }} to slack"
       - name: notify to CTK releases channel on slack
         uses: Ilshidur/action-slack@master
         env:
