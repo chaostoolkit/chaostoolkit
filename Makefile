@@ -6,11 +6,11 @@ install:
 .PHONY: install-dev
 install-dev: install
 	pip install -r requirements-dev.txt
-	python setup.py develop
+	python3 setup.py develop
 
 .PHONY: build
 build:
-	python setup.py build
+	python3 setup.py build
 
 .PHONY: lint
 lint:
