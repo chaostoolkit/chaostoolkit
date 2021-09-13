@@ -12,6 +12,7 @@ CHANGELOG.md and if it changed/added tests
 `install` in the Makefile
 * Updated `.github/workflows/check_pr.yaml` to check that both `CHANGELOG.md`
 and `chaostoolkit/__init__.py` get updated in line with a new version
+* Updated `Makefile` to specify `python3` instead of `python`
 
 ## [1.9.6][] - 2021-08-26
 
