@@ -7,17 +7,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
-  check-changelog:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check Changelog Modified
-        uses: dangoslen/changelog-enforcer@v2
-        with:
-          changeLogPath: 'CHANGELOG.md'
-          missingUpdateErrorMessage: |
-            Please modify `CHANGELOG.md` to reflect the new release
-  check-init:
+  check-release:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -29,23 +19,32 @@ jobs:
       - name: Determine if __init__.py modified
         id: modified
         run: |
+          init_modified=false
+          changelog_modified=false
           for changed_file in ${{ steps.files.outputs.all_modified_files }}; do
             if [[ ${changed_file} == "chaostoolkit/__init__.py" ]];
             then
-              echo "::set-output name=MODIFIED::TRUE"; # __init__.py was modified
-              exit 0
+              init_modified=true # __init__.py was modified
+            elif [[ ${changed_file} == "CHANGELOG.md" ]];
+            then
+              changelog_modified=true # CHANGELOG.md was modified
             fi
           done
-          echo "::set-output name=MODIFIED::FALSE" # __init__.py was not modified
+          if [[ ${init_modified} == false ]];
+          then
+            echo "__init__.py was not modified"
+          fi
+          if [[ ${changelog_modified} == false ]];
+          then
+            echo "CHANGELOG.md was not modified"
+          fi
+          if [[ ${init_modified} == false || ${changelog_modified} == false ]];
+          then
+            exit 1
+          fi
           exit 0
-      - name: Check Modified
-        if: ${{ steps.modified.outputs.MODIFIED == 'FALSE' }}
-        uses: actions/github-script@v3
-        with:
-          script: |
-              core.setFailed('__init__.py was not modified')
   release-to-pypi:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -72,7 +71,7 @@ jobs:
         path: dist/chaostoolkit-*
 
   build-docker-image:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - release-to-pypi
@@ -102,7 +101,7 @@ jobs:
         docker push chaostoolkit/chaostoolkit:latest
 
   trigger-build-doc:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Rebuilding the documentation
@@ -118,7 +117,7 @@ jobs:
             https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-documentation/requests
 
   trigger-build-bundle:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Creating a new binary bundle of the toolkit and all known drivers/plugins
@@ -134,7 +133,7 @@ jobs:
             https://api.travis-ci.org/repo/chaostoolkit%2Fchaostoolkit-bundler/requests
 
   create-gh-release:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Create Release
@@ -148,7 +147,7 @@ jobs:
           prerelease: false
 
   upload-gh-release-assets:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - create-gh-release
@@ -168,7 +167,7 @@ jobs:
           allowUpdates: true
 
   notify-to-slack:
-    needs: [check-changelog, check-init]
+    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - create-gh-release
