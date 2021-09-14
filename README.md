@@ -3,9 +3,7 @@
 [![Version](https://img.shields.io/pypi/v/chaostoolkit.svg)](https://img.shields.io/pypi/v/chaostoolkit.svg)
 [![License](https://img.shields.io/pypi/l/chaostoolkit.svg)](https://img.shields.io/pypi/l/chaostoolkit.svg)
 
-
 [![Build](https://github.com/chaostoolkit/chaostoolkit/workflows/Build/badge.svg)](https://github.com/chaostoolkit/chaostoolkit/actions?query=workflow%3ABuild)
-
 
 [![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
@@ -127,10 +125,14 @@ seeks [discussions][join] and continuous improvement.
 [join]: https://join.chaostoolkit.org/
 
 From a code perspective, if you wish to contribute, you will need to run a
-Python 3.6+ environment. Please, fork this project, write unit tests to cover
+Python 3.6+ environment. Please, [fork][fork] this project, [sync][sync] it with the upstream repository, write unit tests to cover
 the proposed changes, implement the changes, ensure they meet the formatting
 standards set out by `black`, `flake8`, and `isort`, add an entry into
 `CHANGELOG.md`, and then raise a PR to the repository for review
+
+[fork]: https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks
+
+[sync]: https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork
 
 Please refer to the [formatting](#formatting-and-linting) section for more
 information on the formatting standards.
@@ -142,7 +144,6 @@ the rules of the DCO before submitting a PR.
 
 [dco]: https://github.com/probot/dco#how-it-works
 
-
 ### Develop
 
 If you wish to develop on this project, make sure to install the development
@@ -150,7 +151,6 @@ dependencies. But first, [create a virtual environment][venv] and then install
 those dependencies.
 
 [venv]: http://docs.chaostoolkit.org/reference/usage/install/#create-a-virtual-environment
-
 
 ```console
 $ make install-dev
