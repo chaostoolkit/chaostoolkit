@@ -25,6 +25,7 @@ empty_settings_path = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "fixtures", "empty-settings.yaml")
 )
 
+
 def test_source_experiment_is_mandatory():
     runner = CliRunner()
     result = runner.invoke(cli, ["run"])
