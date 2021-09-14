@@ -1,7 +1,7 @@
 import json
 import os
 import uuid
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import click
 from chaoslib import __version__ as chaoslib_version
@@ -26,7 +26,7 @@ from chaoslib.settings import (
     locate_settings_entry,
     save_settings,
 )
-from chaoslib.types import Activity, Discovery, Experiment, Journal, Schedule
+from chaoslib.types import Activity, Discovery, Experiment, Journal, Schedule, Dry
 from click_plugins import with_plugins
 
 try:
@@ -134,9 +134,11 @@ def validate_vars(
     default="./journal.json",
     help="Path where to save the journal from the execution.",
 )
-@click.option(
-    "--dry", is_flag=True, help="Run the experiment without executing activities."
-)
+@click.option('--dry', type=click.Choice([
+                "probes", "actions", "activities",
+                "pause"
+              ]), show_default=False,
+              help='Run the experiment without executing the chosen strategy.')
 @click.option(
     "--no-validation",
     is_flag=True,
@@ -211,7 +213,7 @@ def run(
     ctx: click.Context,
     source: str,
     journal_path: str = "./journal.json",
-    dry: bool = False,
+    dry: Optional[str] = None,
     no_validation: bool = False,
     no_exit: bool = False,
     no_verify_tls: bool = False,
@@ -249,7 +251,7 @@ def run(
             logger.debug(x)
             ctx.exit(1)
 
-    experiment["dry"] = dry
+    experiment["dry"] = Dry.from_string(dry)
     settings.setdefault("runtime", {}).setdefault("rollbacks", {}).setdefault(
         "strategy", rollback_strategy
     )
@@ -267,7 +269,8 @@ def run(
     )
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
-
+    if "dry" in journal["experiment"]:
+        journal["experiment"]["dry"] = dry.value if dry else None
     with open(journal_path, "w") as r:
         json.dump(journal, r, indent=2, ensure_ascii=False, default=encoder)
 
