@@ -1,6 +1,15 @@
 # Changelog
-
 ## [Unreleased][]
+
+
+### Added 
+
+* The new dry run with 4 options:
+  * --dry=activities run all activities as dry run. (same as the old flag)
+  * --dry=actions run all actions as dry run.
+  * --dry=probes run all probes as dry run.
+  * --dry=pause run all activities with no pausing.
+* Added tests
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...HEAD
 
