@@ -145,7 +145,7 @@ def test_dry_activities(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    assert "Dry mode enabled" in log
+    assert "Running experiment with dry activities" in log
 
 
 def test_dry_probes(log_file):
@@ -170,7 +170,7 @@ def test_dry_probes(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    assert "Probeless mode enabled" in log
+    assert "Running experiment with dry probes" in log
 
 
 def test_dry_actions(log_file):
@@ -195,7 +195,7 @@ def test_dry_actions(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    assert "Actionless mode enabled" in log
+    assert "Running experiment with dry actions" in log
 
 
 def test_dry_pause(log_file):
@@ -220,7 +220,7 @@ def test_dry_pause(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    assert "Pauseless mode enabled" in log
+    assert "Running experiment with dry pause" in log
 
 
 @patch("chaostoolkit.cli.notify", spec=True)
