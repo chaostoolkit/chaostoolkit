@@ -19,7 +19,6 @@ from chaoslib.notification import (
 from chaoslib.settings import CHAOSTOOLKIT_CONFIG_PATH
 from click.testing import CliRunner
 
-
 from chaostoolkit.cli import cli, encoder
 
 empty_settings_path = os.path.abspath(

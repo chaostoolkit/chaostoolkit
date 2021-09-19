@@ -26,7 +26,7 @@ from chaoslib.settings import (
     locate_settings_entry,
     save_settings,
 )
-from chaoslib.types import Activity, Discovery, Experiment, Journal, Schedule, Dry
+from chaoslib.types import Activity, Discovery, Dry, Experiment, Journal, Schedule
 from click_plugins import with_plugins
 
 try:
@@ -134,11 +134,12 @@ def validate_vars(
     default="./journal.json",
     help="Path where to save the journal from the execution.",
 )
-@click.option('--dry', type=click.Choice([
-                "probes", "actions", "activities",
-                "pause"
-              ]), show_default=False,
-              help='Run the experiment without executing the chosen strategy.')
+@click.option(
+    "--dry",
+    type=click.Choice(["probes", "actions", "activities", "pause"]),
+    show_default=False,
+    help="Run the experiment without executing the chosen strategy.",
+)
 @click.option(
     "--no-validation",
     is_flag=True,
