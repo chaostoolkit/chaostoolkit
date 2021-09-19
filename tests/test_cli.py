@@ -18,7 +18,6 @@ from chaoslib.notification import (
 )
 from chaoslib.settings import CHAOSTOOLKIT_CONFIG_PATH
 from click.testing import CliRunner
-import tempfile
 
 
 from chaostoolkit.cli import cli, encoder
@@ -712,6 +711,3 @@ def test_remove_settings_entry():
             ],
         )
         assert result.exit_code == 1
-if __name__ == "__main__":
-    log_file = tempfile.NamedTemporaryFile()
-    test_dry_activities(log_file)
