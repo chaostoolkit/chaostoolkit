@@ -70,7 +70,6 @@ jobs:
         path: dist/chaostoolkit-*
 
   build-docker-image:
-    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - release-to-pypi
