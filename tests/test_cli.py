@@ -121,7 +121,7 @@ def test_change_directory(log_file):
     assert os.getcwd() == curdir
 
 
-def test_dry(log_file):
+def test_dry_activities(log_file):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__), "fixtures", "check-file-exists.json"
@@ -134,7 +134,7 @@ def test_dry(log_file):
             "--log-file",
             log_file.name,
             "run",
-            "--dry",
+            "--dry=activities",
             exp_path,
         ],
     )
@@ -143,7 +143,82 @@ def test_dry(log_file):
 
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
-    assert "Dry mode enabled" in log
+    assert "Running experiment with dry activities" in log
+
+
+def test_dry_probes(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "check-file-exists.json"
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--settings",
+            empty_settings_path,
+            "--log-file",
+            log_file.name,
+            "run",
+            "--dry=probes",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+    assert "Running experiment with dry probes" in log
+
+
+def test_dry_actions(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "check-file-exists.json"
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--settings",
+            empty_settings_path,
+            "--log-file",
+            log_file.name,
+            "run",
+            "--dry=actions",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+    assert "Running experiment with dry actions" in log
+
+
+def test_dry_pause(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "check-file-exists.json"
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--settings",
+            empty_settings_path,
+            "--log-file",
+            log_file.name,
+            "run",
+            "--dry=pause",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+    assert "Running experiment with dry pause" in log
 
 
 @patch("chaostoolkit.cli.notify", spec=True)

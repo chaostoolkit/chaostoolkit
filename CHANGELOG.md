@@ -14,6 +14,12 @@ CHANGELOG.md and if it changed/added tests
 and `chaostoolkit/__init__.py` get updated in line with a new version
 * Updated `Makefile` to specify `python3` instead of `python`
 
+* Added dry run options:
+  * `--dry=activities` runs all activities as dry run. (same as the old flag)
+  * `--dry=actions` runs all actions as dry run.
+  * `--dry=probes` runs all probes as dry run.
+  * `--dry=pause` runs all activities with no pausing.
+
 ## [1.9.6][] - 2021-08-26
 
 [1.9.6]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.5...1.9.6
