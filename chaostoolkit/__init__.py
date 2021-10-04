@@ -14,8 +14,8 @@ def encoder(o: object) -> str:
     as much information as we can.
     """
     if isinstance(o, (date, datetime)):
-        # we do not meddle with the timezone and assume the date was stored
-        # with the right information of timezone as +-HH:MM
+        # we do not meddle with the timezone and assume the date was
+        # stored with the right information of timezone as +-HH:MM
         return o.isoformat()
     elif isinstance(o, decimal.Decimal):
         return str(o)

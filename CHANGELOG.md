@@ -4,6 +4,7 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.0...HEAD
 
+
 ## [1.10.0][] - 2021-10-04
 
 [1.10.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...1.10.0
