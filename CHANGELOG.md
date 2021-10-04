@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.9.6...HEAD
 
+### Changed
+
+* Updated to chaostoolkit-lib 1.22+ to support new `dry` flag
+
 ### Added
 
 * Added `.github/workflows/check_pr.yaml` which checks if a PR has modified the
