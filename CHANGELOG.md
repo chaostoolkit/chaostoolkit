@@ -11,6 +11,7 @@
 ### Changed
 
 * Updated to chaostoolkit-lib 1.22+ to support new `dry` flag
+* Updated release workflow to remove duplicate `needs` properties
 
 ### Added
 
