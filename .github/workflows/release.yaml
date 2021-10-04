@@ -145,7 +145,6 @@ jobs:
           prerelease: false
 
   upload-gh-release-assets:
-    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - create-gh-release
@@ -165,7 +164,6 @@ jobs:
           allowUpdates: true
 
   notify-to-slack:
-    needs: [check-release]
     runs-on: ubuntu-20.04
     needs:
       - create-gh-release
