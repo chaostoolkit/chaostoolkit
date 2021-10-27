@@ -60,8 +60,7 @@ def configure_logger(
         if sys.version_info < (3, 8):
             fmt = "(process) (asctime) (levelname) (module) (lineno) (message)"
         else:
-            fmt = "%(process) %(asctime) %(levelname) " \
-                  "%(module) %(lineno) %(message)"
+            fmt = "%(process) %(asctime) %(levelname) %(module) %(lineno) %(message)"
         if context_id:
             fmt = f"(context_id) {fmt}"
         formatter = jsonlogger.JsonFormatter(fmt, json_default=encoder, timestamp=True)
