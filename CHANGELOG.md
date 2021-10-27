@@ -4,6 +4,12 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.0...HEAD
 
+### Changed
+
+* Upgraded to python-json-logger 2.0+
+* Fixed json logger format as per [#251][251]
+
+[251]: https://github.com/chaostoolkit/chaostoolkit/issues/251
 
 ## [1.10.0][] - 2021-10-04
 
