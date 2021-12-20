@@ -127,7 +127,7 @@ seeks [discussions][join] and continuous improvement.
 [join]: https://join.chaostoolkit.org/
 
 From a code perspective, if you wish to contribute, you will need to run a
-Python 3.6+ environment. Please, fork this project, write unit tests to cover
+Python 3.7+ environment. Please, fork this project, write unit tests to cover
 the proposed changes, implement the changes, ensure they meet the formatting
 standards set out by `black`, `flake8`, and `isort`, add an entry into
 `CHANGELOG.md`, and then raise a PR to the repository for review

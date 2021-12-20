@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.1...HEAD
 
+### Changed
+
+* Bump to Python 3.7 as a baseline since Python 3.7 is EOL
+
 ## [1.10.1][] - 2021-10-27
 
 [1.10.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.0...1.10.1
