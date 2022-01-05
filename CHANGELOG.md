@@ -6,7 +6,7 @@
 
 ### Changed
 
-* Bump to Python 3.7 as a baseline since Python 3.7 is EOL
+* Bump to Python 3.7 as a baseline since Python 3.6 is EOL
 
 ## [1.10.1][] - 2021-10-27
 
