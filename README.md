@@ -10,7 +10,6 @@
 [![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
 [![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
 [![Python versions](https://img.shields.io/pypi/pyversions/chaostoolkit.svg)](https://www.python.org/)
-[![Requirements Status](https://requires.io/github/chaostoolkit/chaostoolkit/requirements.svg?branch=master)](https://requires.io/github/chaostoolkit/chaostoolkit/requirements/?branch=master)
 [![Has wheel](https://img.shields.io/pypi/wheel/chaostoolkit.svg)](http://pythonwheels.com/)
 
 Chaos Toolkit is a project whose mission is to provide a free, open and community-driven toolkit and API to all the various forms of chaos engineering tools that the community needs.
