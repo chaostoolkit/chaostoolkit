@@ -8,6 +8,10 @@
 
 * Bump to Python 3.7 as a baseline since Python 3.6 is EOL
 
+### Added
+
+* Add Python 3.10 support
+
 ## [1.10.1][] - 2021-10-27
 
 [1.10.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.0...1.10.1
