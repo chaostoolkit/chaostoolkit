@@ -1,44 +1,44 @@
-# Chaos Toolkit - An Open API for Chaos Engineering
+<h2 align="center">
+  <br>
+  <p align="center"><img src="https://avatars.githubusercontent.com/u/32068152?s=200&v=4"></p>
+</h2>
 
-[![Version](https://img.shields.io/pypi/v/chaostoolkit.svg)](https://img.shields.io/pypi/v/chaostoolkit.svg)
-[![License](https://img.shields.io/pypi/l/chaostoolkit.svg)](https://img.shields.io/pypi/l/chaostoolkit.svg)
+<h4 align="center">Chaos Toolkit - Chaos Engineering Auomation for Developers</h4>
 
+<p align="center">
+   <a href="https://github.com/chaostoolkit/chaostoolkit/releases">
+   <img alt="Release" src="https://img.shields.io/github/v/release/chaostoolkit/chaostoolkit">
+   <a href="#">
+   <img alt="Build" src="https://github.com/chaostoolkit/chaostoolkit/actions/workflows/build.yaml/badge.svg">
+   <a href="https://github.com/reliablyhq/cli/issues">
+   <img alt="GitHub issues" src="https://img.shields.io/github/issues/chaostoolkit/chaostoolkit?style=flat-square&logo=github&logoColor=white">
+   <a href="https://github.com/reliablyhq/cli/blob/master/LICENSE.md">
+   <img alt="License" src="https://img.shields.io/github/license/chaostoolkit/chaostoolkit">
+   <a href="#">
+   <img alt="Python version" src="https://img.shields.io/pypi/pyversions/chaostoolkit.svg">
+   <a href="https://pkg.go.dev/github.com/chaostoolkit/chaostoolkit">
+</p>
 
-[![Build](https://github.com/chaostoolkit/chaostoolkit/workflows/Build/badge.svg)](https://github.com/chaostoolkit/chaostoolkit/actions?query=workflow%3ABuild)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/chaostoolkit/chaostoolkit/graphs/commit-activity)
+<p align="center">
+  <a href="https://chaostoolkit.org/reference/usage/install/">Installation</a> •
+  <a href="https://chaostoolkit.org/reference/tutorial/">Tutorials</a> •
+  <a href="https://chaostoolkit.org/reference/concepts/">Reference</a> •
+  <a href="https://chaostoolkit.org/drivers/overview/">Extensions</a> •
+  <a href="https://github.com/chaostoolkit/chaostoolkit/blob/main/CHANGELOG.md">ChangeLog</a>
+</p>
 
-[![Downloads](https://pepy.tech/badge/chaostoolkit)](https://pepy.tech/project/chaostoolkit)
-[![Docker Pulls](https://img.shields.io/docker/pulls/chaostoolkit/chaostoolkit.svg)](https://hub.docker.com/r/chaostoolkit/chaostoolkit/)
-[![Python versions](https://img.shields.io/pypi/pyversions/chaostoolkit.svg)](https://www.python.org/)
-[![Has wheel](https://img.shields.io/pypi/wheel/chaostoolkit.svg)](http://pythonwheels.com/)
+---
 
-Chaos Toolkit is a project whose mission is to provide a free, open and community-driven toolkit and API to all the various forms of chaos engineering tools that the community needs.
+# Chaos Toolkit - Chaos Engineering Auomation for Developers
 
-## Why the Chaos Toolkit?
+The Chaos Toolkit, or as we love to call it &#x201C;ctk&#x201D;, is a simple
+CLI-driven tool who helps you write and run Chaos Engineering experiment. It 
+supports any target platform you can think of through
+[existing extensions](https://chaostoolkit.org/drivers/overview/) or
+the ones you write as you need.
 
-The Chaos Toolkit has two main purposes:
-
-* To provide a full chaos engineering implementation that simplifies the adoption of chaos engineering by providing an easy starting point for applying the discipline.
-* To define an open API with the community so that any chaos experiment can be executed consistently using integrations with the many commercial, private and open source chaos implementations that are emerging.
-
-![Chaos Toolkit](https://docs.chaostoolkit.org/static/images/schema-1920.svg)
-
-### Simplifying Adoption of Chaos Engineering
-
-Firstly the Chaos Toolkit aims to make it simple and straightforward to run
-experiments against your live system to build confidence in its behavior and learn about
-potential weaknesses.
-
-Following the
-[principles of chaos engineering][principles], the Chaos Toolkit aims to be the easiest way to apply these principles to your own complex, and even sometimes chaotic, systems.
-
-[principles]: http://principlesofchaos.org/
-
-### An Open API to Chaos Engineering
-
-Secondly the Chaos Toolkit defines an [Open API][api] to Chaos Engineering through it's JSON/YAML-format experiment definition. The toolkit can be extended to integrate with any number of commercial, private and open source chaos implementations through probes (to measure steady-state before and after an experiment) and actions (to vary real-world events during an experiment).
-
-[api]: https://docs.chaostoolkit.org/reference/api/experiment/
+Chaos Toolkit is versatile and works really well in settings where other Chaos
+Engineering tools may not fit: cloud environments, datacenters, CI/CD, etc.
 
 ## Install or Upgrade
 
@@ -50,60 +50,15 @@ Generally speaking, you can install it as follows:
 $ pip install -U chaostoolkit
 ```
 
-It is recommended that you create a Python virtual environment for running your chaos experiments. Full instructions for installing chaostoolkit and its requirements are available in the [installation documentation][install].
-
-[install]: https://docs.chaostoolkit.org/reference/usage/install/
-
-### Download and run the bundle
-
-While installing via packages gives you the most control over what to deploy,
-you may also be interested in simply dowloading a standalone binary that can
-be run as-is.
-
-Download a copy from [here][download].
-
-[download]: https://github.com/chaostoolkit/chaostoolkit-bundler
-
-Whenever a new version is released, just download its copy again.
-
 ## Getting Started
 
-Once you have installed the Chaos Toolkit you can use it through its simple command line tool. The tool's main job is to run your experiment and then
-generate a report of the findings from the experiment to then share with your team for discussion.
+Once you have installed the Chaos Toolkit you can use it through its simple command line tool. 
 
 Running an experiment is as simple as:
 
 ```console
 $ chaos run experiment.json
 ```
-
-The Chaos Toolkit takes experiments defined in a [JSON format][json] description file, encoded in JSON (YAML is also supported), and runs its steps sequentially. A full specification of this experiment description file can be found in the [main project documentation][api].
-
-[json]: https://www.json.org/
-
-![Chaos Toolkit Run Sample](https://github.com/chaostoolkit/chaostoolkit/blob/master/assets/chaostoolkit-run.gif)
-
-## Extending the Chaos Toolkit
-
-The Chaos Toolkit plays the experiment description that you provide to it.
-Experiments are made up of probes and actions (to vary real-world events during an experiment). We are always looking for community contribution and ideas around
-what probes and actions you might need as you integrate chaos experiments through the Chaos Toolkit, into your own unique context and environment.
-
-If you have an idea for a new set of probes and actions that you'd like to share, please first consider raising a ticket or even joining our community slack to suggest your idea.
-
-In terms of implementation, the [Chaos Toolkit currently supports][extend] probes and actions implemented as Python functions, separate processes or even remote HTTP calls. As long as your extensions conform to the [Chaos Toolkit API][api] you can then specify your own unique extensions in your experiment definitions.
-
-The core implementation of the Chaos Toolkit API can be found in the [chaostoolkit-lib][chaoslib] project.
-
-[extend]: https://docs.chaostoolkit.org/reference/extending/approaches/
-[chaoslib]: https://github.com/chaostoolkit/chaostoolkit-lib
-
-### Current Known Extensions
-
-The Chaos Toolkit is made of [many extensions][ext] that you can simply download
-and add to your environment to use.
-
-[ext]: https://pypi.org/search/?q=chaostoolkit
 
 ## Get involved!
 
@@ -141,55 +96,3 @@ the rules of the DCO before submitting a PR.
 
 [dco]: https://github.com/probot/dco#how-it-works
 
-
-### Develop
-
-If you wish to develop on this project, make sure to install the development
-dependencies. But first, [create a virtual environment][venv] and then install
-those dependencies.
-
-[venv]: http://docs.chaostoolkit.org/reference/usage/install/#create-a-virtual-environment
-
-
-```console
-$ make install-dev
-```
-
-Now, you can edit the files and they will be automatically be seen by your
-environment, even when running from the `chaos` command locally.
-
-### Test
-
-To run the tests for the project execute the following:
-
-```console
-$ make tests
-```
-
-### Formatting and Linting
-
-We use a combination of [`black`][black], [`flake8`][flake8], and [`isort`][isort]
-to both lint and format this repositories code.
-
-[black]: https://github.com/psf/black
-[flake8]: https://github.com/PyCQA/flake8
-[isort]: https://github.com/PyCQA/isort
-
-Before raising a Pull Request, we recommend you run formatting against your
-code with:
-
-```console
-$ make format
-```
-
-This will automatically format any code that doesn't adhere to the formatting
-standards.
-
-As some things are not picked up by the formatting, we also recommend you run:
-
-```console
-$ make lint
-```
-
-To ensure that any unused import statements/strings that are too long, etc.
-are also picked up.
