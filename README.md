@@ -24,7 +24,7 @@
   <a href="https://chaostoolkit.org/reference/tutorial/">Tutorials</a> •
   <a href="https://chaostoolkit.org/reference/concepts/">Reference</a> •
   <a href="https://chaostoolkit.org/drivers/overview/">Extensions</a> •
-  <a href="https://github.com/chaostoolkit/chaostoolkit/blob/main/CHANGELOG.md">ChangeLog</a>
+  <a href="https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md">ChangeLog</a>
 </p>
 
 ---
