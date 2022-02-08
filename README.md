@@ -20,10 +20,10 @@
 </p>
 
 <p align="center">
+  <a href="https://join.chaostoolkit.org/">Community</a> •
   <a href="https://chaostoolkit.org/reference/usage/install/">Installation</a> •
   <a href="https://chaostoolkit.org/reference/tutorial/">Tutorials</a> •
   <a href="https://chaostoolkit.org/reference/concepts/">Reference</a> •
-  <a href="https://chaostoolkit.org/drivers/overview/">Extensions</a> •
   <a href="https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md">ChangeLog</a>
 </p>
 
@@ -85,9 +85,6 @@ Python 3.7+ environment. Please, fork this project, write unit tests to cover
 the proposed changes, implement the changes, ensure they meet the formatting
 standards set out by `black`, `flake8`, and `isort`, add an entry into
 `CHANGELOG.md`, and then raise a PR to the repository for review
-
-Please refer to the [formatting](#formatting-and-linting) section for more
-information on the formatting standards.
 
 The Chaos Toolkit projects require all contributors must sign a
 [Developer Certificate of Origin][dco] on each commit they would like to merge
