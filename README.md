@@ -3,7 +3,7 @@
   <p align="center"><img src="https://avatars.githubusercontent.com/u/32068152?s=200&v=4"></p>
 </h2>
 
-<h4 align="center">Chaos Toolkit - Chaos Engineering Auomation for Developers</h4>
+<h4 align="center">Chaos Toolkit - Chaos Engineering Automation for Developers</h4>
 
 <p align="center">
    <a href="https://github.com/chaostoolkit/chaostoolkit/releases">
@@ -29,7 +29,7 @@
 
 ---
 
-# Chaos Toolkit - Chaos Engineering Auomation for Developers
+# Chaos Toolkit - Chaos Engineering for Developers
 
 The Chaos Toolkit, or as we love to call it &#x201C;ctk&#x201D;, is a simple
 CLI-driven tool who helps you write and run Chaos Engineering experiment. It 
