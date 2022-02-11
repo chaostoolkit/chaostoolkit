@@ -75,6 +75,10 @@ Finally you can always email `contact@chaostoolkit.org` with any questions as we
 
 ## Contribute
 
+<a href="https://github.com/tooljet/tooljet/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=chaostoolkit/chaostoolkit" />
+</a>
+
 Contributors to this project are welcome as this is an open-source effort that
 seeks [discussions][join] and continuous improvement.
 
