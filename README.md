@@ -42,9 +42,7 @@ Engineering tools may not fit: cloud environments, datacenters, CI/CD, etc.
 
 ## Install or Upgrade
 
-### Install from Packages
-
-Generally speaking, you can install it as follows:
+Provided you have Python 3.7+ installed, you can install it as follows:
 
 ```console
 $ pip install -U chaostoolkit
