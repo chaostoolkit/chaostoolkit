@@ -30,11 +30,11 @@ jobs:
           context: ./container
           push: true
           tags: chaostoolkit/chaostoolkit-basic
-          file: ./Dockerfile-basic
+          file: Dockerfile-basic
           labels: |
             CTK_VERSION=${CTK_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
-      - name: Build and push chaostoolkit-basic
+      - name: Build and push chaostoolkit-full
         uses: docker/build-push-action@v2
         env:
           CTK_TAG: ${{ steps.previoustag.outputs.tag }}
@@ -42,7 +42,7 @@ jobs:
           context: ./container
           push: true
           tags: chaostoolkit/chaostoolkit-full
-          file: ./Dockerfile-full
+          file: Dockerfile-full
           labels: |
             CTK_VERSION=${CTK_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
