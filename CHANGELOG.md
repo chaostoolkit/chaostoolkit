@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.11.0...HEAD
 
+### Added
+
+* Full and basic container images abased of Debians bullseye
+
 ## [1.11.0][] - 2022-01-05
 
 [1.11.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.10.1...1.11.0

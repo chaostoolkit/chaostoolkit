@@ -1,0 +1,35 @@
+FROM python:3-slim-bullseye AS build-venv
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG CTK_VERSION
+
+RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
+
+ADD requirements.txt requirements.txt
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential gcc && \
+    python3 -m venv /home/ctk/.venv && \
+    /home/ctk/.venv/bin/pip install --no-cache-dir -q -U --disable-pip-version-check --prefer-binary pip && \
+    /home/ctk/.venv/bin/pip install --no-cache-dir -q --prefer-binary setuptools wheel && \
+    /home/ctk/.venv/bin/pip install --no-cache-dir --prefer-binary chaostoolkit==${CTK_VERSION} && \
+    /home/ctk/.venv/bin/pip install --no-cache-dir -U --prefer-binary -r requirements.txt && \
+    chown --recursive ctk:ctk /home/ctk && \
+    apt-get remove -y build-essential gcc && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+FROM python:3-slim-bullseye
+
+LABEL org.opencontainers.image.authors="chaostoolkit <contact@chaostoolkit.org>"
+LABEL org.opencontainers.image.vendor="Chaos Toolkit"
+LABEL org.opencontainers.image.url="https://chaostoolkit.org"
+LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostoolkit/container/Dockerfile"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
+
+RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
+COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/ctk/
+
+WORKDIR /home/ctk
+USER 1001
+
+ENTRYPOINT ["/home/ctk/.venv/bin/chaos"]
+CMD ["--help"]

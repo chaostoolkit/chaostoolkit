@@ -1,0 +1,22 @@
+chaostoolkit-aws
+chaostoolkit-azure
+chaostoolkit-cloud-foundry
+chaostoolkit-kubernetes
+chaostoolkit-google-cloud-platform
+chaostoolkit-humio
+chaostoolkit-prometheus
+chaostoolkit-spring
+chaostoolkit-toxiproxy
+chaostoolkit-opentracing
+chaostoolkit-service-fabric
+chaostoolkit-istio
+chaostoolkit-wiremock
+chaostoolkit-gandi
+chaostoolkit-dynatrace
+chaostoolkit-k6
+chaostoolkit-reliably
+chaostoolkit-addons
+chaostoolkit-grafana
+
+# Not included because package is way too large and bloat this image
+#chaostoolkit-ansible
