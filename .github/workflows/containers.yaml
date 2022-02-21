@@ -40,7 +40,7 @@ jobs:
           CTK_TAG: ${{ steps.previoustag.outputs.tag }}
         with:
           context: .
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: chaostoolkit/chaostoolkit:full
           file: ./container/Dockerfile-full
           labels: |
@@ -50,6 +50,6 @@ jobs:
         uses: peter-evans/dockerhub-description@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          password: ${{ secrets.DOCKER_PWD }}
           repository: chaostoolkit/chaostoolkit
           short-description: ${{ github.event.repository.description }}
