@@ -13,8 +13,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        id: latest_tag
+        run: ::set-output name=GIT_LATEST_TAG::$(git describe --tags --abbrev=0)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -24,27 +24,23 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push chaostoolkit-basic
         uses: docker/build-push-action@v2
-        env:
-          CTK_TAG: ${{ steps.previoustag.outputs.tag }}
         with:
           context: .
           push: true
           tags: chaostoolkit/chaostoolkit:basic
           file: ./container/Dockerfile-basic
           labels: |
-            CTK_VERSION=${CTK_TAG}
+            CTK_VERSION=${steps.latest_tag.outputs.GIT_LATEST_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
       - name: Build and push chaostoolkit-full
         uses: docker/build-push-action@v2
-        env:
-          CTK_TAG: ${{ steps.previoustag.outputs.tag }}
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: chaostoolkit/chaostoolkit:full
           file: ./container/Dockerfile-full
           labels: |
-            CTK_VERSION=${CTK_TAG}
+            CTK_VERSION=${steps.latest_tag.outputs.GIT_LATEST_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
