@@ -27,10 +27,10 @@ jobs:
         env:
           CTK_TAG: ${{ steps.previoustag.outputs.tag }}
         with:
-          context: ./container
+          context: .
           push: true
-          tags: chaostoolkit/chaostoolkit-basic
-          file: Dockerfile-basic
+          tags: chaostoolkit/chaostoolkit:basic
+          file: ./container/Dockerfile-basic
           labels: |
             CTK_VERSION=${CTK_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
@@ -39,10 +39,17 @@ jobs:
         env:
           CTK_TAG: ${{ steps.previoustag.outputs.tag }}
         with:
-          context: ./container
+          context: .
           push: true
-          tags: chaostoolkit/chaostoolkit-full
-          file: Dockerfile-full
+          tags: chaostoolkit/chaostoolkit:full
+          file: ./container/Dockerfile-full
           labels: |
             CTK_VERSION=${CTK_TAG}
             org.opencontainers.image.revision=${GITHUB_SHA}
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: chaostoolkit/chaostoolkit
+          short-description: ${{ github.event.repository.description }}
