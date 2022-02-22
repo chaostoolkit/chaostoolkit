@@ -22,26 +22,44 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker meta
+        id: metabasic
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            chaostoolkit/chaostoolkit
+          tags: |
+            type=raw,value=basic
+          labels: |
+            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
+            org.opencontainers.image.revision=${GITHUB_SHA}
+      - name: Docker meta
+        id: metafull
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            chaostoolkit/chaostoolkit
+          tags: |
+            type=raw,value=full
+          labels: |
+            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
+            org.opencontainers.image.revision=${GITHUB_SHA}
       - name: Build and push chaostoolkit-basic
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: true
-          tags: chaostoolkit/chaostoolkit:basic
+          push: ${{ github.event_name != 'pull_request' }}
           file: ./container/Dockerfile-basic
-          labels: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
-            org.opencontainers.image.revision=${GITHUB_SHA}
+          tags: ${{ steps.metabasic.outputs.tags }}
+          labels: ${{ steps.metabasic.outputs.labels }}
       - name: Build and push chaostoolkit-full
         uses: docker/build-push-action@v2
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: chaostoolkit/chaostoolkit:full
           file: ./container/Dockerfile-full
-          labels: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
-            org.opencontainers.image.revision=${GITHUB_SHA}
+          tags: ${{ steps.metafull.outputs.tags }}
+          labels: ${{ steps.metafull.outputs.labels }}
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
         with:
