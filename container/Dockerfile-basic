@@ -6,8 +6,7 @@ ARG CTK_VERSION
 RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
 
 ADD requirements.txt requirements.txt
-RUN env && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential gcc && \
     python3 -m venv /home/ctk/.venv && \
     /home/ctk/.venv/bin/pip install --no-cache-dir -q -U --disable-pip-version-check --prefer-binary pip && \
