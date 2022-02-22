@@ -22,7 +22,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Docker meta
+      - name: Docker meta for 'basic' flavour
         id: metabasic
         uses: docker/metadata-action@v3
         with:
@@ -31,9 +31,8 @@ jobs:
           tags: |
             type=raw,value=basic
           labels: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
-            org.opencontainers.image.revision=${GITHUB_SHA}
-      - name: Docker meta
+            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
+      - name: Docker meta for 'full' flavour
         id: metafull
         uses: docker/metadata-action@v3
         with:
@@ -42,8 +41,7 @@ jobs:
           tags: |
             type=raw,value=full
           labels: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
-            org.opencontainers.image.revision=${GITHUB_SHA}
+            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Build and push chaostoolkit-basic
         uses: docker/build-push-action@v2
         with:
@@ -52,6 +50,8 @@ jobs:
           file: ./container/Dockerfile-basic
           tags: ${{ steps.metabasic.outputs.tags }}
           labels: ${{ steps.metabasic.outputs.labels }}
+          build-args: |
+            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Build and push chaostoolkit-full
         uses: docker/build-push-action@v2
         with:
@@ -60,6 +60,8 @@ jobs:
           file: ./container/Dockerfile-full
           tags: ${{ steps.metafull.outputs.tags }}
           labels: ${{ steps.metafull.outputs.labels }}
+          build-args: |
+            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
         with:
