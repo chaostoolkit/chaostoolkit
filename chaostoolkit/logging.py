@@ -25,6 +25,7 @@ def configure_logger(
     verbose: bool = False,
     log_format: str = "string",
     log_file: str = None,
+    log_file_level: str = "debug",
     logger_name: str = "chaostoolkit",
     context_id: str = None,
 ):
@@ -77,4 +78,6 @@ def configure_logger(
             "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
         )
         formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
-        logzero.logfile(log_file, formatter=formatter, mode="a", loglevel=logging.DEBUG)
+        logzero.logfile(
+            log_file, formatter=formatter, mode="a", loglevel=log_file_level.upper()
+        )

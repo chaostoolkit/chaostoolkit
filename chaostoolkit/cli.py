@@ -61,6 +61,13 @@ __all__ = ["cli"]
     help="File path where to write the command's log.",
 )
 @click.option(
+    "--log-file-level",
+    default="debug",
+    show_default=False,
+    help="File logging level: debug, info, warning, error",
+    type=click.Choice(["debug", "info", "warning", "error"]),
+)
+@click.option(
     "--log-format",
     default="string",
     show_default=False,
@@ -81,6 +88,7 @@ def cli(
     change_dir: str = None,
     no_log_file: bool = False,
     log_file: str = "chaostoolkit.log",
+    log_file_level: str = "info",
     log_format: str = "string",
     settings: str = CHAOSTOOLKIT_CONFIG_PATH,
 ):
@@ -93,6 +101,7 @@ def cli(
         configure_logger(
             verbose=verbose,
             log_file=log_file,
+            log_file_level=log_file_level,
             log_format=log_format,
             context_id=str(uuid.uuid4()),
         )

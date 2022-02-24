@@ -7,6 +7,8 @@
 ### Added
 
 * Full and basic container images abased of Debians bullseye
+* `--log-file-level`: a new root level flag to set the log level of the
+  `chaostoolkit.log` file
 
 ## [1.11.0][] - 2022-01-05
 
