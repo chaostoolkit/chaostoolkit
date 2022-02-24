@@ -46,10 +46,9 @@ jobs:
         with:
           images: |
             chaostoolkit/chaostoolkit
-          flavor: |
-            latest=auto
           tags: |
-            type=ref,event=tag
+            type=raw,value=latest
+            type=raw,value=${{steps.latest_tag.outputs.git_latest_tag}}
           labels: |
             org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Build and push chaostoolkit-basic
