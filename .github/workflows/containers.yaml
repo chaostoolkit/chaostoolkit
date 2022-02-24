@@ -40,6 +40,18 @@ jobs:
             type=raw,value=full
           labels: |
             org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
+      - name: Docker meta for 'alpine' flavour
+        id: alpine
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            chaostoolkit/chaostoolkit
+          flavor: |
+            latest=auto
+          tags: |
+            type=ref,event=tag
+          labels: |
+            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Build and push chaostoolkit-basic
         uses: docker/build-push-action@v2
         with:
@@ -60,6 +72,16 @@ jobs:
           labels: ${{ steps.metafull.outputs.labels }}
           build-args: |
             CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
+      - name: Build and push chaostoolkit latest
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ./Dockerfile
+          tags: ${{ steps.alpine.outputs.tags }}
+          labels: ${{ steps.alpine.outputs.labels }}
+          build-args: |
+            ctkversion=${{steps.latest_tag.outputs.git_latest_tag}}
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v2
         with:
