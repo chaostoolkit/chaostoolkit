@@ -73,11 +73,12 @@ def configure_logger(
     if log_file:
         # always everything as strings in the log file
         logger.setLevel(logging.DEBUG)
+        log_file_level = logging.getLevelName(log_file_level.upper())
         fmt = (
             "%(color)s[%(asctime)s %(levelname)s] "
             "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
         )
         formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
         logzero.logfile(
-            log_file, formatter=formatter, mode="a", loglevel=log_file_level.upper()
+            log_file, formatter=formatter, mode="a", loglevel=log_file_level
         )
