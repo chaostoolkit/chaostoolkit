@@ -6,7 +6,7 @@ install:
 .PHONY: install-dev
 install-dev: install
 	pip install -r requirements-dev.txt
-	python3 setup.py develop
+	pip install -e .
 
 .PHONY: build
 build:
