@@ -25,4 +25,4 @@ format:
 
 .PHONY: tests
 tests:
-	pytest
+	pytest -s
