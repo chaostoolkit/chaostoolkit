@@ -696,6 +696,11 @@ def test_remove_settings_entry():
                 "auths.chaos\\\\.example\\\\.com:8443",
             ],
         )
+        print(result.output, result.exception)
+        try:
+            print(result.stderr)
+        except Exception:
+            pass
         assert result.exit_code == 0
 
         result = runner.invoke(
