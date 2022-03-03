@@ -30,6 +30,7 @@ COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/ctk/
 
 WORKDIR /home/ctk
 USER 1001
+ENV PATH="/home/ctk/.venv/bin:${PATH}"
 
 ENTRYPOINT ["/home/ctk/.venv/bin/chaos"]
 CMD ["--help"]
