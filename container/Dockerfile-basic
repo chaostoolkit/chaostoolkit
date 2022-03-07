@@ -24,13 +24,13 @@ LABEL org.opencontainers.image.url="https://chaostoolkit.org"
 LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostoolkit/container/Dockerfile"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
-RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
-COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/ctk/
-RUN ln -s /home/ctk/.venv/bin/chaos /usr/local/bin/chaos
+RUN groupadd -g 1001 svc && useradd -r -u 1001 -g svc svc
+COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/svc/
+RUN ln -s /home/svc/.venv/bin/chaos /usr/local/bin/chaos
 
-WORKDIR /home/ctk
+WORKDIR /home/svc
 USER 1001
-ENV PATH="/home/ctk/.venv/bin:${PATH}" 
+ENV PATH="/home/svc/.venv/bin:${PATH}" 
 
 ENTRYPOINT ["chaos"]
 CMD ["--help"]
