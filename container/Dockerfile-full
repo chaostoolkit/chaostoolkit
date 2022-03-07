@@ -27,6 +27,7 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
 COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/ctk/
+RUN ln -s /home/ctk/.venv/bin/chaos /usr/local/bin/chaos
 
 WORKDIR /home/ctk
 USER 1001
