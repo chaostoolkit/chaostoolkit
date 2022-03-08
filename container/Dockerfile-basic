@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostool
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 RUN groupadd -g 1001 svc && useradd -r -u 1001 -g svc svc
-COPY --from=build-venv --chown=ctk:ctk /home/ctk /home/svc/
+COPY --from=build-venv --chown=svc:svc /home/ctk /home/svc/
 RUN ln -s /home/svc/.venv/bin/chaos /usr/local/bin/chaos
 
 WORKDIR /home/svc
