@@ -17,6 +17,7 @@ chaostoolkit-k6
 chaostoolkit-reliably
 chaostoolkit-addons
 chaostoolkit-grafana
+chaostoolkit-slack
 
 # Not included because package is way too large and bloat this image
 #chaostoolkit-ansible
