@@ -142,7 +142,7 @@ jobs:
       - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
       - run: echo "Notify new Chaos Toolkit release ${{ env.RELEASE_VERSION }} to slack"
       - name: notify to CTK releases channel on slack
-        uses: Ilshidur/action-slack@master
+        uses: Ilshidur/action-slack@2.1.0
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         with:
