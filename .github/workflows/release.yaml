@@ -138,7 +138,7 @@ jobs:
       - release-to-pypi
       - upload-gh-release-assets
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
       - run: echo "Notify new Chaos Toolkit release ${{ env.RELEASE_VERSION }} to slack"
       - name: notify to CTK releases channel on slack
