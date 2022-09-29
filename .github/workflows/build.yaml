@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.7'
     - name: Install dependencies
@@ -23,11 +23,13 @@ jobs:
         make build
 
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    needs:
+      - build
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.7'
     - name: Install dependencies
@@ -38,14 +40,16 @@ jobs:
         make lint
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    needs:
+      - lint
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9, "3.10"]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies

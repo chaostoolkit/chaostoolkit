@@ -5,9 +5,9 @@ on:
 
 jobs:
   check-changelog:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Check Changelog modified
         uses: dangoslen/changelog-enforcer@v2
         with:
@@ -15,9 +15,9 @@ jobs:
           missingUpdateErrorMessage: |
             Please include an entry into `CHANGELOG.md` to describe what happened in the PR
   check-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Get changed files
         id: files
         uses: jitterbit/get-changed-files@v1

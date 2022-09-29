@@ -7,6 +7,7 @@
 ### Changed
 
 - Updated dependencies
+- Upgraded GitHub actions
 
 ## [1.12.0][] - 2022-02-05
 
