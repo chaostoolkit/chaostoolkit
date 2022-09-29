@@ -432,8 +432,14 @@ def test_show_settings():
         result = runner.invoke(cli, ["--settings", settings_path, "settings", "show"])
         assert result.exit_code == 0
         assert result.exception is None
-        assert yaml.dump(yaml.load(result.output), canonical=True) == yaml.dump(
-            yaml.load(settings_content), canonical=True
+        assert yaml.dump(
+            yaml.load(result.output, Loader=yaml.CLoader),
+            canonical=True,
+            Dumper=yaml.CDumper,
+        ) == yaml.dump(
+            yaml.load(settings_content, Loader=yaml.CLoader),
+            canonical=True,
+            Dumper=yaml.CDumper,
         )
 
 
