@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.12.0...HEAD
 
+### Changed
+
+- Updated dependencies
+
 ## [1.12.0][] - 2022-02-05
 
 [1.12.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.11.0...1.12.0
