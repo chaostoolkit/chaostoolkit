@@ -3,6 +3,8 @@
 ## [Unreleased][]
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.13.0...HEAD
+- Addressed issue# 272 - removed vulnerabilities
+
 
 ## [1.13.0][] - 2022-09-29
 
