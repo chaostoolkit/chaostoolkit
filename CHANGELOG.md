@@ -3,8 +3,8 @@
 ## [Unreleased][]
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.13.0...HEAD
-- Addressed issue# 272 - removed vulnerabilities
-
+- Addressed issue# 272 - removed vulnerabilities on container image built using Dockerfile-full
+- Addressed issue# 272 - removed vulnerabilities on container image built using Dockerfile-basic
 
 ## [1.13.0][] - 2022-09-29
 
