@@ -1,4 +1,4 @@
-FROM python:3-slim-bullseye AS build-venv
+FROM ubuntu:latest AS build-venv
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CTK_VERSION
@@ -7,6 +7,7 @@ RUN groupadd -g 1001 ctk && useradd -r -u 1001 -g ctk ctk
 
 ADD requirements.txt requirements.txt
 RUN apt-get update && \
+    apt-get install -y python3 python3-pip python3.10-venv && \
     apt-get install -y --no-install-recommends build-essential gcc && \
     python3 -m venv /home/svc/.venv && \
     /home/svc/.venv/bin/pip install --no-cache-dir -q -U --disable-pip-version-check --prefer-binary pip && \
@@ -16,7 +17,7 @@ RUN apt-get update && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-FROM python:3-slim-bullseye
+FROM ubuntu:latest
 
 LABEL org.opencontainers.image.authors="chaostoolkit <contact@chaostoolkit.org>"
 LABEL org.opencontainers.image.vendor="Chaos Toolkit"
