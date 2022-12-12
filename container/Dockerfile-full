@@ -26,9 +26,9 @@ LABEL org.opencontainers.image.url="https://chaostoolkit.org"
 LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostoolkit/container/Dockerfile"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
-RUN groupadd -g 1001 svc && useradd -r -u 1001 -g svc svc
-COPY --from=build-venv --chown=svc:svc /home/svc /home/svc/
-RUN ln -s /home/svc/.venv/bin/chaos /usr/local/bin/chaos
+RUN apt-get update && apt-get install -y python3 && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN groupadd -g 1001 svc && useradd -m -u 1001 -g svc svc
+COPY --from=build-venv --chown=svc:svc /home/svc/.venv/ /home/svc/.venv
 
 WORKDIR /home/svc
 USER 1001
