@@ -32,10 +32,10 @@
 # Chaos Toolkit - Chaos Engineering for Developers
 
 The Chaos Toolkit, or as we love to call it &#x201C;ctk&#x201D;, is a simple
-CLI-driven tool who helps you write and run Chaos Engineering experiment. It 
-supports any target platform you can think of through
+CLI-driven tool that helps you write and run Chaos Engineering experiments. It 
+supports any target platform you can think of, through
 [existing extensions](https://chaostoolkit.org/drivers/overview/) or
-the ones you write as you need.
+through extensions you write as you need.
 
 Chaos Toolkit is versatile and works really well in settings where other Chaos
 Engineering tools may not fit: cloud environments, datacenters, CI/CD, etc.
@@ -67,9 +67,9 @@ Chaos Toolkit or Chaos Engineering.
 [join]: https://join.chaostoolkit.org/
 [so]: https://stackoverflow.com/questions/ask?tags=chaostoolkit+chaosengineering
 
-If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
+If you'd prefer not to use Slack then we welcome you to raise GitHub issues on this repo, for any questions, requests, or discussions around the Chaos Toolkit.
 
-Finally you can always email `contact@chaostoolkit.org` with any questions as well.
+Finally you can also email `contact@chaostoolkit.org` with any questions you might have.
 
 ## Contribute
 
