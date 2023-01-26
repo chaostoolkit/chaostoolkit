@@ -11,7 +11,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential gcc && \
     python3 -m venv /home/svc/.venv && \
     /home/svc/.venv/bin/pip install --no-cache-dir -q -U --disable-pip-version-check --prefer-binary pip && \
-    /home/svc/.venv/bin/pip install --no-cache-dir -q --prefer-binary setuptools wheel && \
+    /home/svc/.venv/bin/pip install --no-cache-dir -q --prefer-binary setuptools wheel jsonpath2>=0.2.1 && \
     /home/svc/.venv/bin/pip install --no-cache-dir --prefer-binary chaostoolkit==${CTK_VERSION} && \
     chown --recursive ctk:ctk /home/svc && \
     apt-get remove -y build-essential gcc && \
