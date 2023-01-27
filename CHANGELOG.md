@@ -3,8 +3,10 @@
 ## [Unreleased][]
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.13.0...HEAD
+
 - Addressed issue# 272 - removed vulnerabilities on container image built using Dockerfile-full
 - Addressed issue# 272 - removed vulnerabilities on container image built using Dockerfile-basic
+- Add support for control-file arguments to the the `chaos run` command
 
 ## [1.13.0][] - 2022-09-29
 

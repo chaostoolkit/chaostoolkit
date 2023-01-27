@@ -185,6 +185,14 @@ def validate_vars(
     "Can be provided multiple times.",
 )
 @click.option(
+    "--control-file",
+    multiple=True,
+    type=click.Path(exists=True),
+    help="Specify files that can contain controls definitions "
+    "that will be loaded as global controls at startup. So before "
+    "the experiment was even loaded.",
+)
+@click.option(
     "--hypothesis-strategy",
     default="default",
     type=click.Choice(
@@ -230,6 +238,7 @@ def run(
     rollback_strategy: str = "default",
     var: Dict[str, Any] = None,
     var_file: List[str] = None,
+    control_file: List[str] = None,
     hypothesis_strategy: str = "default",
     hypothesis_frequency: float = 1.0,
     fail_fast: bool = False,
@@ -242,7 +251,15 @@ def run(
 
     experiment_vars = merge_vars(var, var_file)
 
-    load_global_controls(settings)
+    try:
+        load_global_controls(settings, control_file)
+    except TypeError:
+        logger.warning(
+            "Passing control files only work with chaostoolkit-lib 1.33+, you "
+            f"run {chaoslib_version}. The control files will be ignored."
+            "Please upgrade with `pip install -U chaostoolkit-lib`"
+        )
+        load_global_controls(settings)
 
     try:
         experiment = load_experiment(source, settings, verify_tls=not no_verify_tls)
