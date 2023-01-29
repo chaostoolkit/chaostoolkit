@@ -715,3 +715,139 @@ def test_remove_settings_entry():
             ],
         )
         assert result.exit_code == 1
+
+
+def test_use_default_cli_strategies_when_none_provided(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "check-file-exists.json"
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "run",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+
+    m = "Runtime strategies: hypothesis - default / rollbacks - default"
+    assert m in log
+
+
+def test_rollbacks_cli_rollback_strategies_can_be_overriden_by_experiment(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__),
+        "fixtures",
+        "override-rollbacks-runtime-strategy.json",
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "run",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+
+    m = "Runtime strategies: hypothesis - default / rollbacks - never"
+    assert m in log
+
+
+def test_rollbacks_cli_rollback_strategies_in_experiment_can_be_overriden_by_cli(
+    log_file,
+):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__),
+        "fixtures",
+        "override-rollbacks-runtime-strategy.json",
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "run",
+            "--rollback-strategy",
+            "deviated",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+
+    m = "Runtime strategies: hypothesis - default / rollbacks - deviated"
+    assert m in log
+
+
+def test_rollbacks_cli_hypothesis_strategies_can_be_overriden_by_experiment(log_file):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__),
+        "fixtures",
+        "override-hypothesis-runtime-strategy.json",
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "run",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+
+    m = "Runtime strategies: hypothesis - before-method-only / rollbacks - default"
+    assert m in log
+
+
+def test_rollbacks_cli_hypothesis_strategies_in_experiment_can_be_overriden_by_cli(
+    log_file,
+):
+    runner = CliRunner()
+    exp_path = os.path.join(
+        os.path.dirname(__file__),
+        "fixtures",
+        "override-hypothesis-runtime-strategy.json",
+    )
+    result = runner.invoke(
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "run",
+            "--hypothesis-strategy",
+            "after-method-only",
+            exp_path,
+        ],
+    )
+    assert result.exit_code == 0
+    assert result.exception is None
+
+    log_file.seek(0)
+    log = log_file.read().decode("utf-8")
+
+    m = "Runtime strategies: hypothesis - after-method-only / rollbacks - default"
+    assert m in log

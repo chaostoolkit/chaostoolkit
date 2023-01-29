@@ -43,6 +43,9 @@ from chaostoolkit.logging import configure_logger
 
 __all__ = ["cli"]
 
+DEFAULT_ROLLBACK_STRATEGY = "default"
+DEFAULT_HYPOTHESIS_STRATEGY = "default"
+
 
 @click.group()
 @click.version_option(version=__version__)
@@ -157,7 +160,6 @@ def validate_vars(
 @click.option("--no-verify-tls", is_flag=True, help="Do not verify TLS certificate.")
 @click.option(
     "--rollback-strategy",
-    default="default",
     show_default=False,
     help="Rollback runtime strategy. Default is to never play them "
     "on interruption or failed hypothesis.",
@@ -194,7 +196,6 @@ def validate_vars(
 )
 @click.option(
     "--hypothesis-strategy",
-    default="default",
     type=click.Choice(
         [
             "default",
@@ -235,11 +236,11 @@ def run(
     no_validation: bool = False,
     no_exit: bool = False,
     no_verify_tls: bool = False,
-    rollback_strategy: str = "default",
+    rollback_strategy: str = None,
     var: Dict[str, Any] = None,
     var_file: List[str] = None,
     control_file: List[str] = None,
-    hypothesis_strategy: str = "default",
+    hypothesis_strategy: Optional[str] = None,
     hypothesis_frequency: float = 1.0,
     fail_fast: bool = False,
 ) -> Journal:
@@ -279,10 +280,44 @@ def run(
             ctx.exit(1)
 
     experiment["dry"] = Dry.from_string(dry)
-    settings.setdefault("runtime", {}).setdefault("rollbacks", {}).setdefault(
-        "strategy", rollback_strategy
+
+    # we first check the settings for the runtime settings
+    runtime = settings.setdefault("runtime", {})
+    runtime.setdefault("rollbacks", {}).setdefault(
+        "strategy", DEFAULT_ROLLBACK_STRATEGY
     )
-    hypothesis_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
+    runtime.setdefault("hypothesis", {}).setdefault(
+        "strategy", DEFAULT_HYPOTHESIS_STRATEGY
+    )
+
+    # we allow to override via the experiment
+    experiment_runtime = experiment.get("runtime")
+    if experiment_runtime:
+        runtime["rollbacks"]["strategy"] = experiment_runtime.get("rollbacks", {}).get(
+            "strategy", DEFAULT_ROLLBACK_STRATEGY
+        )
+        runtime["hypothesis"]["strategy"] = experiment_runtime.get(
+            "hypothesis", {}
+        ).get("strategy", DEFAULT_HYPOTHESIS_STRATEGY)
+
+    # finally the cli takes precedence over both of the above
+    if hypothesis_strategy is None:
+        hypothesis_strategy = runtime["hypothesis"]["strategy"]
+    else:
+        runtime["hypothesis"]["strategy"] = hypothesis_strategy
+
+    if rollback_strategy is None:
+        rollback_strategy = runtime["rollbacks"]["strategy"]
+    else:
+        runtime["rollbacks"]["strategy"] = rollback_strategy
+
+    logger.debug(
+        f"Runtime strategies: hypothesis - {hypothesis_strategy} "
+        f"/ rollbacks - {rollback_strategy}"
+    )
+
+    ssh_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
+
     schedule = Schedule(
         continuous_hypothesis_frequency=hypothesis_frequency, fail_fast=fail_fast
     )
@@ -290,7 +325,7 @@ def run(
     journal = run_experiment(
         experiment,
         settings=settings,
-        strategy=hypothesis_strategy,
+        strategy=ssh_strategy,
         schedule=schedule,
         experiment_vars=experiment_vars,
     )

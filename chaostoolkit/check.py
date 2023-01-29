@@ -44,7 +44,7 @@ def check_newer_version(command: str):
         pass
 
 
-def check_hypothesis_strategy_spelling(hypothesis_strategy: str):
+def check_hypothesis_strategy_spelling(hypothesis_strategy: str) -> Strategy:
     """
     Checking for incorrectly spelt commands supported by
     previous versions of the cli

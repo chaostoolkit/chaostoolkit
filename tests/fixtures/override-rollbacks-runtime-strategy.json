@@ -1,0 +1,58 @@
+{
+    "title": "Check file is there",
+    "description": "This is a test experiment",
+    "runtime": {
+        "rollbacks": {
+            "strategy": "never"
+        }
+    },
+    "steady-state-hypothesis": {
+        "title": "Services are all available and healthy",
+        "probes": [
+            {
+                "name": "list-all-files-in-directory",
+                "type": "probe",
+                "tolerance": 0,
+                "provider": {
+                    "type": "process",
+                    "path": "ls"
+                }
+            },
+            {
+                "name": "check-file-exists",
+                "type": "probe",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "os.path",
+                    "func": "exists",
+                    "arguments": {
+                        "path": "tests/conftest.py"
+                    }
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "name": "touch-file",
+            "type": "action",
+            "provider": {
+                "type": "process",
+                "path": "touch",
+                "arguments": "tests/conftest.py"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "name": "pretend-to-delete-file",
+            "type": "action",
+            "provider": {
+                "type": "process",
+                "path": "cat",
+                "arguments": "tests/conftest.py"
+            }
+        }
+    ]
+}

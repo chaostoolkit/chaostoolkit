@@ -4,6 +4,27 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.14.0...HEAD
 
+### Added
+
+- Support to define the runtime strategies for hypothesis and rollbacks from
+  within the experiment itself. Usng the following block:
+
+  ```json
+  {
+    "runtime": {
+        "hypoethesis": {
+            "strategy": "after-method-only"
+        },
+        "rollbacks": {
+            "strategy": "always"
+        }
+    }
+  }
+  ```
+
+  Only one of the two may be set. In all cases, these can be overriden by
+  the CLI corresponding flags.
+
 ## [1.14.0][] - 2023-01-27
 
 [1.14.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.13.0...1.14.0
