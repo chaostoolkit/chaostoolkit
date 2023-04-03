@@ -2,7 +2,7 @@ import decimal
 import uuid
 from datetime import date, datetime
 
-__version__ = "1.15.0"
+__version__ = "1.15.1"
 __all__ = ["__version__", "encoder"]
 
 
