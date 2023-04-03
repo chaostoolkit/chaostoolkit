@@ -759,7 +759,14 @@ def init(
 
 
 # keep this after the cli group declaration for plugins to override defaults
-with_plugins(importlib_metadata.entry_points(group="chaostoolkit.cli_plugins"))(cli)
+# knowing which version of importlib is actually installed is dark magic because
+# everyone wants a different versions that may not compatible
+# between each other. Easier to just see what works and what doesn't here.
+# https://github.com/python/importlib_metadata/issues/411#issuecomment-1494336052
+try:
+    with_plugins(importlib_metadata.entry_points().get("chaostoolkit.cli_plugins"))(cli)
+except AttributeError:
+    with_plugins(importlib_metadata.entry_points(group="chaostoolkit.cli_plugins"))(cli)
 
 
 def is_yaml(experiment_path: str) -> bool:
