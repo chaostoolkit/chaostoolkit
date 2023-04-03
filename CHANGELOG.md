@@ -2,7 +2,20 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.1...HEAD
+
+## [1.15.1][] - 2023-04-03
+
+[1.15.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.0...1.15.1
+
+### Fixed
+
+- As we now depend on recent versions of `importlib_metadata` we need to 
+  abide by its breaking compability changes. Specially at the bottom of the
+  section [here](https://docs.python.org/3/library/importlib.metadata.html#entry-points).
+  Fixes [#279][279]
+
+[279]: https://github.com/chaostoolkit/chaostoolkit/issues/279
 
 ## [1.15.0][] - 2023-01-29
 

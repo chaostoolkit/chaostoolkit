@@ -95,7 +95,6 @@ def cli(
     log_format: str = "string",
     settings: str = CHAOSTOOLKIT_CONFIG_PATH,
 ):
-
     if no_log_file:
         configure_logger(
             verbose=verbose, log_format=log_format, context_id=str(uuid.uuid4())
@@ -255,6 +254,7 @@ def run(
     try:
         load_global_controls(settings, control_file)
     except TypeError:
+        logger.debug("Failed to load controls", exc_info=True)
         logger.warning(
             "Passing control files only work with chaostoolkit-lib 1.33+, you "
             f"run {chaoslib_version}. The control files will be ignored."
@@ -759,7 +759,7 @@ def init(
 
 
 # keep this after the cli group declaration for plugins to override defaults
-with_plugins(importlib_metadata.entry_points().get("chaostoolkit.cli_plugins"))(cli)
+with_plugins(importlib_metadata.entry_points(group="chaostoolkit.cli_plugins"))(cli)
 
 
 def is_yaml(experiment_path: str) -> bool:
