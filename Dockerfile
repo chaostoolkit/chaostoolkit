@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.11.3-alpine3.18
 
 LABEL maintainer="chaostoolkit <contact@chaostoolkit.org>"
 
