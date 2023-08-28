@@ -4,6 +4,15 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.1...HEAD
 
+### Fixed
+
+* Always send deviated notication when status is indeed deviated
+
+### Changed
+
+* Switched to ruff to lint code
+* Switched to direct Slack invite link
+
 ## [1.15.1][] - 2023-04-03
 
 [1.15.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.0...1.15.1

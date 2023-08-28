@@ -14,7 +14,7 @@ build:
 
 .PHONY: lint
 lint:
-	flake8 chaostoolkit/ tests/
+	ruff chaostoolkit/ tests/
 	isort --check-only --profile black chaostoolkit/ tests/
 	black --check --diff chaostoolkit/ tests/
 
@@ -22,6 +22,7 @@ lint:
 format:
 	isort --profile black chaostoolkit/ tests/
 	black chaostoolkit/ tests/
+	ruff chaostoolkit/ tests/ --fix
 
 .PHONY: tests
 tests:

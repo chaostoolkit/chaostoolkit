@@ -1,8 +1,8 @@
 black
 coverage
-flake8
 isort
 pytest
 pytest-cov
 pytest-sugar
 semver
+ruff

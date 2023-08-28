@@ -247,7 +247,17 @@ def test_notify_run_failure(notify, log_file):
     exp_path = os.path.join(
         os.path.dirname(__file__), "fixtures", "check-file-exists-fail.json"
     )
-    result = runner.invoke(cli, ["--settings", empty_settings_path, "run", "--hypothesis-strategy", "after-method-only", exp_path])
+    result = runner.invoke(
+        cli,
+        [
+            "--settings",
+            empty_settings_path,
+            "run",
+            "--hypothesis-strategy",
+            "after-method-only",
+            exp_path,
+        ],
+    )
     assert result.exit_code == 1
     assert result.exception
 

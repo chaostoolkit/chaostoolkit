@@ -83,7 +83,7 @@ seeks [discussions][join] and continuous improvement.
 From a code perspective, if you wish to contribute, you will need to run a
 Python 3.7+ environment. Please, fork this project, write unit tests to cover
 the proposed changes, implement the changes, ensure they meet the formatting
-standards set out by `black`, `flake8`, and `isort`, add an entry into
+standards set out by `black`, `ruff`, and `isort`, add an entry into
 `CHANGELOG.md`, and then raise a PR to the repository for review
 
 The Chaos Toolkit projects require all contributors must sign a
