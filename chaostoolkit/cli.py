@@ -341,8 +341,8 @@ def run(
     elif has_failed:
         notify(settings, RunFlowEvent.RunFailed, journal)
 
-        if has_deviated:
-            notify(settings, RunFlowEvent.RunDeviated, journal)
+    if has_deviated:
+        notify(settings, RunFlowEvent.RunDeviated, journal)
 
     if (has_failed or has_deviated) and not no_exit:
         ctx.exit(1)

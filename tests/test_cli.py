@@ -247,12 +247,12 @@ def test_notify_run_failure(notify, log_file):
     exp_path = os.path.join(
         os.path.dirname(__file__), "fixtures", "check-file-exists-fail.json"
     )
-    result = runner.invoke(cli, ["--settings", empty_settings_path, "run", exp_path])
+    result = runner.invoke(cli, ["--settings", empty_settings_path, "run", "--hypothesis-strategy", "after-method-only", exp_path])
     assert result.exit_code == 1
     assert result.exception
 
     notify.assert_any_call(ANY, RunFlowEvent.RunStarted, ANY)
-    notify.assert_any_call(ANY, RunFlowEvent.RunFailed, ANY)
+    notify.assert_any_call(ANY, RunFlowEvent.RunCompleted, ANY)
 
 
 @patch("chaostoolkit.cli.notify", spec=True)
@@ -271,7 +271,7 @@ def test_notify_run_failure_with_deviation(notify, log_file):
     assert result.exception
 
     notify.assert_any_call(ANY, RunFlowEvent.RunStarted, ANY)
-    notify.assert_any_call(ANY, RunFlowEvent.RunFailed, ANY)
+    notify.assert_any_call(ANY, RunFlowEvent.RunCompleted, ANY)
     notify.assert_any_call(ANY, RunFlowEvent.RunDeviated, ANY)
 
 
