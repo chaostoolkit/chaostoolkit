@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="https://join.chaostoolkit.org/">Community</a> •
+  <a href="https://join.slack.com/t/chaostoolkit/shared_invite/zt-22c5isqi9-3YjYzucVTNFFVIG~Kzns8g">Community</a> •
   <a href="https://chaostoolkit.org/reference/usage/install/">Installation</a> •
   <a href="https://chaostoolkit.org/reference/tutorial/">Tutorials</a> •
   <a href="https://chaostoolkit.org/reference/concepts/">Reference</a> •
@@ -64,7 +64,7 @@ Chaos Toolkit's mission is to provide an open API to chaos engineering in all it
 You can also use [StackOverflow][so] to ask any questions regarding using the
 Chaos Toolkit or Chaos Engineering.
 
-[join]: https://join.chaostoolkit.org/
+[join]: https://join.slack.com/t/chaostoolkit/shared_invite/zt-22c5isqi9-3YjYzucVTNFFVIG~Kzns8g
 [so]: https://stackoverflow.com/questions/ask?tags=chaostoolkit+chaosengineering
 
 If you'd prefer not to use Slack then we welcome the raising of GitHub issues on this repo for any questions, requests, or discussions around the Chaos Toolkit.
@@ -79,8 +79,6 @@ Finally you can always email `contact@chaostoolkit.org` with any questions as we
 
 Contributors to this project are welcome as this is an open-source effort that
 seeks [discussions][join] and continuous improvement.
-
-[join]: https://join.chaostoolkit.org/
 
 From a code perspective, if you wish to contribute, you will need to run a
 Python 3.7+ environment. Please, fork this project, write unit tests to cover
