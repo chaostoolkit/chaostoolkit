@@ -5,7 +5,6 @@ import tempfile
 import uuid
 from datetime import datetime
 from decimal import Decimal
-from pathlib import Path
 from unittest.mock import ANY, patch
 
 import pytest
