@@ -279,9 +279,6 @@ def test_notify_run_failure_with_deviation(notify, log_file):
     assert result.exit_code == 1
     assert result.exception
 
-    print(notify.call_args_list)
-    print(Path("./journal.json").read_text())
-
     notify.assert_any_call(ANY, RunFlowEvent.RunStarted, ANY)
     notify.assert_any_call(ANY, RunFlowEvent.RunCompleted, ANY)
     notify.assert_any_call(ANY, RunFlowEvent.RunDeviated, ANY)
