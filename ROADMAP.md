@@ -146,7 +146,7 @@ discovered.
 * [x] create an official repository/package of common tolerances
 * [x] create an official repository/package for common controls
 * [x] add a flag to control the rollbacks strategy [#176][176]
-* [ ] support finer control over rollbacks and when they should be
+* [x] support finer control over rollbacks and when they should be
       executed [#177][177]
 
 [65]: https://github.com/chaostoolkit/chaostoolkit/issues/65
