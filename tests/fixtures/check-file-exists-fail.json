@@ -10,24 +10,12 @@
                 "tolerance": true,
                 "provider": {
                     "type": "python",
-                    "module": "os.path",
-                    "func": "exists",
-                    "arguments": {
-                        "path": "tests/conftest.go"
-                    }
+                    "module": "fixtures.force_failure",
+                    "func": "kaboom"
                 }
             }
         ]
     },
     "method": [
-        {
-            "name": "touch-file",
-            "type": "action",
-            "provider": {
-                "type": "process",
-                "path": "touch",
-                "arguments": "tests/conftest.py"
-            }
-        }
     ]
 }

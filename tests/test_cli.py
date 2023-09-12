@@ -253,8 +253,6 @@ def test_notify_run_failure(notify, log_file):
             "--settings",
             empty_settings_path,
             "run",
-            "--hypothesis-strategy",
-            "after-method-only",
             exp_path,
         ],
     )
@@ -262,7 +260,7 @@ def test_notify_run_failure(notify, log_file):
     assert result.exception
 
     notify.assert_any_call(ANY, RunFlowEvent.RunStarted, ANY)
-    notify.assert_any_call(ANY, RunFlowEvent.RunCompleted, ANY)
+    notify.assert_any_call(ANY, RunFlowEvent.RunFailed, ANY)
 
 
 @patch("chaostoolkit.cli.notify", spec=True)
