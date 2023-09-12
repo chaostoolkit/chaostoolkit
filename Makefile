@@ -1,12 +1,12 @@
 .PHONY: install
 install:
-	pip install --upgrade pip setuptools wheel
-	pip install --upgrade -r requirements.txt
+	pip install --no-cache-dir --upgrade pip setuptools wheel
+	pip install --no-cache-dir --upgrade -r requirements.txt
 
 .PHONY: install-dev
 install-dev: install
-	pip install -r requirements-dev.txt
-	pip install --upgrade -e .
+	pip install --no-cache-dir --upgrade -r requirements-dev.txt
+	pip install --no-cache-dir --upgrade -e .
 
 .PHONY: build
 build:
