@@ -12,6 +12,7 @@
 
 * Switched to ruff to lint code
 * Switched to direct Slack invite link
+* Make sure to use latest importlib-metadata package even on Python 3.7
 
 ## [1.15.1][] - 2023-04-03
 
