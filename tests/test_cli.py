@@ -39,7 +39,9 @@ def test_source_experiment_is_mandatory():
 
 def test_source_path_must_exist(log_file):
     runner = CliRunner()
-    result = runner.invoke(cli, ["--log-file", log_file.name, "run", "invalid.jsn"])
+    result = runner.invoke(
+        cli, ["--log-file", log_file.name, "run", "invalid.jsn"]
+    )
     assert result.exit_code == 1
     assert result.exception
 
@@ -71,7 +73,15 @@ def test_specify_settings_file(log_file):
         os.path.dirname(__file__), "fixtures", "well-formed-experiment.json"
     )
     result = runner.invoke(
-        cli, ["--log-file", log_file.name, "--settings", settings_path, "run", exp_path]
+        cli,
+        [
+            "--log-file",
+            log_file.name,
+            "--settings",
+            settings_path,
+            "run",
+            exp_path,
+        ],
     )
     assert result.exit_code == 1
 
@@ -113,7 +123,8 @@ def test_change_directory(log_file):
     subdir = os.path.join(curdir, "tests", "fixtures")
     try:
         runner.invoke(
-            cli, ["--settings", empty_settings_path, "--change-dir", subdir, "run"]
+            cli,
+            ["--settings", empty_settings_path, "--change-dir", subdir, "run"],
         )
         assert os.getcwd() == subdir
     finally:
@@ -232,7 +243,14 @@ def test_notify_run_complete(notify, log_file):
     )
     result = runner.invoke(
         cli,
-        ["--settings", empty_settings_path, "--change-dir", testdir, "run", exp_path],
+        [
+            "--settings",
+            empty_settings_path,
+            "--change-dir",
+            testdir,
+            "run",
+            exp_path,
+        ],
     )
     assert result.exit_code == 0
     assert result.exception is None
@@ -269,7 +287,9 @@ def test_notify_run_failure_with_deviation(notify, log_file):
     exp_path = os.path.join(
         os.path.dirname(__file__), "fixtures", "check-file-exists-deviated.json"
     )
-    dummy_path = os.path.join(os.path.dirname(__file__), "fixtures", "dummy.txt")
+    dummy_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "dummy.txt"
+    )
 
     with open(dummy_path, "w"):
         result = runner.invoke(
@@ -302,7 +322,9 @@ def test_notify_validate_complete(notify):
 @patch("chaostoolkit.cli.notify", spec=True)
 def test_notify_validate_failure(notify):
     runner = CliRunner()
-    exp_path = os.path.join(os.path.dirname(__file__), "fixtures", "invalid-plan.json")
+    exp_path = os.path.join(
+        os.path.dirname(__file__), "fixtures", "invalid-plan.json"
+    )
     result = runner.invoke(
         cli, ["--settings", empty_settings_path, "validate", exp_path]
     )
@@ -337,7 +359,9 @@ def test_notify_discover_failure(disco, notify):
         assert result.exception is None
 
         notify.assert_any_call(ANY, DiscoverFlowEvent.DiscoverStarted, ANY)
-        notify.assert_called_with(ANY, DiscoverFlowEvent.DiscoverCompleted, discovered)
+        notify.assert_called_with(
+            ANY, DiscoverFlowEvent.DiscoverCompleted, discovered
+        )
 
         f.seek(0)
         data = f.read()
@@ -437,7 +461,9 @@ def test_show_settings():
             settings_path,
         )
         settings_content = open(settings_path).read()
-        result = runner.invoke(cli, ["--settings", settings_path, "settings", "show"])
+        result = runner.invoke(
+            cli, ["--settings", settings_path, "settings", "show"]
+        )
         assert result.exit_code == 0
         assert result.exception is None
         assert yaml.dump(
@@ -555,7 +581,8 @@ def test_set_settings_not_found_key_exits_with_1():
             settings_path,
         )
         result = runner.invoke(
-            cli, ["--settings", settings_path, "settings", "set", "burp", '"hello"']
+            cli,
+            ["--settings", settings_path, "settings", "set", "burp", '"hello"'],
         )
         assert result.exit_code == 1
 
@@ -749,7 +776,9 @@ def test_use_default_cli_strategies_when_none_provided(log_file):
     assert m in log
 
 
-def test_rollbacks_cli_rollback_strategies_can_be_overriden_by_experiment(log_file):
+def test_rollbacks_cli_rollback_strategies_can_be_overriden_by_experiment(
+    log_file,
+):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__),
@@ -805,7 +834,9 @@ def test_rollbacks_cli_rollback_strategies_in_experiment_can_be_overriden_by_cli
     assert m in log
 
 
-def test_rollbacks_cli_hypothesis_strategies_can_be_overriden_by_experiment(log_file):
+def test_rollbacks_cli_hypothesis_strategies_can_be_overriden_by_experiment(
+    log_file,
+):
     runner = CliRunner()
     exp_path = os.path.join(
         os.path.dirname(__file__),

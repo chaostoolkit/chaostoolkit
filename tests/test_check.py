@@ -4,7 +4,10 @@ import semver
 from chaoslib.types import Strategy
 
 from chaostoolkit import __version__
-from chaostoolkit.check import check_hypothesis_strategy_spelling, check_newer_version
+from chaostoolkit.check import (
+    check_hypothesis_strategy_spelling,
+    check_newer_version,
+)
 
 
 class FakeResponse:

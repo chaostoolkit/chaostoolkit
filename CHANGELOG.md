@@ -4,6 +4,12 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.16.0...HEAD
 
+### Changed
+
+* Switched to [pdm](https://pdm-project.org/) to manage the package
+* Dropped support for Python 3.7 as it has been EOL for a while now. We will
+  also drop support for Python 3.8 in 2024.
+
 ## [1.16.0][] - 2023-09-12
 
 [1.16.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.15.1...1.16.0

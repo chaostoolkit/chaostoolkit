@@ -56,7 +56,9 @@ def configure_logger(
             "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
         )
 
-    formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
+    formatter = LogFormatter(
+        fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors
+    )
     if log_format == "json":
         if sys.version_info < (3, 8):
             fmt = "(process) (asctime) (levelname) (module) (lineno) (message)"
@@ -64,7 +66,9 @@ def configure_logger(
             fmt = "%(process) %(asctime) %(levelname) %(module) %(lineno) %(message)"
         if context_id:
             fmt = f"(context_id) {fmt}"
-        formatter = jsonlogger.JsonFormatter(fmt, json_default=encoder, timestamp=True)
+        formatter = jsonlogger.JsonFormatter(
+            fmt, json_default=encoder, timestamp=True
+        )
 
     logger = setup_default_logger(level=log_level, formatter=formatter)
     if context_id:
@@ -78,7 +82,9 @@ def configure_logger(
             "%(color)s[%(asctime)s %(levelname)s] "
             "[%(module)s:%(lineno)d]%(end_color)s %(message)s"
         )
-        formatter = LogFormatter(fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors)
+        formatter = LogFormatter(
+            fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors
+        )
         logzero.logfile(
             log_file, formatter=formatter, mode="a", loglevel=log_file_level
         )

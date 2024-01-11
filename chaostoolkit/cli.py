@@ -26,7 +26,14 @@ from chaoslib.settings import (
     locate_settings_entry,
     save_settings,
 )
-from chaoslib.types import Activity, Discovery, Dry, Experiment, Journal, Schedule
+from chaoslib.types import (
+    Activity,
+    Discovery,
+    Dry,
+    Experiment,
+    Journal,
+    Schedule,
+)
 from click_plugins import with_plugins
 
 try:
@@ -38,7 +45,10 @@ import yaml
 from logzero import logger
 
 from chaostoolkit import __version__, encoder
-from chaostoolkit.check import check_hypothesis_strategy_spelling, check_newer_version
+from chaostoolkit.check import (
+    check_hypothesis_strategy_spelling,
+    check_newer_version,
+)
 from chaostoolkit.logging import configure_logger
 
 __all__ = ["cli"]
@@ -55,8 +65,12 @@ DEFAULT_HYPOTHESIS_STRATEGY = "default"
     is_flag=True,
     help="Do not search for an updated version of the chaostoolkit.",
 )
-@click.option("--change-dir", help="Change directory before running experiment.")
-@click.option("--no-log-file", is_flag=True, help="Disable logging to file entirely.")
+@click.option(
+    "--change-dir", help="Change directory before running experiment."
+)
+@click.option(
+    "--no-log-file", is_flag=True, help="Disable logging to file entirely."
+)
 @click.option(
     "--log-file",
     default="chaostoolkit.log",
@@ -156,7 +170,9 @@ def validate_vars(
     is_flag=True,
     help="Do not validate the experiment before running.",
 )
-@click.option("--no-verify-tls", is_flag=True, help="Do not verify TLS certificate.")
+@click.option(
+    "--no-verify-tls", is_flag=True, help="Do not verify TLS certificate."
+)
 @click.option(
     "--rollback-strategy",
     show_default=False,
@@ -263,7 +279,9 @@ def run(
         load_global_controls(settings)
 
     try:
-        experiment = load_experiment(source, settings, verify_tls=not no_verify_tls)
+        experiment = load_experiment(
+            source, settings, verify_tls=not no_verify_tls
+        )
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -293,9 +311,9 @@ def run(
     # we allow to override via the experiment
     experiment_runtime = experiment.get("runtime")
     if experiment_runtime:
-        runtime["rollbacks"]["strategy"] = experiment_runtime.get("rollbacks", {}).get(
-            "strategy", DEFAULT_ROLLBACK_STRATEGY
-        )
+        runtime["rollbacks"]["strategy"] = experiment_runtime.get(
+            "rollbacks", {}
+        ).get("strategy", DEFAULT_ROLLBACK_STRATEGY)
         runtime["hypothesis"]["strategy"] = experiment_runtime.get(
             "hypothesis", {}
         ).get("strategy", DEFAULT_HYPOTHESIS_STRATEGY)
@@ -319,7 +337,8 @@ def run(
     ssh_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
 
     schedule = Schedule(
-        continuous_hypothesis_frequency=hypothesis_frequency, fail_fast=fail_fast
+        continuous_hypothesis_frequency=hypothesis_frequency,
+        fail_fast=fail_fast,
     )
 
     journal = run_experiment(
@@ -351,7 +370,9 @@ def run(
 
 
 @cli.command()
-@click.option("--no-verify-tls", is_flag=True, help="Do not verify TLS certificate.")
+@click.option(
+    "--no-verify-tls", is_flag=True, help="Do not verify TLS certificate."
+)
 @click.argument("source")
 @click.pass_context
 def validate(
@@ -361,7 +382,9 @@ def validate(
     settings = load_settings(ctx.obj["settings_path"])
 
     try:
-        experiment = load_experiment(source, settings, verify_tls=not no_verify_tls)
+        experiment = load_experiment(
+            source, settings, verify_tls=not no_verify_tls
+        )
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
@@ -409,7 +432,9 @@ def show_settings(ctx: click.Context, fmt: str = "json"):
     Be aware this will not obfuscate secret data.
     """
     if not os.path.isfile(ctx.obj["settings_path"]):
-        click.abort("No settings file found at {}".format(ctx.obj["settings_path"]))
+        click.abort(
+            "No settings file found at {}".format(ctx.obj["settings_path"])
+        )
 
     settings = load_settings(ctx.obj["settings_path"]) or {}
     if fmt == "json":
@@ -520,7 +545,9 @@ settings.add_command(get_settings_value)
 
 @cli.command()
 @click.argument(
-    "target", type=click.Choice(["core", "settings", "extensions"]), metavar="TARGET"
+    "target",
+    type=click.Choice(["core", "settings", "extensions"]),
+    metavar="TARGET",
 )
 @click.pass_context
 def info(ctx: click.Context, target: str):
@@ -545,14 +572,20 @@ def info(ctx: click.Context, target: str):
     elif target == "extensions":
         fmt = "{:<40}{:<10}{:30}{:50}"
         click.secho(
-            fmt.format("NAME", "VERSION", "LICENSE", "DESCRIPTION"), fg="bright_blue"
+            fmt.format("NAME", "VERSION", "LICENSE", "DESCRIPTION"),
+            fg="bright_blue",
         )
         extensions = list_extensions()
         for extension in extensions:
-            summary = extension.summary.replace("Chaos Toolkit Extension for ", "")[:50]
+            summary = extension.summary.replace(
+                "Chaos Toolkit Extension for ", ""
+            )[:50]
             click.echo(
                 fmt.format(
-                    extension.name, extension.version, extension.license, summary
+                    extension.name,
+                    extension.version,
+                    extension.license,
+                    summary,
                 )
             )
     elif target == "settings":
@@ -764,9 +797,13 @@ def init(
 # between each other. Easier to just see what works and what doesn't here.
 # https://github.com/python/importlib_metadata/issues/411#issuecomment-1494336052
 try:
-    with_plugins(importlib_metadata.entry_points().get("chaostoolkit.cli_plugins"))(cli)
+    with_plugins(
+        importlib_metadata.entry_points().get("chaostoolkit.cli_plugins")
+    )(cli)
 except AttributeError:
-    with_plugins(importlib_metadata.entry_points(group="chaostoolkit.cli_plugins"))(cli)
+    with_plugins(
+        importlib_metadata.entry_points(group="chaostoolkit.cli_plugins")
+    )(cli)
 
 
 def is_yaml(experiment_path: str) -> bool:
@@ -785,7 +822,12 @@ def add_activities(
     base_activity = {
         "type": None,
         "name": None,
-        "provider": {"type": "python", "module": None, "func": None, "arguments": {}},
+        "provider": {
+            "type": "python",
+            "module": None,
+            "func": None,
+            "arguments": {},
+        },
     }
 
     s = click.style
@@ -795,9 +837,13 @@ def add_activities(
 
     click.echo(s("Add an activity", fg="green"))
     echo(
-        "\n".join([f"{idx + 1}) {name}" for (idx, (name, a)) in enumerate(activities)])
+        "\n".join(
+            [f"{idx + 1}) {name}" for (idx, (name, a)) in enumerate(activities)]
+        )
     )
-    activity_index = click.prompt(s("Activity (0 to escape)", fg="green"), type=int)
+    activity_index = click.prompt(
+        s("Activity (0 to escape)", fg="green"), type=int
+    )
     if not activity_index:
         return
 

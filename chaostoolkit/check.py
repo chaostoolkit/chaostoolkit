@@ -7,9 +7,7 @@ from chaostoolkit import __version__
 __all__ = ["check_newer_version", "check_hypothesis_strategy_spelling"]
 
 LATEST_RELEASE_URL = "https://releases.chaostoolkit.org/latest"
-CHANGELOG_URL = (
-    "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
-)
+CHANGELOG_URL = "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
 
 
 def check_newer_version(command: str):
