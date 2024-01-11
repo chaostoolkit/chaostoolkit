@@ -10,7 +10,7 @@
                 "tolerance": true,
                 "provider": {
                     "type": "python",
-                    "module": "fixtures.force_failure",
+                    "module": "tests.fixtures.force_failure",
                     "func": "kaboom"
                 }
             }
