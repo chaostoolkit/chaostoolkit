@@ -1,8 +1,13 @@
 import decimal
 import uuid
 from datetime import date, datetime
+from importlib.metadata import PackageNotFoundError, version
 
-__version__ = "1.16.0"
+try:
+    __version__ = version("chaostoolkit")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
 __all__ = ["__version__", "encoder"]
 
 
