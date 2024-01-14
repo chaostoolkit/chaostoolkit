@@ -8,6 +8,7 @@
 
 * Don't upload assets to GH release, leave them on Pypi only
 * Bump dependencies
+* Upgrade container images to latest baseline version
 
 ## [1.17.1][] - 2024-01-14
 

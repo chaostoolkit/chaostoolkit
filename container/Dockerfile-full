@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS build-venv
+FROM ubuntu:rolling AS build-venv
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CTK_VERSION
@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-FROM ubuntu:latest
+FROM ubuntu:rolling
 
 LABEL org.opencontainers.image.authors="chaostoolkit <contact@chaostoolkit.org>"
 LABEL org.opencontainers.image.vendor="Chaos Toolkit"
