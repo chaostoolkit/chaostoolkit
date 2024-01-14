@@ -2,7 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...HEAD
+
+## [1.17.1][] - 2024-01-14
+
+[1.17.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.0...1.17.1
+
+### Fixed
+
+* Ensure Pypy package uses the tag version
 
 ## [1.17.0][] - 2024-01-11
 

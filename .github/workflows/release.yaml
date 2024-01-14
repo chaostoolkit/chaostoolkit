@@ -20,6 +20,8 @@ jobs:
         python-version: "3.8"
     - name: Build wheels
       run: pdm build --no-sdist
+      env:
+        PDM_BUILD_SCM_VERSION: ${{github.ref_name}}
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
