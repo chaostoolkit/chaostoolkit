@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...HEAD
 
+### Changed
+
+* Don't upload assets to GH release, leave them on Pypi only
+
 ## [1.17.1][] - 2024-01-14
 
 [1.17.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.0...1.17.1
