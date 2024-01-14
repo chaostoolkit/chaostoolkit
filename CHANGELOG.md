@@ -7,6 +7,7 @@
 ### Changed
 
 * Don't upload assets to GH release, leave them on Pypi only
+* Bump dependencies
 
 ## [1.17.1][] - 2024-01-14
 
