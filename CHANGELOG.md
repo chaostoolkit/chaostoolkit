@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...HEAD
 
+### Fixed
+
+* Script path name
+
 ### Changed
 
 * Don't upload assets to GH release, leave them on Pypi only

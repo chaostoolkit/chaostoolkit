@@ -41,7 +41,7 @@ readme = "README.md"
 license = {text = "Apache-2.0"}
 
 [project.scripts]
-reliably = "reliably_cli.__main__:cli"
+chaos = "chaostoolkit.__main__:cli"
 
 [project.urls]
 Homepage = "https://chaostoolkit.org/"
