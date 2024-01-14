@@ -13,7 +13,7 @@ RUN apt-get update && \
     export PATH="$PATH:/root/.local/bin" && \
     pdm self update && \
     cd /home/svc/ && \
-    pdm venv create  && \
+    pdm venv create python3.11 && \
     pdm use .venv && \
     pdm update --no-editable --prod --no-self --no-lock && \
     chown --recursive svc:svc /home/svc/.venv  && \
@@ -21,6 +21,8 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 FROM ubuntu:rolling
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 LABEL org.opencontainers.image.authors="chaostoolkit <contact@chaostoolkit.org>"
 LABEL org.opencontainers.image.vendor="Chaos Toolkit"

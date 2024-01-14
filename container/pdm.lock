@@ -5,7 +5,7 @@
 groups = ["default", "full", "extensions"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:a13b02283bd441e917c3f825579b67c3443429ab37ae87c48eff0e8fd22ad8cc"
+content_hash = "sha256:1bd2ea45c15f437d03dbedbd4c9bef84068e162158526635323db4cab6c7129e"
 
 [[package]]
 name = "aiohttp"
@@ -160,7 +160,7 @@ files = [
 
 [[package]]
 name = "chaostoolkit"
-version = "1.17.1"
+version = "1.18.0"
 requires_python = ">=3.8"
 summary = "Chaos Engineering Toolkit for everyone"
 groups = ["default"]
@@ -175,7 +175,7 @@ dependencies = [
     "requests>=2.28",
 ]
 files = [
-    {file = "chaostoolkit-1.17.1-py3-none-any.whl", hash = "sha256:5ddc2c69c2b326425531e1705335e6909b940665d09d0a3e6ad9e9dd2e1f8e1c"},
+    {file = "chaostoolkit-1.18.0-py3-none-any.whl", hash = "sha256:4fe09a9ab4dd6405e41453ee2f545946f07b44d08de827781bb94e22361b732f"},
 ]
 
 [[package]]
