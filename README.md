@@ -92,7 +92,7 @@ following commands:
 [pdm]: https://pdm-project.org/latest/
 
 ```console
-$ pdm run install
+$ pdm install
 $ pdm run test
 $ pdm run format
 $ pdm run lint
