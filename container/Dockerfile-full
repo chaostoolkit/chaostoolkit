@@ -5,16 +5,18 @@ ARG CTK_VERSION
 
 RUN groupadd -g 1001 svc && useradd -r -u 1001 -g svc svc
 
-ADD requirements.txt requirements.txt
+COPY pyproject.toml pdm.lock /home/svc/
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3.10-venv && \
-    apt-get install -y --no-install-recommends build-essential gcc && \
-    python3 -m venv /home/svc/.venv && \
-    /home/svc/.venv/bin/pip install --no-cache-dir -q -U --disable-pip-version-check --prefer-binary pip && \
-    /home/svc/.venv/bin/pip install --no-cache-dir -q --prefer-binary setuptools wheel jsonpath2>=0.2.1 && \
-    /home/svc/.venv/bin/pip install --no-cache-dir --prefer-binary chaostoolkit==${CTK_VERSION} && \
-    /home/svc/.venv/bin/pip install --no-cache-dir -U --prefer-binary -r requirements.txt && \
-    chown --recursive svc:svc /home/svc && \
+    apt-get install -y python3.11 && \
+    apt-get install -y --no-install-recommends curl python3.11-venv build-essential gcc && \
+    curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3.11 - && \
+    export PATH="$PATH:/root/.local/bin" && \
+    pdm self update && \
+    cd /home/svc/ && \
+    pdm venv create  && \
+    pdm use .venv && \
+    pdm update --no-editable --no-self --dev --no-lock -G extensions && \
+    chown --recursive svc:svc /home/svc/.venv  && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -26,13 +28,18 @@ LABEL org.opencontainers.image.url="https://chaostoolkit.org"
 LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostoolkit/container/Dockerfile"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
-RUN apt-get update && apt-get install -y python3 && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN groupadd -g 1001 svc && useradd -m -u 1001 -g svc svc
+RUN apt-get update && \
+    apt-get install -y python3.11 && \
+    groupadd -g 1001 svc && \
+    useradd -m -u 1001 -g svc svc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY --from=build-venv --chown=svc:svc /home/svc/.venv/ /home/svc/.venv
 
 WORKDIR /home/svc
 USER 1001
-ENV PATH="/home/svc/.venv/bin:${PATH}"
+ENV PATH="/home/svc/.venv/bin:${PATH}" 
 
 ENTRYPOINT ["chaos"]
 CMD ["--help"]

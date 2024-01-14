@@ -1,0 +1,26 @@
+[project]
+name = "chaostoolkit-containers"
+version = "0.1.0"
+description = "Containers with basic extensions for Chaos Toolkit"
+authors = [
+    {name = "Chaos Toolkit", email = "contact@chaostoolkit.org"},
+]
+dependencies = [
+    "chaostoolkit>=1.17.1",
+    "pip>=23.3.2",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[tool.pdm.dev-dependencies]
+extensions = [
+    "chaostoolkit-aws>=0.29.0",
+    "chaostoolkit-kubernetes>=0.34.1",
+    "chaostoolkit-google-cloud-platform>=0.14.1",
+    "chaostoolkit-prometheus>=0.6.0",
+    "chaostoolkit-toxiproxy>=0.3.1",
+    "chaostoolkit-opentracing>=0.16.1",
+    "chaostoolkit-addons>=0.9.0",
+    "chaostoolkit-slack>=0.10.0",
+]
