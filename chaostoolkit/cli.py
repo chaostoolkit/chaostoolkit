@@ -1,9 +1,11 @@
 import json
+import logging
 import os
 import uuid
 from typing import Any, Dict, List, Optional
 
 import click
+from chaostoolkit.logging import configure_logger
 from chaoslib import __version__ as chaoslib_version
 from chaoslib import convert_vars, merge_vars
 from chaoslib.control import load_global_controls
@@ -42,19 +44,18 @@ except ImportError:
     import importlib_metadata
 
 import yaml
-from logzero import logger
 
 from chaostoolkit import __version__, encoder
 from chaostoolkit.check import (
     check_hypothesis_strategy_spelling,
     check_newer_version,
 )
-from chaostoolkit.logging import configure_logger
 
 __all__ = ["cli"]
 
 DEFAULT_ROLLBACK_STRATEGY = "default"
 DEFAULT_HYPOTHESIS_STRATEGY = "default"
+logger = logging.getLogger("chaostoolkit")
 
 
 @click.group()

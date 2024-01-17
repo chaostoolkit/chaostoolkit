@@ -4,6 +4,24 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.18.0...HEAD
 
+### Changed
+
+* [POTENTIALLY BREAKING] Removed the `logzero` dependency as the package is now
+  not maintained any longer. As all the Chaos Toolkit extensions directly
+  import their loggers as `from logzero import loggger` the chaos toolkit now
+  manages that logger and inject a fake `logzero` module into `sys.path`
+  to replace the logger with the chaostoolkit one. Its behavior is the same
+  with the same color scheme and file support. But at least we won't have to
+  import that package any longer.
+
+  Gradually, I will remove the dependency from all extensions. Meanwhile, you
+  can now irectly access the Chaos Toolkit logger as:
+
+  ```python
+  import logging
+  logger = logging.getLogger("chaostoolkit")
+  ```
+
 ## [1.18.0][] - 2024-01-14
 
 [1.18.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...1.18.0
