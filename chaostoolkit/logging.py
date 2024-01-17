@@ -1,24 +1,41 @@
+try:
+    import curses  # type: ignore
+except ImportError:
+    curses = None
+
 import logging
+import os
 import sys
 import uuid
+from logging.handlers import RotatingFileHandler
+from types import ModuleType
+from typing import Dict
 
-import logzero
-from logzero import ForegroundColors, LogFormatter, setup_default_logger
 from pythonjsonlogger import jsonlogger
 
 from chaostoolkit import encoder
 
+if os.name == "nt":
+    from colorama import init as colorama_init
+
+    colorama_init()
+
+
 __all__ = ["configure_logger"]
 
 
-class ChaosToolkitContextFilter(logging.Filter):
-    def __init__(self, name: str = "", context_id: str = None):
-        logging.Filter.__init__(self, name)
-        self.context_id = context_id or str(uuid.uuid4())
+def inject_fake_logzero() -> None:
+    """
+    To remove our dependency on logzero, we need to make sure we
+    take its place in the import path.
+    """
+    m = ModuleType("logzero")
+    m.__path__ = []
+    sys.modules[m.__name__] = m
+    m.logger = logging.getLogger("chaostoolkit")
 
-    def filter(self, record: logging.LogRecord) -> bool:
-        record.context_id = self.context_id
-        return True
+
+inject_fake_logzero()
 
 
 def configure_logger(
@@ -42,11 +59,11 @@ def configure_logger(
 
     # we define colors ourselves as critical is missing in default ones
     colors = {
-        logging.DEBUG: ForegroundColors.CYAN,
-        logging.INFO: ForegroundColors.GREEN,
-        logging.WARNING: ForegroundColors.YELLOW,
-        logging.ERROR: ForegroundColors.RED,
-        logging.CRITICAL: ForegroundColors.RED,
+        logging.DEBUG: "\033[36m",
+        logging.INFO: "\033[32m",
+        logging.WARNING: "\033[33m",
+        logging.ERROR: "\033[31m",
+        logging.CRITICAL: "\033[31m",
     }
     fmt = "%(color)s[%(asctime)s %(levelname)s]%(end_color)s %(message)s"
     if verbose:
@@ -70,7 +87,15 @@ def configure_logger(
             fmt, json_default=encoder, timestamp=True
         )
 
-    logger = setup_default_logger(level=log_level, formatter=formatter)
+    logger = logging.getLogger(logger_name)
+    logger.propagate = False
+    logger.setLevel(log_level)
+
+    handler = logging.StreamHandler()
+    handler.setLevel(log_level)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
     if context_id:
         logger.addFilter(ChaosToolkitContextFilter(logger_name, context_id))
 
@@ -85,6 +110,73 @@ def configure_logger(
         formatter = LogFormatter(
             fmt=fmt, datefmt="%Y-%m-%d %H:%M:%S", colors=colors
         )
-        logzero.logfile(
-            log_file, formatter=formatter, mode="a", loglevel=log_file_level
-        )
+        handler = RotatingFileHandler(log_file)
+        handler.setLevel(log_file_level)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
+
+###############################################################################
+# Private function
+###############################################################################
+class ChaosToolkitContextFilter(logging.Filter):
+    def __init__(self, name: str = "", context_id: str = None):
+        logging.Filter.__init__(self, name)
+        self.context_id = context_id or str(uuid.uuid4())
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        record.context_id = self.context_id
+        return True
+
+
+class LogFormatter(logging.Formatter):
+    # adjusted from logzero
+    def __init__(self, fmt: str, datefmt: str, colors: Dict[str, str]) -> None:
+        logging.Formatter.__init__(self, datefmt=datefmt)
+
+        self._fmt = fmt
+        self._colors = colors
+        self._normal = ""
+
+        if colors and terminal_has_colors():
+            self._normal = "\033[39m"
+
+    def format(self, record: logging.LogRecord) -> str:
+        record.asctime = self.formatTime(record, self.datefmt)
+        record.message = record.getMessage()
+
+        if record.levelno in self._colors:
+            record.color = self._colors[record.levelno]
+            record.end_color = self._normal
+        else:
+            record.color = record.end_color = ""
+
+        formatted = self._fmt % record.__dict__
+
+        if record.exc_info:
+            if not record.exc_text:
+                record.exc_text = self.formatException(record.exc_info)
+
+        if record.exc_text:
+            lines = [formatted.rstrip()]
+            lines.extend(ln for ln in record.exc_text.split("\n"))
+            formatted = "\n".join(lines)
+
+        return formatted.replace("\n", "\n    ")
+
+
+def terminal_has_colors() -> bool:
+    # adjusted from logzero
+    if os.name == "nt":
+        return True
+
+    if curses and hasattr(sys.stderr, "isatty") and sys.stderr.isatty():
+        try:
+            curses.setupterm()
+            if curses.tigetnum("colors") > 0:
+                return True
+
+        except Exception:
+            pass
+
+    return False

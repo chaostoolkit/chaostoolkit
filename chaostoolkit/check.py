@@ -1,6 +1,7 @@
+import logging
+
 import requests
 from chaoslib.types import Strategy
-from logzero import logger
 
 from chaostoolkit import __version__
 
@@ -8,6 +9,7 @@ __all__ = ["check_newer_version", "check_hypothesis_strategy_spelling"]
 
 LATEST_RELEASE_URL = "https://releases.chaostoolkit.org/latest"
 CHANGELOG_URL = "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
+logger = logging.getLogger("chaostoolkit")
 
 
 def check_newer_version(command: str):
