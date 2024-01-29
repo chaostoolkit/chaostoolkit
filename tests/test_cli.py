@@ -232,7 +232,7 @@ def test_dry_pause(log_file):
     assert "Running experiment with dry pause" in log
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.run.notify", spec=True)
 def test_notify_run_complete(notify, log_file):
     testdir = os.path.normpath(
         os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")
@@ -259,7 +259,7 @@ def test_notify_run_complete(notify, log_file):
     notify.assert_called_with(ANY, RunFlowEvent.RunCompleted, ANY)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.run.notify", spec=True)
 def test_notify_run_failure(notify, log_file):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -281,7 +281,7 @@ def test_notify_run_failure(notify, log_file):
     notify.assert_any_call(ANY, RunFlowEvent.RunFailed, ANY)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.run.notify", spec=True)
 def test_notify_run_failure_with_deviation(notify, log_file):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -303,7 +303,7 @@ def test_notify_run_failure_with_deviation(notify, log_file):
     notify.assert_any_call(ANY, RunFlowEvent.RunDeviated, ANY)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.validate.notify", spec=True)
 def test_notify_validate_complete(notify):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -319,7 +319,7 @@ def test_notify_validate_complete(notify):
     notify.assert_called_with(ANY, ValidateFlowEvent.ValidateCompleted, ANY)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.validate.notify", spec=True)
 def test_notify_validate_failure(notify):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -335,8 +335,8 @@ def test_notify_validate_failure(notify):
     notify.assert_called_with(ANY, ValidateFlowEvent.ValidateFailed, ANY, ANY)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
-@patch("chaostoolkit.cli.disco", spec=True)
+@patch("chaostoolkit.commands.discover.notify", spec=True)
+@patch("chaostoolkit.commands.discover.disco", spec=True)
 def test_notify_discover_failure(disco, notify):
     with tempfile.NamedTemporaryFile() as f:
         discovered = {"msg": "hello"}
@@ -370,8 +370,8 @@ def test_notify_discover_failure(disco, notify):
         assert json.loads(data) == discovered
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
-@patch("chaostoolkit.cli.disco", spec=True)
+@patch("chaostoolkit.commands.discover.notify", spec=True)
+@patch("chaostoolkit.commands.discover.disco", spec=True)
 def test_notify_discover_complete(disco, notify):
     err = DiscoveryFailed()
     disco.side_effect = err
@@ -394,7 +394,7 @@ def test_notify_discover_complete(disco, notify):
     notify.assert_called_with(ANY, DiscoverFlowEvent.DiscoverFailed, ANY, err)
 
 
-@patch("chaostoolkit.cli.notify", spec=True)
+@patch("chaostoolkit.commands.init.notify", spec=True)
 def test_notify_init_complete(notify):
     # fill the inputs of the init command
     inputs = "\n".join(
@@ -462,7 +462,14 @@ def test_show_settings():
         )
         settings_content = open(settings_path).read()
         result = runner.invoke(
-            cli, ["--no-version-check", "--settings", settings_path, "settings", "show"]
+            cli,
+            [
+                "--no-version-check",
+                "--settings",
+                settings_path,
+                "settings",
+                "show",
+            ],
         )
         assert result.exit_code == 0
         assert result.exception is None

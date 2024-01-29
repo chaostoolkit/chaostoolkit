@@ -1,4 +1,4 @@
-from chaostoolkit.cli import is_yaml
+from chaostoolkit.commands.init import is_yaml
 
 
 def test_is_yaml():
