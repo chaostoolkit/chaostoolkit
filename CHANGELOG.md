@@ -15,12 +15,17 @@
   import that package any longer.
 
   Gradually, I will remove the dependency from all extensions. Meanwhile, you
-  can now irectly access the Chaos Toolkit logger as:
+  can now directly access the Chaos Toolkit logger as:
 
   ```python
   import logging
   logger = logging.getLogger("chaostoolkit")
   ```
+
+* Refactored the cli module into sub-packages to help readability of each
+  command. This will be the basis for future work on making some of the
+  commands cleaner and more modern, it will also help when adding new
+  commands
 
 ## [1.18.0][] - 2024-01-14
 
