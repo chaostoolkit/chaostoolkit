@@ -3,7 +3,7 @@ import os
 import uuid
 
 import click
-from chaostoolkit.logging import configure_logger
+from chaoslib.log import configure_logger
 
 from chaostoolkit import __version__
 from chaostoolkit.check import (

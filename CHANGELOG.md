@@ -27,6 +27,11 @@
   commands cleaner and more modern, it will also help when adding new
   commands
 
+* Bumped `chaostoolkit-lib` to 1.42.0
+
+* Moved the logging configuration function to `chaostoolkit-lib` (requires
+  chaostoolkit-lib 1.42.0)
+
 ## [1.18.0][] - 2024-01-14
 
 [1.18.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...1.18.0
