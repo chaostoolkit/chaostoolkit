@@ -32,6 +32,8 @@
 * Moved the logging configuration function to `chaostoolkit-lib` (requires
   chaostoolkit-lib 1.42.0)
 
+* Upgraded various GH actions so that we upgrade to nodejs 20
+
 ## [1.18.0][] - 2024-01-14
 
 [1.18.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.17.1...1.18.0

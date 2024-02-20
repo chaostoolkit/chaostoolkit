@@ -7,7 +7,7 @@ jobs:
   check-changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check Changelog modified
         uses: dangoslen/changelog-enforcer@v2
         with:
@@ -17,7 +17,7 @@ jobs:
   check-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get changed files
         id: files
         uses: jitterbit/get-changed-files@v1
