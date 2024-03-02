@@ -56,16 +56,15 @@ building a proper definition of its own future.
 Glad you ask! The Chaos Toolkit is an open source project which strives to
 be welcoming and supportive of [contributions][contribute]. we love a civil and
 joyful community that [respects its members][coc]. To help the project you
-have a variety of entry points, depending on your experience and time. In
-regards to the core, we'll do our best to keep this roadmap up to date so that
-yo ucan quickly see if anything picks up your interest. In that case, mostly
+have a variety of entry points, depending on your experience and time. With regard to the core, we'll do our best to keep this roadmap up to date so that
+you can quickly see if anything picks up your interest. In that case, mostly
 start by creating and issue and come to the [community chat][slack] to
 announce it. Usually we expect PRs with fully squashed and [signed][dco]
 commits.
 
-[contribute]: https://docs.chaostoolkit.org/reference/contributing/
+[contribute]: https://chaostoolkit.org/reference/contributing/
 [coc]: https://github.com/chaostoolkit/chaostoolkit/blob/master/CODE_OF_CONDUCT.md
-[slack]: https://join.chaostoolkit.org/
+[slack]: https://chaostoolkit.slack.com
 [dco]: https://docs.chaostoolkit.org/reference/contributing/#licensing-and-certification-of-origin
 [bdfl]: https://en.wikipedia.org/wiki/Benevolent_dictator_for_life
 
@@ -107,7 +106,7 @@ This may look like a convoluted and fairly loose way to organise the project
 but the idea is to offer a visibility on how things can move forward.
 
 As ever, don't hesitate to come to the [chat][slack] to discuss this with
-the maintainers and community. The whole "process" will evolved and improve.
+the maintainers and community. The whole "process" will evolve and improve.
 
 ### Milestones or no milestones?
 
@@ -118,11 +117,11 @@ something in that vein.
 For now, the project is not structured well enough to make any sort 
 of promises as to when new releases happens. 
 
-However, milestones could be used to advertize of future releases scope so
+However, milestones could be used to advertize of future releases scope, so
 they prove useful. The only downside of GitHub milestones is that they only
-exist on a per-repository basis, which lead to more project maintanance.
+exist on a per-repository basis, which lead to more project maintenance.
 
-Nevertheless we will be using milestones to scope a future release but without
+Nevertheless, we will be using milestones to scope a future release but without
 a release date in mind for now.
 
 
