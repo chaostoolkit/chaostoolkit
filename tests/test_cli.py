@@ -32,8 +32,8 @@ def test_source_experiment_is_mandatory():
     assert result.exit_code == 2
     assert result.exception
     assert (
-            'Error: Missing argument "SOURCE".' in result.output
-            or "Error: Missing argument 'SOURCE'." in result.output
+        'Error: Missing argument "SOURCE".' in result.output
+        or "Error: Missing argument 'SOURCE'." in result.output
     )
 
 
@@ -791,7 +791,7 @@ def test_use_default_cli_strategies_when_none_provided(log_file):
 
 
 def test_rollbacks_cli_rollback_strategies_can_be_overriden_by_experiment(
-        log_file,
+    log_file,
 ):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -819,7 +819,7 @@ def test_rollbacks_cli_rollback_strategies_can_be_overriden_by_experiment(
 
 
 def test_rollbacks_cli_rollback_strategies_in_experiment_can_be_overriden_by_cli(
-        log_file,
+    log_file,
 ):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -849,7 +849,7 @@ def test_rollbacks_cli_rollback_strategies_in_experiment_can_be_overriden_by_cli
 
 
 def test_rollbacks_cli_hypothesis_strategies_can_be_overriden_by_experiment(
-        log_file,
+    log_file,
 ):
     runner = CliRunner()
     exp_path = os.path.join(
@@ -877,7 +877,7 @@ def test_rollbacks_cli_hypothesis_strategies_can_be_overriden_by_experiment(
 
 
 def test_rollbacks_cli_hypothesis_strategies_in_experiment_can_be_overriden_by_cli(
-        log_file,
+    log_file,
 ):
     runner = CliRunner()
     exp_path = os.path.join(
