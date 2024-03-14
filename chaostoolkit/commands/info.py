@@ -48,7 +48,7 @@ def info(ctx: click.Context, target: str):
                 fmt.format(
                     extension.name,
                     extension.version,
-                    extension.license,
+                    extension.license or "Unknown",
                     summary,
                 )
             )
