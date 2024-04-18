@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.19.0...HEAD
 
+### Changed
+
+* Bumped Github actions to build and publish container images
+* Building container images for amd64 and arm64 architectures
+
 ## [1.19.0][] - 2024-02-20
 
 [1.19.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.18.0...1.19.0
