@@ -15,7 +15,7 @@ RUN apt-get update && \
     cd /home/svc/ && \
     pdm venv create python3.11 && \
     pdm use .venv && \
-    pdm update --no-editable --no-self --dev --no-lock -G extensions && \
+    pdm update --no-editable --no-self --dev --frozen-lockfile -G extensions && \
     chown --recursive svc:svc /home/svc/.venv  && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
