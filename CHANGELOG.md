@@ -8,6 +8,8 @@
 
 * Bumped Github actions to build and publish container images
 * Building container images for amd64 and arm64 architectures
+* Make the entrypoint of the default container image to NOT be an absolute path
+  to be more adaptable from the Kubernetes operator
 
 ## [1.19.0][] - 2024-02-20
 

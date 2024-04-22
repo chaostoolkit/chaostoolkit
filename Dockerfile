@@ -19,5 +19,7 @@ WORKDIR /home/svc
 # https://github.com/kubernetes/kubernetes/issues/40958
 USER 1001
 
-ENTRYPOINT ["/usr/local/bin/chaos"]
+ENV PATH="${PATH}:/usr/local/bin" 
+
+ENTRYPOINT ["chaos"]
 CMD ["--help"]
