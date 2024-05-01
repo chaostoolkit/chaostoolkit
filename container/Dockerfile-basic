@@ -1,4 +1,4 @@
-FROM ubuntu:rolling AS build-venv
+FROM ubuntu:23.10 AS build-venv
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CTK_VERSION
@@ -20,7 +20,7 @@ RUN apt-get update && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-FROM ubuntu:rolling
+FROM ubuntu:23.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 
