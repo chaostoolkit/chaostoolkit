@@ -36,7 +36,7 @@ def show_settings(ctx: click.Context, fmt: str = "json"):
     Be aware this will not obfuscate secret data.
     """
     if not os.path.isfile(ctx.obj["settings_path"]):
-        click.abort(
+        ctx.fail(
             "No settings file found at {}".format(ctx.obj["settings_path"])
         )
 

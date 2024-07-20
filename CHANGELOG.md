@@ -11,6 +11,10 @@
 * Make the entrypoint of the default container image to NOT be an absolute path
   to be more adaptable from the Kubernetes operator
 
+### Fixed
+
+* Fixed a bug in `chaos settings` command when the settings file does not exist
+
 ## [1.19.0][] - 2024-02-20
 
 [1.19.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.18.0...1.19.0
