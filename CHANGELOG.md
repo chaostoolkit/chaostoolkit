@@ -2,10 +2,15 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.19.0...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.20.0...HEAD
+
+## [1.20.0][] - 2026-08-08
+
+[1.20.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.19.0...1.20.0
 
 ### Changed
 
+* Requires Python 3.12+
 * Bumped Github actions to build and publish container images
 * Building container images for amd64 and arm64 architectures
 * Make the entrypoint of the default container image to NOT be an absolute path
