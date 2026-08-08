@@ -44,13 +44,16 @@ jobs:
           docker build --build-arg ctkversion=${DOCKER_TAG} -t chaostoolkit/chaostoolkit .
           docker tag chaostoolkit/chaostoolkit:latest chaostoolkit/chaostoolkit:${DOCKER_TAG}
 
+    - name: Login to Docker Hub
+      uses: docker/login-action@v4
+      with:
+        username: chaostoolkit
+        password: ${{ secrets.DOCKER_PWD }}
+
     - name: Publishing to the Docker repository
       env:
         DOCKER_TAG: ${{ env.RELEASE_VERSION }}
-        DOCKER_USER_NAME: chaostoolkit
-        DOCKER_PWD: ${{ secrets.DOCKER_PWD }}
       run: |
-        docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_PWD}
         docker push chaostoolkit/chaostoolkit:$DOCKER_TAG
         docker push chaostoolkit/chaostoolkit:latest
 
