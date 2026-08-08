@@ -9,10 +9,7 @@ from unittest.mock import ANY, patch
 
 import pytest
 import yaml
-from chaoslib.exceptions import DiscoveryFailed
 from chaoslib.notification import (
-    DiscoverFlowEvent,
-    InitFlowEvent,
     RunFlowEvent,
     ValidateFlowEvent,
 )
@@ -48,6 +45,11 @@ def test_source_path_must_exist(log_file):
     log_file.seek(0)
     log = log_file.read().decode("utf-8")
     assert 'Path "invalid.jsn" does not exist.' in log
+
+
+def test_removed_commands_are_not_registered():
+    assert "discover" not in cli.commands
+    assert "init" not in cli.commands
 
 
 def test_default_settings_file(log_file):
@@ -333,117 +335,6 @@ def test_notify_validate_failure(notify):
 
     notify.assert_any_call(ANY, ValidateFlowEvent.ValidateStarted, ANY)
     notify.assert_called_with(ANY, ValidateFlowEvent.ValidateFailed, ANY, ANY)
-
-
-@patch("chaostoolkit.commands.discover.notify", spec=True)
-@patch("chaostoolkit.commands.discover.disco", spec=True)
-def test_notify_discover_failure(disco, notify):
-    with tempfile.NamedTemporaryFile() as f:
-        discovered = {"msg": "hello"}
-        disco.return_value = discovered
-
-        runner = CliRunner()
-        result = runner.invoke(
-            cli,
-            [
-                "--settings",
-                empty_settings_path,
-                "discover",
-                "--discovery-path",
-                f.name,
-                "--no-install",
-                "chaostoolkit-kubernetes",
-            ],
-        )
-        assert result.exit_code == 0
-        assert result.exception is None
-
-        notify.assert_any_call(ANY, DiscoverFlowEvent.DiscoverStarted, ANY)
-        notify.assert_called_with(
-            ANY, DiscoverFlowEvent.DiscoverCompleted, discovered
-        )
-
-        f.seek(0)
-        data = f.read()
-        if isinstance(data, bytes):
-            data = data.decode("utf-8")
-        assert json.loads(data) == discovered
-
-
-@patch("chaostoolkit.commands.discover.notify", spec=True)
-@patch("chaostoolkit.commands.discover.disco", spec=True)
-def test_notify_discover_complete(disco, notify):
-    err = DiscoveryFailed()
-    disco.side_effect = err
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        [
-            "--settings",
-            empty_settings_path,
-            "discover",
-            "--no-install",
-            "chaostoolkit-kubernetes",
-        ],
-    )
-    assert result.exit_code == 0
-    assert result.exception is None
-
-    notify.assert_any_call(ANY, DiscoverFlowEvent.DiscoverStarted, ANY)
-    notify.assert_called_with(ANY, DiscoverFlowEvent.DiscoverFailed, ANY, err)
-
-
-@patch("chaostoolkit.commands.init.notify", spec=True)
-def test_notify_init_complete(notify):
-    # fill the inputs of the init command
-    inputs = """a dummy test
-Y
-a steady state hypo
-1
-Y
-true
-default
-N
-Y
-1
-Y
-true
-default
-N
-N
-N"""
-    runner = CliRunner()
-
-    base_path = os.path.dirname(__file__)
-    disco_path = os.path.join(base_path, "fixtures", "disco.json")
-    export_path_json = os.path.join(base_path, "experiment.json")
-    export_path_yaml = os.path.join(base_path, "experiment.yaml")
-
-    export_paths = [None, export_path_json, export_path_yaml]
-
-    for export_path in export_paths:
-        cli_params = [
-            "--settings",
-            empty_settings_path,
-            "init",
-            "--discovery-path",
-            disco_path,
-        ]
-
-        if export_path:
-            cli_params.extend(["--experiment-path", export_path])
-        else:
-            export_path = os.path.join(os.getcwd(), "experiment.json")
-
-        result = runner.invoke(cli, cli_params, input=inputs)
-
-        assert result.exit_code == 0
-        assert result.exception is None
-        assert os.path.exists(export_path)
-
-        notify.assert_any_call(ANY, InitFlowEvent.InitStarted)
-        notify.assert_any_call(ANY, InitFlowEvent.InitCompleted, ANY)
 
 
 def test_show_settings():

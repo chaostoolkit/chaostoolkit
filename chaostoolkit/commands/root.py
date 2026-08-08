@@ -15,9 +15,7 @@ except ImportError:
     import importlib_metadata
 
 
-from chaostoolkit.commands.discover import discover as discover_cli
 from chaostoolkit.commands.info import info as info_cli
-from chaostoolkit.commands.init import init as init_cli
 from chaostoolkit.commands.run import run as run_cli
 from chaostoolkit.commands.settings import settings as settings_cli
 from chaostoolkit.commands.validate import validate as validate_cli
@@ -101,9 +99,7 @@ def cli(
         os.chdir(change_dir)
 
 
-cli.add_command(discover_cli)
 cli.add_command(info_cli)
-cli.add_command(init_cli)
 cli.add_command(run_cli)
 cli.add_command(settings_cli)
 cli.add_command(validate_cli)
