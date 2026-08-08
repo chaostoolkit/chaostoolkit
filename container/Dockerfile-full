@@ -9,7 +9,7 @@ COPY pyproject.toml pdm.lock /home/svc/
 RUN apt-get update && \
     apt-get install -y python3.14 && \
     apt-get install -y --no-install-recommends curl python3.14-venv build-essential gcc && \
-    curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3.11 - && \
+    curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3.14 - && \
     export PATH="$PATH:/root/.local/bin" && \
     pdm self update && \
     cd /home/svc/ && \
