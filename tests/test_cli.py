@@ -461,7 +461,6 @@ def test_show_settings():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -494,7 +493,6 @@ def test_get_settings_entry_as_yaml():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -520,7 +518,6 @@ def test_get_settings_entry_as_json():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -547,7 +544,6 @@ def test_get_settings_entry_as_string():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -620,7 +616,6 @@ def test_set_settings_entry():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -659,7 +654,6 @@ def test_set_settings_entry_as_a_list():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -685,7 +679,6 @@ def test_set_settings_entry_as_a_int():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",
@@ -699,7 +692,6 @@ def test_set_settings_entry_as_a_int():
         result = runner.invoke(
             cli,
             [
-                "--no-version-check",
                 "--settings",
                 settings_path,
                 "settings",

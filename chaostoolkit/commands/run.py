@@ -20,12 +20,10 @@ from chaoslib.types import (
     Dry,
     Journal,
     Schedule,
+    Strategy,
 )
 
 from chaostoolkit import encoder
-from chaostoolkit.check import (
-    check_hypothesis_strategy_spelling,
-)
 
 DEFAULT_ROLLBACK_STRATEGY = "default"
 DEFAULT_HYPOTHESIS_STRATEGY = "default"
@@ -110,7 +108,6 @@ def validate_vars(
             "after-method-only",
             "during-method-only",
             "continuously",
-            "continously",
         ],
         case_sensitive=True,
     ),
@@ -226,7 +223,7 @@ def run(
         f"/ rollbacks - {rollback_strategy}"
     )
 
-    ssh_strategy = check_hypothesis_strategy_spelling(hypothesis_strategy)
+    ssh_strategy = Strategy.from_string(hypothesis_strategy)
 
     schedule = Schedule(
         continuous_hypothesis_frequency=hypothesis_frequency,
