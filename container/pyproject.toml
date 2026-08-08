@@ -9,7 +9,7 @@ dependencies = [
     "chaostoolkit>=1.17.1",
     "pip>=23.3.2",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 

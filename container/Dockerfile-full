@@ -1,4 +1,4 @@
-FROM ubuntu:23.10 AS build-venv
+FROM ubuntu:latest AS build-venv
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CTK_VERSION
@@ -7,20 +7,20 @@ RUN groupadd -g 1001 svc && useradd -r -u 1001 -g svc svc
 
 COPY pyproject.toml pdm.lock /home/svc/
 RUN apt-get update && \
-    apt-get install -y python3.11 && \
-    apt-get install -y --no-install-recommends curl python3.11-venv build-essential gcc && \
+    apt-get install -y python3.14 && \
+    apt-get install -y --no-install-recommends curl python3.14-venv build-essential gcc && \
     curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3.11 - && \
     export PATH="$PATH:/root/.local/bin" && \
     pdm self update && \
     cd /home/svc/ && \
-    pdm venv create python3.11 && \
+    pdm venv create python3.14 && \
     pdm use .venv && \
     pdm update --no-editable --no-self --dev --frozen-lockfile -G extensions && \
     chown --recursive svc:svc /home/svc/.venv  && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-FROM ubuntu:23.10
+FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -31,7 +31,7 @@ LABEL org.opencontainers.image.source="https://gtihub.com/chaostoolkit/chaostool
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 RUN apt-get update && \
-    apt-get install -y python3.11 && \
+    apt-get install -y python3.14 && \
     groupadd -g 1001 svc && \
     useradd -m -u 1001 -g svc svc && \
     apt-get clean && \
