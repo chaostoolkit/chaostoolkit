@@ -1,7 +1,7 @@
 import decimal
 import json
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 import pytest
 
@@ -9,9 +9,9 @@ from chaostoolkit.cli import encoder
 
 
 def test_encode_date_and_datetime():
-    now = datetime.now()
-    utcnow = datetime.utcnow()
-    today = datetime.today()
+    now = datetime.now(UTC)
+    utcnow = datetime.now(UTC)
+    today = datetime.now(UTC)
 
     d = {"now": now, "utcnow": utcnow, "today": today}
 

@@ -1,9 +1,9 @@
 import os
 
 import click
-
 from chaoslib import __version__ as chaoslib_version
 from chaoslib.info import list_extensions
+
 from chaostoolkit import __version__
 
 

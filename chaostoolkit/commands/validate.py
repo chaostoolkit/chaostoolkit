@@ -1,7 +1,6 @@
 import logging
 
 import click
-
 from chaoslib.exceptions import ChaosException, InvalidSource
 from chaoslib.experiment import ensure_experiment_is_valid
 from chaoslib.loader import load_experiment
@@ -9,8 +8,8 @@ from chaoslib.notification import (
     ValidateFlowEvent,
     notify,
 )
-from chaoslib.types import Experiment
 from chaoslib.settings import load_settings
+from chaoslib.types import Experiment
 
 logger = logging.getLogger("chaostoolkit")
 

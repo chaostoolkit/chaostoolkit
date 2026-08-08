@@ -3,7 +3,7 @@ import os
 import shutil
 import tempfile
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 from unittest.mock import ANY, patch
 
@@ -100,7 +100,7 @@ def test_json_encoder_failure():
 
 
 def test_json_encoder_datetime():
-    now = datetime.utcnow()
+    now = datetime.now(UTC)
     assert encoder(now) == now.isoformat()
 
 
@@ -397,26 +397,22 @@ def test_notify_discover_complete(disco, notify):
 @patch("chaostoolkit.commands.init.notify", spec=True)
 def test_notify_init_complete(notify):
     # fill the inputs of the init command
-    inputs = "\n".join(
-        [
-            "a dummy test",
-            "Y",
-            "a steady state hypo",
-            "1",
-            "Y",
-            "true",
-            "default",
-            "N",
-            "Y",
-            "1",
-            "Y",
-            "true",
-            "default",
-            "N",
-            "N",
-            "N",
-        ]
-    )
+    inputs = """a dummy test
+Y
+a steady state hypo
+1
+Y
+true
+default
+N
+Y
+1
+Y
+true
+default
+N
+N
+N"""
     runner = CliRunner()
 
     base_path = os.path.dirname(__file__)
@@ -460,7 +456,8 @@ def test_show_settings():
             ),
             settings_path,
         )
-        settings_content = open(settings_path).read()
+        with open(settings_path) as f:
+            settings_content = f.read()
         result = runner.invoke(
             cli,
             [

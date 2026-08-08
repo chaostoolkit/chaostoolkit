@@ -1,5 +1,3 @@
-from typing import Union
-
 from chaostoolkit.types import MicroservicesStatus
 
 
@@ -7,7 +5,7 @@ def all_microservices_healthy() -> MicroservicesStatus:
     return [], [{"name": "my-svc"}]
 
 
-def microservice_available_and_healthy(name: str) -> Union[bool, None]:
+def microservice_available_and_healthy(name: str) -> bool | None:
     return False
 
 

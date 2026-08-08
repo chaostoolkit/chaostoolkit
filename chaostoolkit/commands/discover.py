@@ -8,11 +8,10 @@ from chaoslib.notification import (
     DiscoverFlowEvent,
     notify,
 )
-from chaoslib.types import Discovery
 from chaoslib.settings import load_settings
+from chaoslib.types import Discovery
 
 from chaostoolkit import encoder
-
 
 logger = logging.getLogger("chaostoolkit")
 

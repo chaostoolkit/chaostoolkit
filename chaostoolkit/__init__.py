@@ -22,9 +22,7 @@ def encoder(o: object) -> str:
         # we do not meddle with the timezone and assume the date was
         # stored with the right information of timezone as +-HH:MM
         return o.isoformat()
-    elif isinstance(o, decimal.Decimal):
-        return str(o)
-    elif isinstance(o, uuid.UUID):
+    elif isinstance(o, (decimal.Decimal, uuid.UUID)):
         return str(o)
 
     raise TypeError(f"Object of type '{type(o)}' is not JSON serializable")

@@ -1,11 +1,12 @@
 import logging
+from contextlib import suppress
 
 import requests
 from chaoslib.types import Strategy
 
 from chaostoolkit import __version__
 
-__all__ = ["check_newer_version", "check_hypothesis_strategy_spelling"]
+__all__ = ["check_hypothesis_strategy_spelling", "check_newer_version"]
 
 LATEST_RELEASE_URL = "https://releases.chaostoolkit.org/latest"
 CHANGELOG_URL = "https://github.com/chaostoolkit/chaostoolkit/blob/master/CHANGELOG.md"  # nopep8
@@ -18,7 +19,7 @@ def check_newer_version(command: str):
     with the current's version. If the former is higher then issue a warning
     inviting the user to upgrade its environment.
     """
-    try:
+    with suppress(Exception):
         command = command.strip()
         r = requests.get(
             LATEST_RELEASE_URL,
@@ -31,17 +32,13 @@ def check_newer_version(command: str):
             if payload.get("up_to_date") is False:
                 options = "--pre -U" if "rc" in latest_version else "-U"
                 logger.warning(
-                    "\nThere is a new version ({v}) of the chaostoolkit "
+                    f"\nThere is a new version ({latest_version}) of the chaostoolkit "
                     "available.\n"
                     "You may upgrade by typing:\n\n"
-                    "$ pip install {opt} chaostoolkit\n\n"
-                    "Please review changes at {u}\n".format(
-                        u=CHANGELOG_URL, v=latest_version, opt=options
-                    )
+                    f"$ pip install {options} chaostoolkit\n\n"
+                    f"Please review changes at {CHANGELOG_URL}\n"
                 )
                 return latest_version
-    except Exception:
-        pass
 
 
 def check_hypothesis_strategy_spelling(hypothesis_strategy: str) -> Strategy:

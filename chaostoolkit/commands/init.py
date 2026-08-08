@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from typing import List
 
 import click
 import yaml
@@ -10,11 +9,10 @@ from chaoslib.notification import (
     InitFlowEvent,
     notify,
 )
-from chaoslib.types import Activity, Experiment
 from chaoslib.settings import load_settings
+from chaoslib.types import Activity, Experiment
 
 from chaostoolkit import encoder
-
 
 logger = logging.getLogger("chaostoolkit")
 
@@ -37,7 +35,7 @@ logger = logging.getLogger("chaostoolkit")
 @click.pass_context
 def init(
     ctx: click.Context,
-    discovery_path: str = "./discovery.json",  # noqa: C901
+    discovery_path: str = "./discovery.json",
     experiment_path: str = "./experiment.json",
 ) -> Experiment:
     """Initialize a new experiment from discovered capabilities."""
@@ -176,8 +174,8 @@ def is_yaml(experiment_path: str) -> bool:
 
 
 def add_activities(
-    activities: List[Activity],
-    pool: List[Activity],  # noqa: C901
+    activities: list[Activity],
+    pool: list[Activity],
     with_tolerance: bool = False,
 ):
     """

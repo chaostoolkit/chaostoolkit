@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import click
 from chaoslib import __version__ as chaoslib_version
@@ -33,8 +33,8 @@ logger = logging.getLogger("chaostoolkit")
 
 
 def validate_vars(
-    ctx: click.Context, param: click.Option, value: List[str]
-) -> Dict[str, Any]:
+    ctx: click.Context, param: click.Option, value: list[str]
+) -> dict[str, Any]:
     """
     Process all `--var key=value` and return a dictionary of them with the
     value converted to the appropriate type.
@@ -139,15 +139,15 @@ def run(
     ctx: click.Context,
     source: str,
     journal_path: str = "./journal.json",
-    dry: Optional[str] = None,
+    dry: str | None = None,
     no_validation: bool = False,
     no_exit: bool = False,
     no_verify_tls: bool = False,
-    rollback_strategy: str = None,
-    var: Dict[str, Any] = None,
-    var_file: List[str] = None,
-    control_file: List[str] = None,
-    hypothesis_strategy: Optional[str] = None,
+    rollback_strategy: str | None = None,
+    var: dict[str, Any] | None = None,
+    var_file: list[str] | None = None,
+    control_file: list[str] | None = None,
+    hypothesis_strategy: str | None = None,
     hypothesis_frequency: float = 1.0,
     fail_fast: bool = False,
 ) -> Journal:

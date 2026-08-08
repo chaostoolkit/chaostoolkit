@@ -4,13 +4,13 @@ import uuid
 
 import click
 from chaoslib.log import configure_logger
+from chaoslib.settings import CHAOSTOOLKIT_CONFIG_PATH
+from click_plugins import with_plugins
 
 from chaostoolkit import __version__
 from chaostoolkit.check import (
     check_newer_version,
 )
-from chaoslib.settings import CHAOSTOOLKIT_CONFIG_PATH
-from click_plugins import with_plugins
 
 try:
     import importlib.metadata as importlib_metadata
@@ -75,7 +75,7 @@ def cli(
     ctx: click.Context,
     verbose: bool = False,
     no_version_check: bool = False,
-    change_dir: str = None,
+    change_dir: str | None = None,
     no_log_file: bool = False,
     log_file: str = "chaostoolkit.log",
     log_file_level: str = "info",

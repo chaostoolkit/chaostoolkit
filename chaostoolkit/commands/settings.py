@@ -3,7 +3,6 @@ import os
 
 import click
 import yaml
-
 from chaoslib.settings import (
     load_settings,
     locate_settings_entry,
@@ -16,7 +15,6 @@ def settings():
     """
     Read, write or remove from your settings file.
     """
-    pass
 
 
 @settings.command("show")
@@ -54,7 +52,7 @@ settings.add_command(show_settings)
 @click.argument("key", nargs=1)
 @click.argument("value", nargs=1)
 @click.pass_context
-def set_settings_value(ctx: click.Context, key: str, value: str = None):
+def set_settings_value(ctx: click.Context, key: str, value: str | None = None):
     """
     Set a settings value.
     The value must be a valid JSON string so that it can be interpreted
@@ -69,7 +67,7 @@ def set_settings_value(ctx: click.Context, key: str, value: str = None):
     item = locate_settings_entry(settings, key)
     if not item:
         ctx.exit(1)
-    parent, entry, key_tail, index = item
+    parent, _, key_tail, index = item
 
     value = json.loads(value)
     if key_tail is not None:
@@ -98,7 +96,7 @@ def remove_settings_value(ctx: click.Context, key: str):
     item = locate_settings_entry(settings, key)
     if not item:
         ctx.exit(1)
-    parent, entry, key_tail, index = item
+    parent, _, key_tail, index = item
 
     if key_tail is not None:
         parent.pop(key_tail, None)
@@ -134,7 +132,7 @@ def get_settings_value(ctx: click.Context, key: str, fmt: str = "json"):
     item = locate_settings_entry(settings, key)
     if not item:
         ctx.exit(1)
-    parent, entry, key_tail, index = item
+    _, entry, _, _ = item
 
     if fmt == "json":
         click.echo(json.dumps(entry, indent=2))
