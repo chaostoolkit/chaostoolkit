@@ -16,6 +16,12 @@ RUN apt-get update && \
     pdm venv create python3.14 && \
     pdm use .venv && \
     pdm update --no-editable --no-self --dev --frozen-lockfile -G extensions && \
+    if [ -n "${CTK_VERSION}" ]; then \
+        CTK_PACKAGE="chaostoolkit==${CTK_VERSION}"; \
+    else \
+        CTK_PACKAGE="chaostoolkit"; \
+    fi && \
+    /home/svc/.venv/bin/python -m pip install --no-cache-dir --upgrade "${CTK_PACKAGE}" && \
     chown --recursive svc:svc /home/svc/.venv  && \
     apt-get remove -y build-essential gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -23,6 +29,8 @@ RUN apt-get update && \
 FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
+
+COPY --from=ghcr.io/astral-sh/uv:0.9.13 /uv /usr/local/bin/uv
 
 LABEL org.opencontainers.image.authors="chaostoolkit <contact@chaostoolkit.org>"
 LABEL org.opencontainers.image.vendor="Chaos Toolkit"

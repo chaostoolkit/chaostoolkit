@@ -9,7 +9,16 @@ from chaoslib.notification import (
     notify,
 )
 from chaoslib.settings import load_settings
-from chaoslib.types import Experiment
+from chaoslib.types import Experiment, Settings
+
+from chaostoolkit.runtime import (
+    RUNTIME_ARGUMENTS_META_KEY,
+    RUNTIME_INVOCATION_CWD_META_KEY,
+    PythonRuntimeError,
+    get_python_runtime_info,
+    in_runtime_child,
+    supervised_runtime,
+)
 
 logger = logging.getLogger("chaostoolkit")
 
@@ -28,12 +37,39 @@ def validate(
 
     try:
         experiment = load_experiment(
-            source, settings, verify_tls=not no_verify_tls
+            source,
+            settings,
+            verify_tls=not no_verify_tls,
         )
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
         ctx.exit(1)
+
+    try:
+        runtime = get_python_runtime_info(experiment)
+        if runtime is not None and not in_runtime_child():
+            with supervised_runtime(
+                runtime,
+                argv=ctx.meta[RUNTIME_ARGUMENTS_META_KEY],
+                invocation_cwd=ctx.meta[RUNTIME_INVOCATION_CWD_META_KEY],
+            ) as child:
+                exit_code = child.wait()
+            ctx.exit(exit_code)
+    except PythonRuntimeError as x:
+        logger.error(str(x))
+        logger.debug(x)
+        ctx.exit(1)
+
+    return _execute_validate(ctx, experiment, settings)
+
+
+def _execute_validate(
+    ctx: click.Context,
+    experiment: Experiment,
+    settings: Settings | None,
+) -> Experiment:
+    """Validate an already-loaded experiment in the selected runtime."""
 
     try:
         notify(settings, ValidateFlowEvent.ValidateStarted, experiment)
