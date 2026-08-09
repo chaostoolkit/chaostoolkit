@@ -4,6 +4,20 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.20.0...HEAD
 
+### Added
+
+* Experiments can declare Python dependencies under
+  `runtime.python.dependencies`. The `run` and `validate` commands use `uv` to
+  prepare those dependencies without modifying the current installation. An
+  optional `runtime.python.version` selects an isolated Python runtime.
+* Official container images now include `uv` for experiment dependencies, and
+  the basic/full builds now honor their `CTK_VERSION` build argument.
+
+### Changed
+
+* Moved the built-in Click group to `chaostoolkit.commands.root` while keeping
+  all commands, plugin loading, and existing public CLI imports compatible.
+
 ## [1.20.0][] - 2026-08-08
 
 [1.20.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.19.0...1.20.0
@@ -35,6 +49,7 @@
 
   ```python
   import logging
+
   logger = logging.getLogger("chaostoolkit")
   ```
 

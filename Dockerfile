@@ -1,5 +1,7 @@
 FROM python:3.14-alpine3.23
 
+COPY --from=ghcr.io/astral-sh/uv:0.9.13 /uv /usr/local/bin/uv
+
 LABEL maintainer="chaostoolkit <contact@chaostoolkit.org>"
 
 ARG ctkversion

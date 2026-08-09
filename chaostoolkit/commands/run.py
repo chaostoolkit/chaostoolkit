@@ -18,13 +18,23 @@ from chaoslib.settings import (
 )
 from chaoslib.types import (
     Dry,
+    Experiment,
     Journal,
     Schedule,
+    Settings,
 )
 
 from chaostoolkit import encoder
 from chaostoolkit.check import (
     check_hypothesis_strategy_spelling,
+)
+from chaostoolkit.runtime import (
+    RUNTIME_ARGUMENTS_META_KEY,
+    RUNTIME_INVOCATION_CWD_META_KEY,
+    PythonRuntimeError,
+    get_python_runtime_info,
+    in_runtime_child,
+    supervised_runtime,
 )
 
 DEFAULT_ROLLBACK_STRATEGY = "default"
@@ -154,11 +164,59 @@ def run(
     """Run the experiment loaded from SOURCE, either a local file or a
     HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
-    has_deviated = False
-    has_failed = False
+
+    try:
+        experiment = _load_run_experiment(
+            source,
+            settings,
+            control_file,
+            no_verify_tls,
+        )
+    except InvalidSource as x:
+        logger.error(str(x))
+        logger.debug(x)
+        ctx.exit(1)
+
+    try:
+        if not in_runtime_child():
+            runtime_info = get_python_runtime_info(experiment)
+            if runtime_info is not None:
+                with supervised_runtime(
+                    runtime_info,
+                    argv=ctx.meta[RUNTIME_ARGUMENTS_META_KEY],
+                    invocation_cwd=ctx.meta[RUNTIME_INVOCATION_CWD_META_KEY],
+                ) as child:
+                    exit_code = child.wait()
+                ctx.exit(exit_code)
+    except PythonRuntimeError as x:
+        logger.error(str(x))
+        logger.debug(x)
+        ctx.exit(1)
 
     experiment_vars = merge_vars(var, var_file)
 
+    return _execute_run(
+        ctx,
+        experiment,
+        settings,
+        experiment_vars,
+        journal_path,
+        dry,
+        no_validation,
+        no_exit,
+        rollback_strategy,
+        hypothesis_strategy,
+        hypothesis_frequency,
+        fail_fast,
+    )
+
+
+def _load_run_experiment(
+    source: str,
+    settings: Settings,
+    control_file: list[str] | None,
+    no_verify_tls: bool,
+) -> Experiment:
     try:
         load_global_controls(settings, control_file)
     except TypeError:
@@ -170,15 +228,24 @@ def run(
         )
         load_global_controls(settings)
 
-    try:
-        experiment = load_experiment(
-            source, settings, verify_tls=not no_verify_tls
-        )
-    except InvalidSource as x:
-        logger.error(str(x))
-        logger.debug(x)
-        ctx.exit(1)
+    return load_experiment(source, settings, verify_tls=not no_verify_tls)
 
+
+def _execute_run(
+    ctx: click.Context,
+    experiment: Experiment,
+    settings: Settings,
+    experiment_vars: dict[str, Any],
+    journal_path: str,
+    dry: str | None,
+    no_validation: bool,
+    no_exit: bool,
+    rollback_strategy: str | None,
+    hypothesis_strategy: str | None,
+    hypothesis_frequency: float,
+    fail_fast: bool,
+) -> Journal:
+    """Execute an already-loaded experiment in the selected runtime."""
     notify(settings, RunFlowEvent.RunStarted, experiment)
 
     if not no_validation:

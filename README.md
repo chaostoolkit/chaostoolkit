@@ -42,7 +42,14 @@ Engineering tools may not fit: cloud environments, datacenters, CI/CD, etc.
 
 ## Install or Upgrade
 
-Provided you have Python 3.8+ installed, you can install it as follows:
+Provided you have Python 3.12+ installed, the recommended installation uses
+[`uv`](https://docs.astral.sh/uv/):
+
+```console
+$ uv tool install chaostoolkit
+```
+
+You can also install it with `pip`, as before:
 
 ```console
 $ pip install -U chaostoolkit
@@ -57,6 +64,34 @@ Running an experiment is as simple as:
 ```console
 $ chaos run experiment.json
 ```
+
+### Experiment dependencies
+
+An experiment can declare the Python packages it needs. For example:
+
+```yaml
+runtime:
+  python:
+    version: "3.14"
+    dependencies:
+      - chaostoolkit-kubernetes>=0.38
+```
+
+When `chaos run` or `chaos validate` sees this declaration, it asks `uv` to
+prepare the dependencies and runs the command in that Python environment. The
+current Chaos Toolkit installation and its environment are not modified.
+Setting `isolated` to `true` creates an isolated run environment; it defaults
+to `false`. Setting `version` selects the Python version used by `uv` and
+automatically enables isolation.
+
+This feature requires the `uv` executable to be available on `PATH`. Without a
+`runtime.python.dependencies` declaration, Chaos Toolkit behaves exactly as it
+did before and expects extensions to already be installed.
+
+For remote sources, controls needed to fetch or load the experiment must
+already be installed with Chaos Toolkit. A remote experiment may be fetched
+once to discover its dependencies and again inside the prepared runtime;
+remote experiment documents should therefore be immutable or versioned.
 
 ## Get involved!
 
@@ -81,7 +116,7 @@ Contributors to this project are welcome as this is an open-source effort that
 seeks [discussions][join] and continuous improvement.
 
 From a code perspective, if you wish to contribute, you will need to run a
-Python 3.8+ environment. Please, fork this project, write unit tests to cover
+Python 3.12+ environment. Please, fork this project, write unit tests to cover
 the proposed changes, implement the changes, ensure they meet the formatting
 standards set out by `ruff`, add an entry into
 `CHANGELOG.md`, and then raise a PR to the repository for review
@@ -104,4 +139,3 @@ into the master branch of the repository. Please, make sure you can abide by
 the rules of the DCO before submitting a PR.
 
 [dco]: https://github.com/probot/dco#how-it-works
-
