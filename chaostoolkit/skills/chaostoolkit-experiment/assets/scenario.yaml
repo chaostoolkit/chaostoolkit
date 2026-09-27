@@ -14,7 +14,7 @@ runtime:
   python:
     isolated: true
     dependencies:
-      - chaostoolkit-addons>=0.11   # idle_for, safeguards
+      - chaostoolkit-addons>=0.12   # idle_for, safeguards
       # e.g. chaostoolkit-kubernetes>=0.40
 
 steady-state-hypothesis:

@@ -49,6 +49,9 @@
 
 * Moved the built-in Click group to `chaostoolkit.commands.root` while keeping
   all commands, plugin loading, and existing public CLI imports compatible.
+* Requires `chaostoolkit-lib` 1.45.1+, so an interruption raised while a
+  Python activity runs, for instance on SIGTERM, interrupts the run instead
+  of being recorded as a failed activity.
 
 ## [1.20.0][] - 2026-08-08
 

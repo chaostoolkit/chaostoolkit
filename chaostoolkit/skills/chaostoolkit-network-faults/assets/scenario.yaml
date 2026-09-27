@@ -12,7 +12,7 @@ runtime:
     version: "3.14"             # required by faultlib
     dependencies:
       - faultlib>=1.0
-      - chaostoolkit-addons>=0.11   # idle_for, safeguards
+      - chaostoolkit-addons>=0.12   # idle_for, safeguards
 
 controls:
   - name: fault

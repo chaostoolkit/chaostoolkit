@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
-lock_version = "4.5.0"
-content_hash = "sha256:cea73eaa39ed844d847a1d0415f7afa5afcbd6c1414c47357df5e42f3fc369ff"
+lock_version = "4.5.1"
+content_hash = "sha256:6a83160f5c0dc5e94f59faa0622fe8fd56c19db8588e28d1da63c289406e6732"
 
 [[metadata.targets]]
 requires_python = ">=3.12"
@@ -23,7 +23,7 @@ files = [
 
 [[package]]
 name = "chaostoolkit-lib"
-version = "1.45.0"
+version = "1.45.1"
 requires_python = ">=3.12"
 summary = "Chaos Toolkit core library"
 groups = ["default"]
@@ -36,8 +36,8 @@ dependencies = [
     "requests>=2.31.0",
 ]
 files = [
-    {file = "chaostoolkit_lib-1.45.0-py3-none-any.whl", hash = "sha256:b5a8cb0d87c629448544fa6e0bd06cbcbce3d69f6310ba43294a3bcd4edeaa0e"},
-    {file = "chaostoolkit_lib-1.45.0.tar.gz", hash = "sha256:305db446de8cbfdfa390ee23e5a2cb3307a376bad4b9714f48dc9fdcd93794ce"},
+    {file = "chaostoolkit_lib-1.45.1-py3-none-any.whl", hash = "sha256:4cfbf9c6a7cbfb5295d56822167f514b0944a85a598e7251de5e47c022e974dd"},
+    {file = "chaostoolkit_lib-1.45.1.tar.gz", hash = "sha256:f514a6b63e636feb3b2d19a839db182add49bdf83a3bad6c9e8da11feae28f2b"},
 ]
 
 [[package]]
