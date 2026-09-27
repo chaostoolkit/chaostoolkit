@@ -184,7 +184,7 @@ before anything is started.
 ### Safeguards
 
 `chaostoolkit-addons` provides `chaosaddons.controls.safeguards`. Declare
-`chaostoolkit-addons` in `runtime.python.dependencies`.
+`chaostoolkit-addons>=0.12` in `runtime.python.dependencies`.
 
 ```yaml
 controls:
@@ -216,9 +216,9 @@ A probe with `background: true` and no `frequency` runs once, without
 blocking. When any safeguard misses its tolerance, the run is interrupted
 gracefully: rollbacks are played and controls stop. The journal records the
 safeguard under `safeguards`, which the agent report exposes as
-`interrupted_by`. Older releases of `chaostoolkit-addons` do not record it: when
-`interrupted_by` is null, find `Safeguard '<name>' triggered the end of the
-experiment` in the log file. Keep safeguard probes fast; a slow one can delay the end of
+`interrupted_by`. Releases of `chaostoolkit-addons` before 0.12 do not record
+it: when `interrupted_by` is null, find `Safeguard '<name>' triggered the end
+of the experiment` in the log file. Keep safeguard probes fast; a slow one can delay the end of
 the run.
 
 ### Other addons controls

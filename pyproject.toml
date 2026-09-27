@@ -13,7 +13,7 @@ authors = [
 dependencies = [
     "click>=8.0",
     "click-plugins>=1.1",
-    "chaostoolkit-lib>=1.42",
+    "chaostoolkit-lib>=1.45.1",
     "importlib-metadata>=6.0",
     "pyyaml>=6.0.1",
 ]
