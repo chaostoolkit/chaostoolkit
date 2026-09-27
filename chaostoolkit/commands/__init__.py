@@ -11,6 +11,7 @@ from chaostoolkit.commands.root import info_cli as info_cli
 from chaostoolkit.commands.root import init_cli as init_cli
 from chaostoolkit.commands.root import run_cli as run_cli
 from chaostoolkit.commands.root import settings_cli as settings_cli
+from chaostoolkit.commands.root import skills_cli as skills_cli
 from chaostoolkit.commands.root import validate_cli as validate_cli
 
 __all__ = ["cli"]

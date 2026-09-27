@@ -1,5 +1,7 @@
+import contextlib
 import json
 import logging
+import sys
 from typing import Any
 
 import click
@@ -24,10 +26,11 @@ from chaoslib.types import (
     Settings,
 )
 
-from chaostoolkit import encoder
+from chaostoolkit import agent, encoder
 from chaostoolkit.check import (
     check_hypothesis_strategy_spelling,
 )
+from chaostoolkit.events import EventFile
 from chaostoolkit.runtime import (
     RUNTIME_ARGUMENTS_META_KEY,
     RUNTIME_INVOCATION_CWD_META_KEY,
@@ -143,6 +146,21 @@ def validate_vars(
     "experiment as soon as it deviates once. Otherwise, keeps "
     "running until the end of the experiment.",
 )
+@click.option(
+    "--output",
+    "output_format",
+    type=click.Choice(["text", "agent"]),
+    default="text",
+    show_default=True,
+    help="Output on stdout. With agent, a single JSON report is written "
+    "once the run is over. The exit code is not affected.",
+)
+@click.option(
+    "--events-file",
+    type=click.Path(dir_okay=False, writable=True),
+    help="Stream the run's progress as newline-delimited JSON events to "
+    "this file, for instance to follow a long run.",
+)
 @click.argument("source")
 @click.pass_context
 def run(
@@ -160,10 +178,13 @@ def run(
     hypothesis_strategy: str | None = None,
     hypothesis_frequency: float = 1.0,
     fail_fast: bool = False,
+    output_format: str = "text",
+    events_file: str | None = None,
 ) -> Journal:
     """Run the experiment loaded from SOURCE, either a local file or a
     HTTP resource. SOURCE can be formatted as JSON or YAML."""
     settings = load_settings(ctx.obj["settings_path"]) or {}
+    for_agent = output_format == "agent"
 
     try:
         experiment = _load_run_experiment(
@@ -175,22 +196,33 @@ def run(
     except InvalidSource as x:
         logger.error(str(x))
         logger.debug(x)
+        if for_agent:
+            agent.emit(agent.run_error_report("load", x, source=source))
         ctx.exit(1)
 
     try:
         if not in_runtime_child():
             runtime_info = get_python_runtime_info(experiment)
             if runtime_info is not None:
+                runtime_kwargs = {"capture_stdout": True} if for_agent else {}
                 with supervised_runtime(
                     runtime_info,
                     argv=ctx.meta[RUNTIME_ARGUMENTS_META_KEY],
                     invocation_cwd=ctx.meta[RUNTIME_INVOCATION_CWD_META_KEY],
+                    **runtime_kwargs,
                 ) as child:
-                    exit_code = child.wait()
+                    if for_agent:
+                        exit_code = agent.relay_child_report(
+                            child, "run", source
+                        )
+                    else:
+                        exit_code = child.wait()
                 ctx.exit(exit_code)
     except PythonRuntimeError as x:
         logger.error(str(x))
         logger.debug(x)
+        if for_agent:
+            agent.emit(agent.run_error_report("runtime", x, source=source))
         ctx.exit(1)
 
     experiment_vars = merge_vars(var, var_file)
@@ -208,6 +240,9 @@ def run(
         hypothesis_strategy,
         hypothesis_frequency,
         fail_fast,
+        source=source,
+        for_agent=for_agent,
+        events_file=events_file,
     )
 
 
@@ -244,6 +279,9 @@ def _execute_run(
     hypothesis_strategy: str | None,
     hypothesis_frequency: float,
     fail_fast: bool,
+    source: str = "",
+    for_agent: bool = False,
+    events_file: str | None = None,
 ) -> Journal:
     """Execute an already-loaded experiment in the selected runtime."""
     notify(settings, RunFlowEvent.RunStarted, experiment)
@@ -254,6 +292,10 @@ def _execute_run(
         except ChaosException as x:
             logger.error(str(x))
             logger.debug(x)
+            if for_agent:
+                agent.emit(
+                    agent.run_error_report("validation", x, source=source)
+                )
             ctx.exit(1)
 
     experiment["dry"] = Dry.from_string(dry)
@@ -300,13 +342,27 @@ def _execute_run(
         fail_fast=fail_fast,
     )
 
-    journal = run_experiment(
-        experiment,
-        settings=settings,
-        strategy=ssh_strategy,
-        schedule=schedule,
-        experiment_vars=experiment_vars,
+    events = EventFile(events_file) if events_file else None
+    # in agent mode, stdout carries the report only: anything activities or
+    # controls print goes to stderr
+    quiet = (
+        contextlib.redirect_stdout(sys.stderr)
+        if for_agent
+        else contextlib.nullcontext()
     )
+    try:
+        with quiet:
+            journal = run_experiment(
+                experiment,
+                settings=settings,
+                strategy=ssh_strategy,
+                schedule=schedule,
+                experiment_vars=experiment_vars,
+                event_handlers=[events] if events else None,
+            )
+    finally:
+        if events:
+            events.close()
     has_deviated = journal.get("deviated", False)
     has_failed = journal["status"] != "completed"
     if "dry" in journal["experiment"]:
@@ -322,7 +378,19 @@ def _execute_run(
     if has_deviated:
         notify(settings, RunFlowEvent.RunDeviated, journal)
 
-    if (has_failed or has_deviated) and not no_exit:
-        ctx.exit(1)
+    exit_code = 1 if has_failed or has_deviated else 0
+    if for_agent:
+        agent.emit(
+            agent.run_report(
+                journal,
+                source=source,
+                journal_path=journal_path,
+                exit_code=exit_code,
+                events_path=events_file,
+            )
+        )
+
+    if exit_code and not no_exit:
+        ctx.exit(exit_code)
 
     return journal

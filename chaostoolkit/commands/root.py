@@ -15,6 +15,7 @@ from chaostoolkit.commands.info import info as info_cli
 from chaostoolkit.commands.init import init as init_cli
 from chaostoolkit.commands.run import run as run_cli
 from chaostoolkit.commands.settings import settings as settings_cli
+from chaostoolkit.commands.skills import skills as skills_cli
 from chaostoolkit.commands.validate import validate as validate_cli
 from chaostoolkit.runtime import (
     RUNTIME_ARGUMENTS_META_KEY,
@@ -122,4 +123,5 @@ cli.add_command(info_cli)
 cli.add_command(init_cli)
 cli.add_command(run_cli)
 cli.add_command(settings_cli)
+cli.add_command(skills_cli)
 cli.add_command(validate_cli)
