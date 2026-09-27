@@ -1,0 +1,74 @@
+# Template: replace every <...> and delete what the question does not need.
+title: <one sentence the outcome confirms or refutes>
+description: "<why this is tested: the change, incident or claim>"
+tags: [<service>]
+
+configuration:
+  entrypoint: <URL users hit, or a metric query>
+  namespace:
+    type: env
+    key: TARGET_NAMESPACE
+    default: <namespace>
+
+runtime:
+  python:
+    isolated: true
+    dependencies:
+      - chaostoolkit-addons>=0.11   # idle_for, safeguards
+      # e.g. chaostoolkit-kubernetes>=0.40
+
+steady-state-hypothesis:
+  title: <SLO in plain words, e.g. p95 checkout latency under 300ms>
+  probes:
+    - type: probe
+      name: <sli-name>
+      tolerance: {type: range, range: [0, <threshold>]}
+      provider:
+        type: python
+        module: activities
+        func: <probe function>
+        arguments: {url: "${entrypoint}"}
+
+method:
+  # the single perturbation
+  - type: action
+    name: <perturbation>
+    provider:
+      type: python
+      module: <activities or extension module>
+      func: <function>
+      arguments: {}
+  # hold it longer than the mechanisms that should react
+  - type: probe
+    name: hold-<perturbation>
+    provider:
+      type: python
+      module: chaosaddons.utils.idle
+      func: idle_for
+      arguments: {duration: <seconds>}
+  # end a persistent perturbation here so recovery is observed before the
+  # final steady-state check; drop it for self-healing ones like a pod kill
+  - type: action
+    name: <undo perturbation>
+    provider:
+      type: python
+      module: <module>
+      func: <function>
+      arguments: {}
+  - type: probe
+    name: observe-recovery
+    provider:
+      type: python
+      module: chaosaddons.utils.idle
+      func: idle_for
+      arguments: {duration: <recovery window>}
+
+rollbacks:
+  # the same undo, safe to run again, in case the method did not reach it
+  - type: action
+    name: <undo perturbation, rollback>
+    provider:
+      type: python
+      module: <module>
+      func: <function>
+      arguments: {}

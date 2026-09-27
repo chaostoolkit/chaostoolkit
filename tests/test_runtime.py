@@ -156,6 +156,54 @@ def test_runtime_child_is_terminated_when_the_context_fails(
     assert process.poll() is not None
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX signals")
+def test_interruption_signals_are_relayed_to_the_runtime_child(
+    tmp_path, monkeypatch
+):
+    import os
+    import signal
+
+    script = (
+        "import signal, sys, time\n"
+        "got = []\n"
+        "signal.signal(signal.SIGTERM, lambda n, f: got.append(n))\n"
+        "print('ready', flush=True)\n"
+        "while not got:\n"
+        "    time.sleep(0.05)\n"
+        "print('relayed', flush=True)\n"
+    )
+    command = [sys.executable, "-c", script]
+    monkeypatch.setattr(runtime, "build_runtime_command", lambda *_: command)
+    before = signal.getsignal(signal.SIGTERM)
+
+    with supervised_runtime(
+        PythonRuntime(("provider",)), [], tmp_path, capture_stdout=True
+    ) as child:
+        assert child.stdout.readline() == "ready\n"
+        # the supervisor keeps running and relays the signal to its child
+        os.kill(os.getpid(), signal.SIGTERM)
+        assert child.stdout.readline() == "relayed\n"
+        assert child.wait(timeout=10) == 0
+
+    assert signal.getsignal(signal.SIGTERM) is before
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX sessions")
+def test_runtime_child_runs_in_its_own_session(tmp_path, monkeypatch):
+    import os
+
+    command = [sys.executable, "-c", "import os; print(os.getsid(0))"]
+    monkeypatch.setattr(runtime, "build_runtime_command", lambda *_: command)
+
+    with supervised_runtime(
+        PythonRuntime(("provider",)), [], tmp_path, capture_stdout=True
+    ) as child:
+        sid = int(child.stdout.read())
+        child.wait()
+
+    assert sid != os.getsid(0)
+
+
 def test_runtime_child_marker_is_scoped():
     assert in_runtime_child() is False
     with runtime_child_invocation():

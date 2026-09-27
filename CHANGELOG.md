@@ -10,8 +10,40 @@
   `runtime.python.dependencies`. The `run` and `validate` commands use `uv` to
   prepare those dependencies without modifying the current installation. An
   optional `runtime.python.version` selects an isolated Python runtime.
+  SIGINT and SIGTERM received by `chaos` are relayed once to that runtime,
+  which runs in its own session, so the experiment is interrupted gracefully,
+  rollbacks are played and the run still reports.
 * Official container images now include `uv` for experiment dependencies, and
   the basic/full builds now honor their `CTK_VERSION` build argument.
+* `chaos run --output agent` writes a single JSON report on stdout once the
+  run is over (schema `chaostoolkit/agent/run/v1`). It derives a
+  deterministic `outcome` from the journal (`passed`, `deviated`,
+  `baseline-not-met`, `probe-error`, `aborted`, `interrupted` or `error`),
+  whether that outcome is `conclusive`, a short `verdict`, stable `warnings`
+  codes (dry run, no steady-state hypothesis, failed method activities,
+  rollbacks not played or failed), the safeguard that interrupted the run
+  when `chaosaddons.controls.safeguards` recorded it, and a summary of the
+  steady states, method and rollbacks. The exit code is unchanged by this
+  mode.
+* In agent mode, stdout carries the report only: whatever activities or
+  controls print goes to stderr. When the uv runtime cannot be prepared, an
+  `error` report is still written. An interruption that older
+  chaostoolkit-lib versions recorded as a failed activity is reported as
+  `interrupted`, never as a pass.
+* `chaos validate --output agent` writes a single JSON report (schema
+  `chaostoolkit/agent/validate/v1`) stating whether the experiment is valid
+  and, if not, the first error found and at which stage.
+* `chaos skills list|show|install` installs skills guiding coding agents
+  (Claude, Codex, OpenCode) to design and run experiments with the Chaos
+  Toolkit engine, in the workspace or the home directory.
+  `chaostoolkit-experiment` covers experiment design (steady states from
+  real data, error budget burn rate projection, load generation) and the
+  engine contract; `chaostoolkit-network-faults` lets the method set and
+  clear network faults through fault's engine (`faultlib`). When fault 1.0+
+  is on `PATH`, its own skill is installed alongside with
+  `fault skill install`.
+* `chaos run --events-file PATH` streams the run's progress as
+  newline-delimited JSON events to a file, for instance to follow a long run.
 
 ### Changed
 

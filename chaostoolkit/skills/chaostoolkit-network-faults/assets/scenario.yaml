@@ -1,0 +1,93 @@
+# Template: replace every <...>. Copy fault_control.py next to it and run with
+# PYTHONPATH=<scenario dir> --hypothesis-strategy continuously
+# --rollback-strategy always.
+title: <one sentence the outcome confirms or refutes>
+description: <why this is tested>
+
+configuration:
+  entrypoint: <URL users hit, routed through the proxy by the application>
+
+runtime:
+  python:
+    version: "3.14"             # required by faultlib
+    dependencies:
+      - faultlib>=1.0
+      - chaostoolkit-addons>=0.11   # idle_for, safeguards
+
+controls:
+  - name: fault
+    provider:
+      type: python
+      module: fault_control
+      arguments:
+        run_dir: <absolute path to runs/<timestamp>>
+        proxies:
+          - name: <dependency>
+            protocol: tcp
+            listen: 127.0.0.1:<port the application is pointed at>
+            upstream: <real host>:<port>
+  # optional, from the chaostoolkit-experiment skill, after fault
+  # - name: load
+  #   provider: {type: python, module: load_control, arguments: {...}}
+
+steady-state-hypothesis:
+  title: <indicator and threshold in plain words>
+  probes:
+    - type: probe
+      name: <indicator>
+      tolerance: {type: range, range: [0, <threshold>]}
+      provider:
+        type: python
+        module: activities
+        func: <probe function>
+        arguments: {url: "${entrypoint}"}
+
+method:
+  - type: action
+    name: <what degrades>
+    provider:
+      type: python
+      module: fault_control
+      func: set_faults
+      arguments:
+        faults:
+          <dependency>:
+            - type: latency
+              flow: to-client
+              distribution: {type: uniform, min_ms: <min>, max_ms: <max>}
+  - type: probe
+    name: hold-<what degrades>
+    provider:
+      type: python
+      module: chaosaddons.utils.idle
+      func: idle_for
+      # longer than the mechanisms that should react
+      arguments: {duration: <seconds>}
+  - type: probe
+    name: fault-reached-traffic
+    provider:
+      type: python
+      module: fault_control
+      func: ensure_traffic_impacted
+      arguments: {minimum: 1}
+  - type: action
+    name: <dependency recovers>
+    provider:
+      type: python
+      module: fault_control
+      func: clear_faults
+  - type: probe
+    name: observe-recovery
+    provider:
+      type: python
+      module: chaosaddons.utils.idle
+      func: idle_for
+      arguments: {duration: <recovery window>}
+
+rollbacks:
+  - type: action
+    name: heal-all-proxies
+    provider:
+      type: python
+      module: fault_control
+      func: clear_faults
