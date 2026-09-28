@@ -1,7 +1,14 @@
 name: Build container images
 
 on:
+  # manual: package the latest chaostoolkit installable from PyPI, or the
+  # given version. It is also tagged `latest`.
   workflow_dispatch:
+    inputs:
+      version:
+        description: "chaostoolkit version to package (default: latest on PyPI)"
+        required: false
+        default: ""
   # called by the release workflow once the version is on PyPI
   workflow_call:
 
@@ -12,14 +19,30 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: 'Get Previous tag'
-        id: latest_tag
-        run: echo "git_latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
+      - name: Resolve the version to package
+        id: version
+        env:
+          EVENT: ${{ github.event_name }}
+          REQUESTED: ${{ inputs.version }}
+        run: |
+          if [ "$EVENT" != "workflow_dispatch" ]; then
+            # called by a release: package its tag
+            version=$(git describe --tags --abbrev=0)
+          elif [ -n "$REQUESTED" ]; then
+            version="$REQUESTED"
+          else
+            # what pip actually installs, not what the JSON API announces
+            pip download --no-deps --quiet --dest /tmp/latest chaostoolkit
+            version=$(basename /tmp/latest/chaostoolkit-*.whl | cut -d- -f2)
+          fi
+          echo "Packaging chaostoolkit ${version}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
       - name: Wait for the version to be installable from PyPI
         env:
-          CTK_VERSION: ${{ steps.latest_tag.outputs.git_latest_tag }}
+          CTK_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          for attempt in $(seq 30); do
+          # the index pip reads can lag several minutes behind a publish
+          for attempt in $(seq 120); do
             if pip download --no-deps --quiet --dest /tmp/ctk "chaostoolkit==${CTK_VERSION}"; then
               exit 0
             fi
@@ -46,7 +69,7 @@ jobs:
           tags: |
             type=raw,value=basic
           labels: |
-            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
+            org.opencontainers.image.version=${{steps.version.outputs.version}}
       - name: Docker meta for 'full' flavour
         id: metafull
         uses: docker/metadata-action@v6
@@ -56,7 +79,7 @@ jobs:
           tags: |
             type=raw,value=full
           labels: |
-            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
+            org.opencontainers.image.version=${{steps.version.outputs.version}}
       - name: Docker meta for 'alpine' flavour
         id: alpine
         uses: docker/metadata-action@v6
@@ -65,9 +88,9 @@ jobs:
             chaostoolkit/chaostoolkit
           tags: |
             type=raw,value=latest
-            type=raw,value=${{steps.latest_tag.outputs.git_latest_tag}}
+            type=raw,value=${{steps.version.outputs.version}}
           labels: |
-            org.opencontainers.image.version=${{steps.latest_tag.outputs.git_latest_tag}}
+            org.opencontainers.image.version=${{steps.version.outputs.version}}
       - name: Build and push chaostoolkit-basic
         uses: docker/build-push-action@v7
         with:
@@ -78,7 +101,7 @@ jobs:
           tags: ${{ steps.metabasic.outputs.tags }}
           labels: ${{ steps.metabasic.outputs.labels }}
           build-args: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
+            CTK_VERSION=${{steps.version.outputs.version}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push chaostoolkit-full
@@ -91,7 +114,7 @@ jobs:
           tags: ${{ steps.metafull.outputs.tags }}
           labels: ${{ steps.metafull.outputs.labels }}
           build-args: |
-            CTK_VERSION=${{steps.latest_tag.outputs.git_latest_tag}}
+            CTK_VERSION=${{steps.version.outputs.version}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push chaostoolkit latest
@@ -104,7 +127,7 @@ jobs:
           tags: ${{ steps.alpine.outputs.tags }}
           labels: ${{ steps.alpine.outputs.labels }}
           build-args: |
-            ctkversion=${{steps.latest_tag.outputs.git_latest_tag}}
+            ctkversion=${{steps.version.outputs.version}}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Update repo description

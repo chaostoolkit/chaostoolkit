@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.1...HEAD
 
+### Changed
+
+* The container images workflow can be run manually to package the latest
+  chaostoolkit installable from PyPI, or a given version. It waits up to 20
+  minutes for a release to be installable, since PyPI's index can lag behind
+  a publish.
+
 ## [1.21.1][] - 2026-09-28
 
 [1.21.1]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.0...1.21.1
