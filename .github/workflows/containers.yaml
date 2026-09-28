@@ -2,6 +2,8 @@ name: Build container images
 
 on:
   workflow_dispatch:
+  # called by the release workflow once the version is on PyPI
+  workflow_call:
 
 jobs:
   build:
@@ -12,7 +14,20 @@ jobs:
           fetch-depth: 0
       - name: 'Get Previous tag'
         id: latest_tag
-        run: echo "::set-output name=git_latest_tag::$(git describe --tags --abbrev=0)"
+        run: echo "git_latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
+      - name: Wait for the version to be installable from PyPI
+        env:
+          CTK_VERSION: ${{ steps.latest_tag.outputs.git_latest_tag }}
+        run: |
+          for attempt in $(seq 30); do
+            if pip download --no-deps --quiet --dest /tmp/ctk "chaostoolkit==${CTK_VERSION}"; then
+              exit 0
+            fi
+            echo "chaostoolkit ${CTK_VERSION} not installable yet, retrying in 10s"
+            sleep 10
+          done
+          echo "chaostoolkit ${CTK_VERSION} is not available on PyPI"
+          exit 1
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
@@ -96,6 +111,6 @@ jobs:
         uses: peter-evans/dockerhub-description@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKER_PWD }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: chaostoolkit/chaostoolkit
           short-description: ${{ github.event.repository.description }}
