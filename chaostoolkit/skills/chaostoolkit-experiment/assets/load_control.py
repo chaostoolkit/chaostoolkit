@@ -28,13 +28,16 @@ after the rollbacks. The generator's output is written to `run_dir` and a
 summary is added to the journal under `load`.
 """
 
+import contextlib
 import json
 import logging
 import os
 import shutil
 import signal
 import subprocess
+import threading
 import time
+from collections.abc import Iterator
 from typing import Any
 
 from chaoslib.exceptions import InterruptExecution, InvalidControl
@@ -124,12 +127,13 @@ def _start(
     out = open(out_path, "w", encoding="utf-8")  # noqa: SIM115
     err = open(err_path, "w", encoding="utf-8")  # noqa: SIM115
     try:
-        process = subprocess.Popen(
-            [binary, *command[1:]],
-            stdin=subprocess.DEVNULL,
-            stdout=out,
-            stderr=err,
-        )
+        with _sigint_not_ignored():
+            process = subprocess.Popen(
+                [binary, *command[1:]],
+                stdin=subprocess.DEVNULL,
+                stdout=out,
+                stderr=err,
+            )
     except OSError as x:
         out.close()
         err.close()
@@ -153,6 +157,27 @@ def _start(
                 f"see {err_path}"
             )
         time.sleep(0.2)
+
+
+@contextlib.contextmanager
+def _sigint_not_ignored() -> Iterator[None]:
+    """
+    chaos may run in the background with SIGINT ignored, which a child
+    process would inherit, so the generator could not be stopped with it. A
+    caught signal is reset to its default on exec, an ignored one is not:
+    catch SIGINT while the generator is spawned.
+    """
+    ignored = (
+        threading.current_thread() is threading.main_thread()
+        and signal.getsignal(signal.SIGINT) is signal.SIG_IGN
+    )
+    if ignored:
+        signal.signal(signal.SIGINT, signal.default_int_handler)
+    try:
+        yield
+    finally:
+        if ignored:
+            signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def after_experiment_control(
