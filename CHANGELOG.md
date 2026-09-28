@@ -13,6 +13,10 @@
   with SIGTERM: shells start background jobs with SIGINT ignored
 * The skill's load control stops generators reliably even when `chaos` runs
   with SIGINT ignored
+* Releases publish container images through the container images workflow
+  only, multi-arch, once the version is installable from PyPI, instead of a
+  second amd64-only build that could overwrite `latest`. Both use the Docker
+  Hub access token.
 
 ## [1.21.0][] - 2026-09-27
 

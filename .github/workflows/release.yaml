@@ -25,37 +25,11 @@ jobs:
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
-  build-docker-image:
-    runs-on: ubuntu-latest
+  container-images:
     needs:
       - release-to-pypi
-    steps:
-    - uses: actions/checkout@v7
-    - run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
-    - run: echo "Release new docker image with tag ${{ env.RELEASE_VERSION }}"
-    - name: Building the Docker image
-      uses: nick-invision/retry@v2.4.0
-      env:
-        DOCKER_TAG: ${{ env.RELEASE_VERSION }}
-      with:
-        timeout_minutes: 10
-        max_attempts: 3
-        command: |
-          docker build --build-arg ctkversion=${DOCKER_TAG} -t chaostoolkit/chaostoolkit .
-          docker tag chaostoolkit/chaostoolkit:latest chaostoolkit/chaostoolkit:${DOCKER_TAG}
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v4
-      with:
-        username: chaostoolkit
-        password: ${{ secrets.DOCKER_PWD }}
-
-    - name: Publishing to the Docker repository
-      env:
-        DOCKER_TAG: ${{ env.RELEASE_VERSION }}
-      run: |
-        docker push chaostoolkit/chaostoolkit:$DOCKER_TAG
-        docker push chaostoolkit/chaostoolkit:latest
+    uses: ./.github/workflows/containers.yaml
+    secrets: inherit
 
   create-gh-release:
     runs-on: ubuntu-latest
