@@ -39,6 +39,7 @@ from chaostoolkit.runtime import (
     in_runtime_child,
     supervised_runtime,
 )
+from chaostoolkit.signals import SignalRecorder
 
 DEFAULT_ROLLBACK_STRATEGY = "default"
 DEFAULT_HYPOTHESIS_STRATEGY = "default"
@@ -358,7 +359,10 @@ def _execute_run(
                 strategy=ssh_strategy,
                 schedule=schedule,
                 experiment_vars=experiment_vars,
-                event_handlers=[events] if events else None,
+                event_handlers=[
+                    SignalRecorder(),
+                    *([events] if events else []),
+                ],
             )
     finally:
         if events:

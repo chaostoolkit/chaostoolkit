@@ -1,4 +1,5 @@
 import json
+import sys
 
 import pytest
 from click.testing import CliRunner
@@ -643,3 +644,47 @@ def test_runtime_child_report_is_relayed(tmp_path, monkeypatch):
 
     assert result.exit_code == 0
     assert _report(result) == {"schema": RUN_SCHEMA, "outcome": "passed"}
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX signals")
+def test_sigterm_is_reported_as_the_interruption(tmp_path, target):
+    import signal
+
+    hold = {
+        "type": "action",
+        "name": "sigterm-during-run",
+        "provider": {
+            "type": "python",
+            "module": "tests.fixtures.sigterm_self",
+            "func": "sigterm_self_then_wait",
+        },
+    }
+    undo = {
+        "type": "action",
+        "name": "undo",
+        "provider": {"type": "process", "path": "true"},
+    }
+    exp = _write(
+        tmp_path / "e.json",
+        probes=[_exists_probe(target)],
+        method=[hold],
+        rollbacks=[undo],
+    )
+    before = signal.getsignal(signal.SIGTERM)
+
+    result = _run(tmp_path, exp, "--rollback-strategy", "always")
+
+    report = _report(result)
+    assert report["outcome"] == "interrupted"
+    assert report["interrupted_by"] == {
+        "kind": "signal",
+        "name": "SIGTERM",
+        "reason": "received SIGTERM",
+    }
+    assert report["verdict"] == (
+        "The run was interrupted before it completed: received SIGTERM"
+    )
+    assert report["rollbacks"]["played"] == 1
+    journal = json.loads((tmp_path / "journal.json").read_text())
+    assert journal["interruption"]["name"] == "SIGTERM"
+    assert signal.getsignal(signal.SIGTERM) is before

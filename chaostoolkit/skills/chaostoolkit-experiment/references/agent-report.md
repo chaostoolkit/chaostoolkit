@@ -68,7 +68,7 @@ Chosen by fixed precedence, first match wins:
 | --- | --- | --- |
 | `safeguard` | `name`, `status`, `tolerance`, `output` | A safeguard missed its tolerance with that output. |
 | `control` | `name`, `reason` | A bundled control (`fault`, `load`) could not start. |
-| `signal` | `reason` | The run was interrupted from outside, e.g. SIGTERM. |
+| `signal` | `name`, `reason` | The run was interrupted from outside, e.g. `SIGTERM`. |
 
 `conclusive` is true only for `passed` or `deviated` without any of the
 warnings `dry-run`, `no-steady-state-hypothesis` or `method-activity-failed`.

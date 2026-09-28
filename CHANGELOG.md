@@ -4,6 +4,16 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.0...HEAD
 
+### Changed
+
+* When a run is interrupted by SIGTERM or SIGINT, the journal records it under
+  `interruption`, and the agent report gives it as `interrupted_by`
+  (`{"kind": "signal", "name": "SIGTERM", ...}`)
+* The `chaostoolkit-experiment` skill tells agents to stop background runs
+  with SIGTERM: shells start background jobs with SIGINT ignored
+* The skill's load control stops generators reliably even when `chaos` runs
+  with SIGINT ignored
+
 ## [1.21.0][] - 2026-09-27
 
 [1.21.0]: https://github.com/chaostoolkit/chaostoolkit/compare/1.20.0...1.21.0

@@ -232,8 +232,10 @@ echo $! > $R/chaos.pid
 ```
 
 Follow progress with `tail -n 5 $R/events.ndjson`; the run is over when
-`$R/report.json` is not empty. To stop a run early, send SIGINT or SIGTERM
-to the PID so rollbacks still run and the report is still written. Never use
+`$R/report.json` is not empty. To stop a run early, send SIGTERM to the PID
+(`kill $(cat $R/chaos.pid)`): rollbacks still run, the report is still
+written and `interrupted_by` records the signal. Do not rely on SIGINT for a
+background run: shells start background jobs with SIGINT ignored. Never use
 SIGKILL: nothing would be restored.
 
 ## Read the verdict
