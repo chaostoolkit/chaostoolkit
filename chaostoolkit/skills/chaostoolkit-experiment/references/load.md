@@ -22,12 +22,16 @@ scripts in the repository), since it knows the real traffic mix. Otherwise
 default to `oha`:
 
 ```
-oha --no-tui -j -z 5m -q 50 -c 10 http://127.0.0.1:8080/checkout
+oha --no-tui --output-format json -z 5m -q 50 -c 10 http://127.0.0.1:8080/checkout
 ```
 
 `-q` is the rate in requests per second, `-c` the number of concurrent
-connections, `-z` the duration, `-j` a JSON summary on stdout (also printed
-when interrupted). Check `oha --help` for headers, methods and bodies.
+connections, `-z` the duration, `--output-format json` a JSON summary on
+stdout (also printed when interrupted). Older releases such as 1.8 used `-j`
+instead; run `oha --version` if the flag is rejected. Redirects are not
+followed by default (since 1.15), so a 3xx counts as the response: point at
+the final URL or pass `-r <n>`. Check `oha --help` for headers (`-H`), methods
+(`-m`), bodies (`-d`, `-D`) and per-request timeouts (`-t`).
 
 ## Sizing
 

@@ -107,7 +107,8 @@ def _start(
         command = [
             "oha",
             "--no-tui",
-            "-j",
+            "--output-format",
+            "json",
             "-z",
             MAX_DURATION,
             "-c",
