@@ -2,11 +2,11 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.2...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.3...HEAD
 
-## [1.21.2][] - 2026-10-05
+## [1.21.3][] - 2026-10-05
 
-[1.21.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.1...1.21.2
+[1.21.3]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.2...1.21.3
 
 ### Changed
 
@@ -26,6 +26,12 @@
   cannot be limited to a fraction, load near capacity, or changes that are
   hard to undo. The agent explains what else could be affected and offers a
   narrower alternative.
+
+## [1.21.2][] - 2026-10-05
+
+[1.21.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.1...1.21.2
+
+### Changed
 
 * The container images workflow can be run manually to package the latest
   chaostoolkit installable from PyPI, or a given version. It waits up to 20
