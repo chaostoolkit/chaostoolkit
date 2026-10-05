@@ -2,7 +2,11 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.1...HEAD
+[Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.2...HEAD
+
+## [1.21.2][] - 2026-10-05
+
+[1.21.2]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.1...1.21.2
 
 ### Changed
 
@@ -10,6 +14,13 @@
   chaostoolkit installable from PyPI, or a given version. It waits up to 20
   minutes for a release to be installable, since PyPI's index can lag behind
   a publish.
+
+### Fixed
+
+* The `chaostoolkit-experiment` skill's load control asks oha for JSON with
+  `--output-format json`, since recent oha releases removed `-j`. The load
+  reference documents it and warns that oha no longer follows redirects by
+  default since 1.15.
 
 ## [1.21.1][] - 2026-09-28
 
