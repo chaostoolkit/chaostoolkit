@@ -191,11 +191,12 @@ failure.
 
 Production is never an implicit target. Having credentials, a kube context
 or network access to it does not put it in scope, and neither does a general
-go-ahead. Never inject faults, send load, run probes or change anything in
-production unless the user explicitly names production as the target of
-this experiment and approves the plan. Reading existing telemetry to size
-thresholds or load is fine. When you cannot tell whether an environment is
-production, treat it as production.
+go-ahead. Reading from production is fine: telemetry, logs, configuration
+and light read-only requests, for instance to size thresholds or load. Never
+change or stress it: no faults, load, writes, restarts, scaling or
+configuration changes, unless the user explicitly names production as the
+target of this experiment and approves the plan. When you cannot tell whether
+an environment is production, treat it as production.
 
 When the blast radius looks wider than the question needs, stop and ask,
 even if the target is in scope. Signs: the fault hits something shared, such

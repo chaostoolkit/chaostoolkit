@@ -4,6 +4,13 @@
 
 [Unreleased]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.3...HEAD
 
+### Changed
+
+* The `chaostoolkit-experiment` skill states that agents may read from
+  production (telemetry, logs, configuration, light read-only requests) but
+  never change or stress it without the user naming production explicitly
+  and approving the plan.
+
 ## [1.21.3][] - 2026-10-05
 
 [1.21.3]: https://github.com/chaostoolkit/chaostoolkit/compare/1.21.2...1.21.3
