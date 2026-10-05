@@ -68,6 +68,8 @@ method:
 - For TLS dependencies, keep the real hostname for SNI and certificate
   checks, for instance through the client's dial override or local name
   resolution. Never disable certificate verification.
+- List the routing change, such as the address or port the application now
+  uses, under "What we change and restore" in the plan shown before the run.
 - Restore the original routing after the run, and say so in the report.
 - Never redirect production traffic through a proxy without explicit
   approval.

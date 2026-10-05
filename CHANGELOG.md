@@ -10,6 +10,17 @@
 
 ### Changed
 
+* The `chaostoolkit-experiment` skill tells agents to show the user a short
+  plan before every real run, in plain terms: what is tested, where, the
+  traffic sent, the fault, every change to the environment and how it is
+  restored, what healthy means, when the run stops early, and how long it
+  takes. The `chaostoolkit-network-faults` skill lists the routing change to
+  the proxy in that plan.
+* The `chaostoolkit-experiment` skill forbids agents from treating production
+  as an implicit target: access to it does not put it in scope. Faults, load,
+  probes and changes need the user to name production explicitly and approve
+  the plan; an environment that may be production is treated as one.
+
 * The container images workflow can be run manually to package the latest
   chaostoolkit installable from PyPI, or a given version. It waits up to 20
   minutes for a release to be installable, since PyPI's index can lag behind

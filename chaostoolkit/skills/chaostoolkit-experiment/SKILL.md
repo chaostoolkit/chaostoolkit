@@ -189,13 +189,23 @@ the target's identity, the blast radius, a threshold or a rollback rests on
 a guess, stop and ask the user. Asking is part of doing this well, not a
 failure.
 
+Production is never an implicit target. Having credentials, a kube context
+or network access to it does not put it in scope, and neither does a general
+go-ahead. Never inject faults, send load, run probes or change anything in
+production unless the user explicitly names production as the target of
+this experiment and approves the plan. Reading existing telemetry to size
+thresholds or load is fine. When you cannot tell whether an environment is
+production, treat it as production.
+
 1. Validate until `valid` is true. Only the first error is reported.
 2. Dry-run to check the plumbing without touching the system. The load
    control generates no load during a dry run.
 3. Go through the checklist below.
-4. Get explicit approval before the real run unless the user has already put
-   this exact target in scope. Never run against production without it.
-5. Run. Add `--fail-fast` on shared environments so a deviation stops the
+4. Show the user the plan, as described below.
+5. Get explicit approval before the real run unless the user has already put
+   this exact target in scope. Production always needs explicit approval of
+   this plan, even when it is in scope.
+6. Run. Add `--fail-fast` on shared environments so a deviation stops the
    run.
 
 The exit code only says whether the process completed normally. The verdict
@@ -217,6 +227,31 @@ is in the report.
 - [ ] Anything beyond your own machine has a safeguard pre-check proving it
       is the intended target.
 - [ ] Load, if any, is sized from real traffic.
+
+### Show the plan
+
+Before every real run, show the user a short table of what is about to
+happen, in their terms. Fill it from the validated scenario and the changes
+you made to the environment, not from memory: every number must match what
+will run. Use these labels, one line each, and write "none" rather than drop
+a row:
+
+| | |
+|---|---|
+| We want to know | the question, in one sentence |
+| Where | environment and service, and how the run confirms it is the right one |
+| Traffic we send | tool, rate, connections, method and endpoint, where the rate comes from |
+| What we break | the fault, where, how much, for how long |
+| What we change and restore | every change to the environment, made before or during the run (ports, proxy routing, configuration, replicas, paused controllers), and how each one is undone |
+| Healthy means | the indicator and its threshold, and where the threshold comes from |
+| We stop early if | the stop conditions |
+| How long | total, then before, during and after the fault |
+| Files | where the scenario is |
+
+Avoid experiment vocabulary in the table: no "steady state", "hypothesis",
+"method", "probe", "rollback" or "blast radius". If the user has already put
+this target in scope, show the table and proceed; otherwise wait for their
+approval. For production, always wait.
 
 ### Long runs
 
