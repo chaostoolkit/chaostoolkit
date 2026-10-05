@@ -20,6 +20,12 @@
   as an implicit target: access to it does not put it in scope. Faults, load,
   probes and changes need the user to name production explicitly and approve
   the plan; an environment that may be production is treated as one.
+* The `chaostoolkit-experiment` skill tells agents to stop and ask when the
+  blast radius looks wider than the question needs, even for a target in
+  scope: shared dependencies, impact on other services or users, faults that
+  cannot be limited to a fraction, load near capacity, or changes that are
+  hard to undo. The agent explains what else could be affected and offers a
+  narrower alternative.
 
 * The container images workflow can be run manually to package the latest
   chaostoolkit installable from PyPI, or a given version. It waits up to 20

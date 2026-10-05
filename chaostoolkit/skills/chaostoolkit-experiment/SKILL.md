@@ -197,14 +197,24 @@ this experiment and approves the plan. Reading existing telemetry to size
 thresholds or load is fine. When you cannot tell whether an environment is
 production, treat it as production.
 
+When the blast radius looks wider than the question needs, stop and ask,
+even if the target is in scope. Signs: the fault hits something shared, such
+as a database, a broker, DNS, an identity provider or a cluster-wide
+component; other services, teams or users would feel it; it cannot be
+limited to a fraction of replicas or traffic; load approaches the system's
+known capacity; or a change is slow or impossible to undo, such as deleted
+data. Tell the user in plain terms what else could be affected and why, offer
+a narrower alternative if there is one, and wait for their confirmation.
+
 1. Validate until `valid` is true. Only the first error is reported.
 2. Dry-run to check the plumbing without touching the system. The load
    control generates no load during a dry run.
 3. Go through the checklist below.
 4. Show the user the plan, as described below.
 5. Get explicit approval before the real run unless the user has already put
-   this exact target in scope. Production always needs explicit approval of
-   this plan, even when it is in scope.
+   this exact target in scope. Production, or a blast radius wider than the
+   question needs, always requires explicit approval of this plan, even when
+   it is in scope.
 6. Run. Add `--fail-fast` on shared environments so a deviation stops the
    run.
 
@@ -251,7 +261,8 @@ a row:
 Avoid experiment vocabulary in the table: no "steady state", "hypothesis",
 "method", "probe", "rollback" or "blast radius". If the user has already put
 this target in scope, show the table and proceed; otherwise wait for their
-approval. For production, always wait.
+approval. For production, or when the run could reach beyond the service
+under test, always wait.
 
 ### Long runs
 
