@@ -52,7 +52,7 @@ $ uv tool install chaostoolkit
 You can also install it with `pip`, as before:
 
 ```console
-$ pip install -U chaostoolkit
+pip install -U chaostoolkit
 ```
 
 ## Getting Started
@@ -62,7 +62,7 @@ Once you have installed the Chaos Toolkit you can use it through its simple comm
 Running an experiment is as simple as:
 
 ```console
-$ chaos run experiment.json
+chaos run experiment.json
 ```
 
 ### Experiment dependencies
@@ -127,10 +127,10 @@ following commands:
 [pdm]: https://pdm-project.org/latest/
 
 ```console
-$ pdm install
-$ pdm run test
-$ pdm run format
-$ pdm run lint
+pdm install
+pdm run test
+pdm run format
+pdm run lint
 ```
 
 The Chaos Toolkit projects require all contributors must sign a
